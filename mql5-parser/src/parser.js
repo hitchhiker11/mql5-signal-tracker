@@ -1,5 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const storage = require('./storage');
 
 class MQL5Parser {
     constructor() {
@@ -24,20 +25,28 @@ class MQL5Parser {
 
     async parseSignal(signalUrl) {
         try {
+            const existingData = storage.getSignal(signalUrl);
+            if (existingData) {
+                return existingData;
+            }
+
             const response = await axios.get(signalUrl, {
                 headers: this.headers,
                 timeout: 30000,
                 maxRedirects: 5
             });
-            const $ = cheerio.load(response.data);
             
-            return {
+            const $ = cheerio.load(response.data);
+            const data = {
                 generalInfo: this.parseGeneralInfo($),
                 statistics: this.parseStatistics($),
                 tradeHistory: this.parseTradeHistory($),
                 distribution: this.parseDistribution($),
                 authorSignals: this.parseAuthorSignals($)
             };
+
+            storage.saveSignal(signalUrl, data);
+            return data;
         } catch (error) {
             console.error('Ошибка при парсинге:', error);
             throw error;
