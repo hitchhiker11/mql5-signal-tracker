@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Container,
-  Typography,
   Paper,
   Table,
   TableBody,
@@ -9,100 +8,120 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
+  TablePagination,
+  CircularProgress,
+  Alert,
   Button,
-  Stack,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Alert
+  Box,
+  Chip
 } from '@mui/material';
-import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import { userApi } from '../../services/api/user';
+import { useNavigate } from 'react-router-dom';
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const navigate = useNavigate();
 
   const fetchUsers = async () => {
     try {
       const response = await userApi.getAllUsers();
-      setUsers(response.data);
+      if (response?.data) {
+        setUsers(response.data);
+      } else {
+        setUsers([]);
+      }
     } catch (err) {
-      setError('Ошибка при загрузке пользователей');
+      console.error('Error fetching users:', err);
+      setError('Ошибка при загрузке списка пользователей');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (userId) => {
-    try {
-      await userApi.deleteUser(userId);
-      setUsers(users.filter(user => user.id !== userId));
-    } catch (err) {
-      setError('Ошибка при удалении пользователя');
-    }
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleAssignSignal = (userId) => {
+    navigate(`/admin/signals/assign/${userId}`);
   };
 
   if (loading) {
-    return <Typography>Загрузка...</Typography>;
+    return (
+      <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <CircularProgress />
+      </Container>
+    );
   }
 
   return (
     <Container>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Управление пользователями</Typography>
-      </Stack>
-
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
-
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      <Box sx={{ mb: 2 }}>
+        <Button variant="contained" color="primary" onClick={fetchUsers}>
+          Обновить список
+        </Button>
+      </Box>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>Имя пользователя</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Роль</TableCell>
-              <TableCell>Дата регистрации</TableCell>
+              <TableCell>Статус</TableCell>
               <TableCell>Действия</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
+            {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
               <TableRow key={user.id}>
                 <TableCell>{user.id}</TableCell>
-                <TableCell>{user.username}</TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>{user.role}</TableCell>
                 <TableCell>
-                  {new Date(user.created_at).toLocaleDateString()}
+                  <Chip 
+                    label={user.role === 'admin' ? 'Администратор' : 'Пользователь'} 
+                    color={user.role === 'admin' ? 'primary' : 'default'}
+                    size="small"
+                  />
                 </TableCell>
                 <TableCell>
-                  <IconButton
-                    color="error"
-                    onClick={() => handleDelete(user.id)}
+                  <Chip 
+                    label={user.status} 
+                    color={user.status === 'active' ? 'success' : 'warning'}
+                    size="small"
+                  />
+                </TableCell>
+                <TableCell>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleAssignSignal(user.id)}
                   >
-                    <DeleteIcon />
-                  </IconButton>
+                    Назначить сигнал
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        <TablePagination
+          component="div"
+          count={users.length}
+          page={page}
+          onPageChange={(e, newPage) => setPage(newPage)}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={(e) => {
+            setRowsPerPage(parseInt(e.target.value, 10));
+            setPage(0);
+          }}
+          rowsPerPageOptions={[5, 10, 25]}
+        />
       </TableContainer>
     </Container>
   );
