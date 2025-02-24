@@ -1,13 +1,17 @@
 import { Navigate, useRoutes } from 'react-router-dom';
-import AuthLayout from './layouts/AuthLayout';
+
+// Layouts
 import MainLayout from './layouts/MainLayout';
+import AuthLayout from './layouts/AuthLayout';
 import AdminLayout from './layouts/AdminLayout';
 import UserLayout from './layouts/UserLayout';
 
-// Auth pages
+// Pages
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
+import NotFound from './pages/NotFound';
+import Home from './pages/Home';
 
 // Admin pages
 import AdminDashboard from './pages/admin/Dashboard';
@@ -19,10 +23,6 @@ import UserDashboard from './pages/user/Dashboard';
 import UserProfile from './pages/user/Profile';
 import UserSignals from './pages/user/Signals';
 
-// Other pages
-import Home from './pages/Home';
-import NotFound from './pages/NotFound';
-
 export default function Router() {
   return useRoutes([
     {
@@ -31,8 +31,8 @@ export default function Router() {
       children: [
         { path: 'login', element: <Login /> },
         { path: 'register', element: <Register /> },
-        { path: 'forgot-password', element: <ForgotPassword /> },
-      ],
+        { path: 'forgot-password', element: <ForgotPassword /> }
+      ]
     },
     {
       path: '/admin',
@@ -41,8 +41,8 @@ export default function Router() {
         { path: '', element: <Navigate to="/admin/dashboard" replace /> },
         { path: 'dashboard', element: <AdminDashboard /> },
         { path: 'users', element: <UserManagement /> },
-        { path: 'signals', element: <SignalManagement /> },
-      ],
+        { path: 'signals', element: <SignalManagement /> }
+      ]
     },
     {
       path: '/user',
@@ -51,8 +51,8 @@ export default function Router() {
         { path: '', element: <Navigate to="/user/dashboard" replace /> },
         { path: 'dashboard', element: <UserDashboard /> },
         { path: 'profile', element: <UserProfile /> },
-        { path: 'signals', element: <UserSignals /> },
-      ],
+        { path: 'signals', element: <UserSignals /> }
+      ]
     },
     {
       path: '/',
@@ -60,8 +60,8 @@ export default function Router() {
       children: [
         { path: '', element: <Home /> },
         { path: '404', element: <NotFound /> },
-        { path: '*', element: <Navigate to="/404" replace /> },
-      ],
-    },
+        { path: '*', element: <Navigate to="/404" replace /> }
+      ]
+    }
   ]);
 }

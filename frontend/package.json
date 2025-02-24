@@ -26,10 +26,10 @@
     "web-vitals": "^3.5.2"
   },
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "start": "vite"
   },
   "eslintConfig": {
     "extends": [

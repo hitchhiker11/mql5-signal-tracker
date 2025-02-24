@@ -3,25 +3,23 @@ import { authApi } from '../services/api/auth';
 
 export const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      checkAuth();
-    } else {
-      setLoading(false);
-    }
+    checkAuth();
   }, []);
 
   const checkAuth = async () => {
     try {
-      const response = await authApi.checkAuth();
-      setUser(response.data);
+      const token = localStorage.getItem('token');
+      if (token) {
+        const response = await authApi.checkAuth();
+        setUser(response.data.user);
+      }
     } catch (error) {
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem('token');
     } finally {
       setLoading(false);
     }
@@ -30,19 +28,31 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     const response = await authApi.login(credentials);
     const { token, user } = response.data;
-    localStorage.setItem('accessToken', token);
+    localStorage.setItem('token', token);
     setUser(user);
     return response;
   };
 
-  const logout = () => {
-    localStorage.removeItem('accessToken');
-    setUser(null);
+  const logout = async () => {
+    try {
+      await authApi.logout();
+    } finally {
+      localStorage.removeItem('token');
+      setUser(null);
+    }
   };
 
+  const updateUser = (userData) => {
+    setUser(userData);
+  };
+
+  if (loading) {
+    return null; // или компонент загрузки
+  }
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
