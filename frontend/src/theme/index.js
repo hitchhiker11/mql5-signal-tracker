@@ -15,16 +15,6 @@ const theme = createTheme({
           textTransform: 'none'
         }
       }
-    },
-    MuiPaper: {
-      defaultProps: {
-        elevation: 0
-      },
-      styleOverrides: {
-        root: {
-          backgroundImage: 'none'
-        }
-      }
     }
   }
 });

@@ -1,40 +1,30 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
-import DashboardLayout from '../components/dashboard/DashboardLayout';
-import { AuthGuard } from '../auth/AuthGuard';
-
-const APP_BAR_MOBILE = 64;
-const APP_BAR_DESKTOP = 92;
-
-const RootStyle = styled('div')({
-  display: 'flex',
-  minHeight: '100%',
-  overflow: 'hidden'
-});
-
-const MainStyle = styled('div')(({ theme }) => ({
-  flexGrow: 1,
-  overflow: 'auto',
-  minHeight: '100%',
-  paddingTop: APP_BAR_MOBILE + 24,
-  paddingBottom: theme.spacing(10),
-  [theme.breakpoints.up('lg')]: {
-    paddingTop: APP_BAR_DESKTOP + 24,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2)
-  }
-}));
+import { Box, Container } from '@mui/material';
+import Navbar from '../components/dashboard/Navbar';
+import Sidebar from '../components/dashboard/Sidebar';
 
 export default function AdminLayout() {
+  const [open, setOpen] = React.useState(true);
+
   return (
-    <AuthGuard requireAdmin>
-      <RootStyle>
-        <DashboardLayout />
-        <MainStyle>
+    <Box sx={{ display: 'flex' }}>
+      <Navbar open={open} setOpen={setOpen} />
+      <Sidebar open={open} role="admin" />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          mt: 8,
+          backgroundColor: 'background.default',
+          minHeight: '100vh'
+        }}
+      >
+        <Container maxWidth="lg">
           <Outlet />
-        </MainStyle>
-      </RootStyle>
-    </AuthGuard>
+        </Container>
+      </Box>
+    </Box>
   );
 }

@@ -1,18 +1,25 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './useAuth';
+import LoadingScreen from '../components/LoadingScreen';
 
-export default function AuthGuard({ children, requireAdmin }) {
-  const { user } = useAuth();
+export const AuthGuard = ({ children, allowedRoles = ['user', 'admin'] }) => {
+  const { isAuthenticated, loading, user } = useAuth();
   const { pathname } = useLocation();
 
-  if (!user) {
-    return <Navigate to="/auth/login" state={{ from: pathname }} replace />;
+  if (loading) {
+    return <LoadingScreen />;
   }
 
-  if (requireAdmin && user.role !== 'admin') {
-    return <Navigate to="/404" replace />;
+  if (!isAuthenticated) {
+    // Сохраняем путь, с которого пользователь был перенаправлен
+    return <Navigate to="/auth/login" state={{ from: pathname }} />;
+  }
+
+  if (!user || !allowedRoles.includes(user.role)) {
+    // Если роль не подходит, перенаправляем на домашнюю страницу
+    return <Navigate to="/" />;
   }
 
   return <>{children}</>;
-}
+};

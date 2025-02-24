@@ -6,23 +6,18 @@ export const userApi = {
     return response.data;
   },
 
-  getUser: async (userId) => {
-    const response = await axios.get(`/api/users/${userId}`);
+  getUser: async (id) => {
+    const response = await axios.get(`/api/users/${id}`);
     return response.data;
   },
 
-  updateProfile: async (userData) => {
-    const response = await axios.put('/api/users/profile', userData);
+  updateUser: async (id, userData) => {
+    const response = await axios.put(`/api/users/${id}`, userData);
     return response.data;
   },
 
-  changePassword: async (passwords) => {
-    const response = await axios.put('/api/users/password', passwords);
-    return response.data;
-  },
-
-  deleteUser: async (userId) => {
-    const response = await axios.delete(`/api/users/${userId}`);
+  deleteUser: async (id) => {
+    const response = await axios.delete(`/api/users/${id}`);
     return response.data;
   },
 

@@ -1,24 +1,34 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './auth/AuthContext';
-
+import { useAuth } from './auth/useAuth';
+import { AuthGuard } from './auth/AuthGuard';
 // Layouts
 import DashboardLayout from './components/dashboard/DashboardLayout';
 import AuthLayout from './layouts/AuthLayout';
+import AdminLayout from './layouts/AdminLayout';
+import UserLayout from './layouts/UserLayout';
 
 // Pages
-import Dashboard from './pages/Dashboard';
-import SignalsList from './pages/SignalsList';
-import UserSignals from './pages/UserSignals';
-import UsersList from './pages/UsersList';
-import Profile from './pages/Profile';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+
+// Auth Pages
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
 
-// Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+// Admin Pages
+import AdminDashboard from './pages/admin/Dashboard';
+import UserManagement from './pages/admin/UserManagement';
+import SignalManagement from './pages/admin/SignalManagement';
+
+// User Pages
+import UserDashboard from './pages/user/Dashboard';
+import UserProfile from './pages/user/Profile';
+import UserSignals from './pages/user/Signals';
+
+const ProtectedRoute = ({ children, allowedRoles = ['user', 'admin'] }) => {
+  const { isAuthenticated, loading, user } = useAuth();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -28,12 +38,19 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/auth/login" />;
   }
 
+  if (!allowedRoles.includes(user.role)) {
+    return <Navigate to="/" />;
+  }
+
   return children;
 };
 
 export default function Router() {
   return (
     <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<Home />} />
+
       {/* Auth Routes */}
       <Route path="/auth" element={<AuthLayout />}>
         <Route path="login" element={<Login />} />
@@ -41,24 +58,36 @@ export default function Router() {
         <Route path="forgot-password" element={<ForgotPassword />} />
       </Route>
 
-      {/* Protected Dashboard Routes */}
+      {/* Admin Routes */}
       <Route
-        path="/"
+        path="/admin"
         element={
-          <ProtectedRoute>
-            <DashboardLayout />
-          </ProtectedRoute>
+          <AuthGuard allowedRoles={['admin']}>
+            <AdminLayout />
+          </AuthGuard>
         }
       >
-        <Route index element={<Dashboard />} />
-        <Route path="signals" element={<SignalsList />} />
-        <Route path="my-signals" element={<UserSignals />} />
-        <Route path="users" element={<UsersList />} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="users" element={<UserManagement />} />
+        <Route path="signals" element={<SignalManagement />} />
       </Route>
 
-      {/* Redirect unknown routes to dashboard */}
-      <Route path="*" element={<Navigate to="/" />} />
+      {/* User Routes */}
+      <Route
+        path="/user"
+        element={
+          <AuthGuard allowedRoles={['user']}>
+            <UserLayout />
+          </AuthGuard>
+        }
+      >
+        <Route path="dashboard" element={<UserDashboard />} />
+        <Route path="signals" element={<UserSignals />} />
+        <Route path="profile" element={<UserProfile />} />
+      </Route>
+
+      {/* 404 */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

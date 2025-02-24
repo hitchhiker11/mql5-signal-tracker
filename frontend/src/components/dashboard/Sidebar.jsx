@@ -1,115 +1,114 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 import {
-  Box,
   Drawer,
-  Typography,
-  Avatar,
   List,
-  ListItemButton,
+  ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  ListItemButton,
+  Box,
+  useTheme
 } from '@mui/material';
+import {
+  Dashboard as DashboardIcon,
+  People as PeopleIcon,
+  Person as PersonIcon,
+  Timeline as TimelineIcon,
+  Settings as SettingsIcon
+} from '@mui/icons-material';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/useAuth';
-import navConfig from './NavConfig';
-import { useResponsive } from '../../hooks/useResponsive';
 
-const DRAWER_WIDTH = 280;
+const DRAWER_WIDTH = 240;
 
-const RootStyle = styled('div')(({ theme }) => ({
-  [theme.breakpoints.up('lg')]: {
-    flexShrink: 0,
-    width: DRAWER_WIDTH
-  }
-}));
+const getMenuItems = (role) => {
+  const commonItems = [
+    { text: 'Панель управления', icon: <DashboardIcon />, path: `/${role}/dashboard` }
+  ];
 
-const AccountStyle = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
-  borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: theme.palette.grey[500_12]
-}));
+  const adminItems = [
+    { text: 'Пользователи', icon: <PeopleIcon />, path: '/admin/users' },
+    { text: 'Управление сигналами', icon: <TimelineIcon />, path: '/admin/signals' }
+  ];
 
-export default function Sidebar({ isOpenSidebar, onCloseSidebar }) {
-  const { pathname } = useLocation();
-  const { user } = useAuth();
+  const userItems = [
+    { text: 'Мои сигналы', icon: <TimelineIcon />, path: '/user/signals' },
+    { text: 'Профиль', icon: <PersonIcon />, path: '/user/profile' }
+  ];
+
+  return [...commonItems, ...(role === 'admin' ? adminItems : userItems)];
+};
+
+export default function Sidebar({ open, role = 'user' }) {
+  const theme = useTheme();
+  const location = useLocation();
   const navigate = useNavigate();
-  const isDesktop = useResponsive('up', 'lg');
+  const { user } = useAuth();
 
-  const renderContent = (
-    <Box sx={{ px: 2.5, py: 3, display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-          MQL5 Signal Parser
-        </Typography>
-      </Box>
-
-      <AccountStyle>
-        <Avatar src={user?.photoURL} alt="photoURL" />
-        <Box sx={{ ml: 2 }}>
-          <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-            {user?.username}
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {user?.role}
-          </Typography>
-        </Box>
-      </AccountStyle>
-
-      <List disablePadding sx={{ p: 1 }}>
-        {navConfig[user?.role === 'admin' ? 'admin' : 'user'].map((item) => (
-          <ListItemButton
-            key={item.title}
-            onClick={() => navigate(item.path)}
-            sx={{
-              py: 2,
-              px: 3,
-              borderRadius: 1,
-              ...(pathname === item.path && {
-                color: 'primary.main',
-                bgcolor: 'primary.lighter'
-              })
-            }}
-          >
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.title} />
-          </ListItemButton>
-        ))}
-      </List>
-    </Box>
-  );
+  const menuItems = getMenuItems(role);
 
   return (
-    <RootStyle>
-      {!isDesktop && (
-        <Drawer
-          open={isOpenSidebar}
-          onClose={onCloseSidebar}
-          PaperProps={{
-            sx: { width: DRAWER_WIDTH }
-          }}
-        >
-          {renderContent}
-        </Drawer>
-      )}
-
-      {isDesktop && (
-        <Drawer
-          open
-          variant="persistent"
-          PaperProps={{
-            sx: {
-              width: DRAWER_WIDTH,
-              bgcolor: 'background.default',
-              borderRightStyle: 'dashed'
-            }
-          }}
-        >
-          {renderContent}
-        </Drawer>
-      )}
-    </RootStyle>
+    <Drawer
+      variant="permanent"
+      open={open}
+      sx={{
+        width: DRAWER_WIDTH,
+        flexShrink: 0,
+        whiteSpace: 'nowrap',
+        boxSizing: 'border-box',
+        ...(open && {
+          width: DRAWER_WIDTH,
+          '& .MuiDrawer-paper': {
+            width: DRAWER_WIDTH,
+            transition: theme.transitions.create('width', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.enteringScreen,
+            }),
+          },
+        }),
+        ...(!open && {
+          width: theme.spacing(7),
+          '& .MuiDrawer-paper': {
+            width: theme.spacing(7),
+            transition: theme.transitions.create('width', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+          },
+        }),
+      }}
+    >
+      <Box sx={{ mt: 8 }}>
+        <List>
+          {menuItems.map((item) => (
+            <ListItem key={item.text} disablePadding>
+              <ListItemButton
+                selected={location.pathname === item.path}
+                onClick={() => navigate(item.path)}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText 
+                  primary={item.text} 
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </Drawer>
   );
 } 
