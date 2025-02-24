@@ -1,8 +1,7 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-const storage = require('./storage');
+import * as cheerio from 'cheerio';
+import axios from 'axios';
 
-class MQL5Parser {
+export class MQL5Parser {
     constructor() {
         this.baseUrl = 'https://www.mql5.com';
         this.headers = {
@@ -23,114 +22,110 @@ class MQL5Parser {
         };
     }
 
-    async parseSignal(signalUrl) {
+    async parseSignal(url) {
         try {
-            const existingData = storage.getSignal(signalUrl);
-            if (existingData) {
-                return existingData;
-            }
-
-            const response = await axios.get(signalUrl, {
+            const response = await axios.get(url, {
                 headers: this.headers,
                 timeout: 30000,
                 maxRedirects: 5
             });
             
             const $ = cheerio.load(response.data);
+
+            const generalInfo = this.parseGeneralInfo($);
+            const statistics = this.parseStatistics($);
+            const tradeHistory = this.parseTradeHistory($);
+            const distribution = this.parseDistribution($);
+            const authorSignals = this.parseAuthorSignals($);
+
             const data = {
-                generalInfo: this.parseGeneralInfo($),
-                statistics: this.parseStatistics($),
-                tradeHistory: this.parseTradeHistory($),
-                distribution: this.parseDistribution($),
-                authorSignals: this.parseAuthorSignals($)
+                generalInfo,
+                statistics,
+                tradeHistory,
+                distribution,
+                authorSignals,
+                url,
+                lastUpdate: new Date().toISOString()
             };
 
-            storage.saveSignal(signalUrl, data);
             return data;
         } catch (error) {
-            console.error('Ошибка при парсинге:', error);
-            throw error;
+            console.error('Error parsing signal:', error);
+            throw new Error('Failed to parse signal data');
         }
     }
 
     parseGeneralInfo($) {
-        const info = {};
-        
-        // Парсинг основной информации
-        $('.s-list-info__item').each((_, element) => {
-            const label = $(element).find('.s-list-info__label').text().trim();
-            const value = $(element).find('.s-list-info__value').text().trim();
-            info[label] = value;
-        });
-
-        // Парсинг информации о сигнале
-        info.signalName = $('.s-line-card__title').text().trim();
-        info.author = $('.s-line-card__author').text().trim();
-        info.reliability = $('.s-indicators__item_risk').text().trim();
-
-        return info;
+        return {
+            signalName: $('.signal-header__name').text().trim(),
+            author: $('.signal-header__author a').text().trim(),
+            reliability: $('.signal-header__reliability').text().trim(),
+            subscribers: parseInt($('.signal-header__subscribers span').text().trim().replace(/\D/g, '')) || 0,
+            price: parseFloat($('.signal-header__price').text().trim().replace(/[^\d.]/g, '')) || 0
+        };
     }
 
     parseStatistics($) {
-        const stats = {};
-        
-        $('.s-data-columns__item').each((_, element) => {
-            const label = $(element).find('.s-data-columns__label').text().trim();
-            const value = $(element).find('.s-data-columns__value').text().trim();
-            stats[label] = value;
-        });
-
-        return stats;
+        return {
+            deposits: parseFloat($('.signal-header__deposits').text().trim().replace(/[^\d.]/g, '')) || 0,
+            profit: parseFloat($('.signal-header__profit').text().trim().replace(/[^\d.]/g, '')) || 0,
+            trades: parseInt($('.signal-header__trades').text().trim().replace(/\D/g, '')) || 0,
+            weeks: parseInt($('.signal-header__weeks').text().trim().replace(/\D/g, '')) || 0
+        };
     }
 
     parseTradeHistory($) {
         const trades = [];
-        
-        $('#signalInfoTable tbody tr:not(.signalDataHidden):not(.summary)').each((_, row) => {
+        $('.signal-trading__history tbody tr').each((_, row) => {
             const trade = {};
             $(row).find('td').each((index, cell) => {
                 const value = $(cell).text().trim();
                 switch(index) {
-                    case 0: trade.symbol = value; break;
-                    case 1: trade.time = value; break;
-                    case 2: trade.type = value; break;
-                    case 3: trade.volume = value; break;
-                    case 4: trade.price = value; break;
-                    // Добавьте остальные поля по необходимости
+                    case 0: trade.time = value; break;
+                    case 1: trade.type = value; break;
+                    case 2: trade.symbol = value; break;
+                    case 3: trade.volume = parseFloat(value) || 0; break;
+                    case 4: trade.price = parseFloat(value) || 0; break;
+                    case 5: trade.profit = parseFloat(value) || 0; break;
                 }
             });
-            trades.push(trade);
+            if (Object.keys(trade).length > 0) {
+                trades.push(trade);
+            }
         });
-
         return trades;
     }
 
     parseDistribution($) {
         const distribution = [];
-        
-        $('.signals-chart-dist tbody tr').each((_, row) => {
+        $('.signal-trading__distribution .distribution__item').each((_, el) => {
             distribution.push({
-                symbol: $(row).find('.col-symbol').text().trim(),
-                value: $(row).find('.col-buy-sell').text().trim(),
-                percentage: $(row).find('.bar div').attr('style')?.match(/width:\s*([\d.]+)%/)?.[1] || '0'
+                symbol: $(el).find('.distribution__symbol').text().trim(),
+                percentage: parseFloat($(el).find('.distribution__value').text().trim()) || 0
             });
         });
-
         return distribution;
     }
 
     parseAuthorSignals($) {
         const signals = [];
-        
-        $('#authorsSignals .s-other-signal').each((_, element) => {
+        $('.signal-author__signals .signal-card').each((_, el) => {
             signals.push({
-                name: $(element).find('.s-other-signal__name').text().trim(),
-                url: $(element).attr('href')
+                name: $(el).find('.signal-card__name').text().trim(),
+                url: this.baseUrl + $(el).find('a').attr('href'),
+                subscribers: parseInt($(el).find('.signal-card__subscribers').text().trim().replace(/\D/g, '')) || 0
             });
         });
-
         return signals;
+    }
+
+    async validateSignalUrl(url) {
+        const urlPattern = /^https:\/\/www\.mql5\.com\/[a-z]{2}\/signals\/\d+$/;
+        if (!urlPattern.test(url)) {
+            throw new Error('Invalid signal URL format');
+        }
+        return true;
     }
 }
 
-module.exports = MQL5Parser; 
+export default MQL5Parser;

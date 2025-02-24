@@ -1,11 +1,12 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authApi } from '../services/api/auth';
 
-export const AuthContext = createContext(null);
+const AuthContext = createContext(null);
 
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -15,10 +16,12 @@ export function AuthProvider({ children }) {
     try {
       const token = localStorage.getItem('token');
       if (token) {
-        const response = await authApi.checkAuth();
-        setUser(response.data.user);
+        const { user } = await authApi.checkAuth();
+        setUser(user);
+        setIsAuthenticated(true);
       }
     } catch (error) {
+      console.error('Auth check failed:', error);
       localStorage.removeItem('token');
     } finally {
       setLoading(false);
@@ -26,19 +29,26 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (credentials) => {
-    const response = await authApi.login(credentials);
-    const { token, user } = response.data;
+    const { token, user } = await authApi.login(credentials);
     localStorage.setItem('token', token);
     setUser(user);
+    setIsAuthenticated(true);
+  };
+
+  const register = async (userData) => {
+    const response = await authApi.register(userData);
     return response;
   };
 
   const logout = async () => {
     try {
       await authApi.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
     } finally {
       localStorage.removeItem('token');
       setUser(null);
+      setIsAuthenticated(false);
     }
   };
 
@@ -46,13 +56,27 @@ export function AuthProvider({ children }) {
     setUser(userData);
   };
 
+  const value = {
+    user,
+    loading,
+    isAuthenticated,
+    login,
+    logout,
+    register,
+    updateUser
+  };
+
   if (loading) {
     return null; // или компонент загрузки
   }
 
-  return (
-    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};

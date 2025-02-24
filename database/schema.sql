@@ -1,12 +1,46 @@
-CREATE TABLE signals (
-    id SERIAL PRIMARY KEY,
-    signal_url VARCHAR(255) UNIQUE NOT NULL,
-    signal_name VARCHAR(255) NOT NULL,
-    author VARCHAR(255) NOT NULL,
-    reliability VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- Создание базы данных
+CREATE DATABASE IF NOT EXISTS mql5_signals;
+USE mql5_signals;
+
+-- Создание таблицы пользователей
+CREATE TABLE IF NOT EXISTS users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(255) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('user', 'admin') DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- Создание таблицы сигналов
+CREATE TABLE IF NOT EXISTS signals (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  url VARCHAR(255) NOT NULL UNIQUE,
+  name VARCHAR(255) NOT NULL,
+  author VARCHAR(255) NOT NULL,
+  data JSON,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Создание таблицы связей пользователей и сигналов
+CREATE TABLE IF NOT EXISTS user_signals (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  signal_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (signal_id) REFERENCES signals(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_user_signal (user_id, signal_id)
+);
+
+-- Индексы для оптимизации запросов
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_username ON users(username);
+CREATE INDEX idx_signals_url ON signals(url);
+CREATE INDEX idx_user_signals_user ON user_signals(user_id);
+CREATE INDEX idx_user_signals_signal ON user_signals(signal_id);
 
 CREATE TABLE general_info (
     id SERIAL PRIMARY KEY,
