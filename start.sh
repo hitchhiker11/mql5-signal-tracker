@@ -7,7 +7,7 @@
 psql -U $DB_USER -d $DB_NAME -f database/schema.sql
 
 # Запуск парсера
-cd mql5-parser && npm install && npm start &
+cd backend && npm install && npm start &
 
 # Запуск фронтенда
 cd ../mql5-frontend && npm install && npm start 

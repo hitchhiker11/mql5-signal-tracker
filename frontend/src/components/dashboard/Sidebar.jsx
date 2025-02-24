@@ -23,7 +23,7 @@ const DRAWER_WIDTH = 240;
 
 const getMenuItems = (role) => {
   const commonItems = [
-    { text: 'Панель управления', icon: <DashboardIcon />, path: `/${role}/dashboard` }
+    { text: 'Дашборд', icon: <DashboardIcon />, path: `/${role}/dashboard` }
   ];
 
   const adminItems = [

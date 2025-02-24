@@ -76,7 +76,7 @@ export default function UserDashboard() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0.5}>
-        {/* <Typography variant="h4">Панель управления</Typography> */}
+        {/* <Typography variant="h4"></Typography> */}
       </Stack>
 
       {error && (

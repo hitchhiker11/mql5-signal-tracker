@@ -29,35 +29,36 @@ export default function AdminDashboard() {
 
   const fetchDashboardStats = async () => {
     try {
+      setLoading(true);
       const [usersResponse, signalsResponse] = await Promise.all([
-        adminApi.getUsers(),
+        adminApi.getAllUsers(),
         adminApi.getAllSignals()
       ]);
-  
-      if (usersResponse?.data && Array.isArray(usersResponse.data)) {
-        const activeUsers = usersResponse.data.filter(user => user.status === 'active').length;
+
+      if (usersResponse?.data) {
+        const users = usersResponse.data;
         setStats(prev => ({
           ...prev,
           users: {
-            total: usersResponse.data.length,
-            active: activeUsers,
-            new: usersResponse.data.filter(user => {
+            total: users.length,
+            active: users.filter(user => user.status === 'active').length,
+            new: users.filter(user => {
               const createdAt = new Date(user.created_at);
               const now = new Date();
-              const daysDiff = (now - createdAt) / (1000 * 60 * 60 * 24);
-              return daysDiff <= 7;
+              return (now - createdAt) <= 7 * 24 * 60 * 60 * 1000;
             }).length
           }
         }));
       }
-  
-      if (signalsResponse?.data && Array.isArray(signalsResponse.data)) {
+
+      if (signalsResponse?.data) {
+        const signals = signalsResponse.data;
         setStats(prev => ({
           ...prev,
           signals: {
-            total: signalsResponse.data.length,
-            active: signalsResponse.data.filter(signal => signal.status === 'active').length,
-            pending: signalsResponse.data.filter(signal => signal.status === 'pending').length
+            total: signals.length,
+            active: signals.filter(signal => signal.status === 'active').length,
+            pending: signals.filter(signal => signal.status === 'pending').length
           }
         }));
       }

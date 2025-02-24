@@ -1,35 +1,31 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001',
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  baseURL: 'http://localhost:3001',
+  withCredentials: true
 });
 
-// Добавляем токен из localStorage при инициализации
-const token = localStorage.getItem('token');
-if (token) {
-  axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
-
+// Добавляем перехватчик для добавления токена к каждому запросу
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
+// Добавляем перехватчик для обработки ошибок
 axiosInstance.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    console.log('Response error:', error.response);
+  (error) => {
     if (error.response?.status === 401) {
-      console.log('401 error, token:', localStorage.getItem('token'));
+      // Можно добавить логику для обновления токена или перенаправления на страницу входа
+      console.log('Unauthorized, redirecting to login...');
       localStorage.removeItem('token');
       window.location.href = '/auth/login';
     }

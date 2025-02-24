@@ -29,7 +29,7 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
 
 # Установка зависимостей и запуск парсера
 Write-Host "Starting parser..."
-Set-Location -Path ".\mql5-parser"
+Set-Location -Path ".\backend"
 # npm install
 Start-Process npm -ArgumentList "start" -NoNewWindow
 

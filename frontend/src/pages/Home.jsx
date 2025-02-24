@@ -19,7 +19,7 @@ export default function Home() {
       <ContentStyle>
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="h3" paragraph>
-            MQL5 Signal Parser
+            {import.meta.env.VITE_APP_NAME}
           </Typography>
           <Typography sx={{ color: 'text.secondary', mb: 5 }}>
             Анализируйте и отслеживайте торговые сигналы MQL5

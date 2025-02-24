@@ -41,7 +41,7 @@ export default function AuthLayout() {
       <HeaderStyle>
         <Link href="/" underline="none">
           <Typography variant="h3" sx={{ color: 'text.primary' }}>
-            MQL5 Signal Parser
+            {import.meta.env.VITE_APP_NAME}
           </Typography>
         </Link>
       </HeaderStyle>

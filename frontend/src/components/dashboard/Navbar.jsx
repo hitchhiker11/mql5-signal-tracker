@@ -44,7 +44,7 @@ export default function Navbar({ open, setOpen }) {
         </IconButton>
         
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-          MQL5 Signal Parser
+          {import.meta.env.VITE_APP_NAME}
         </Typography>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

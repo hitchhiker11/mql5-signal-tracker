@@ -60,27 +60,38 @@ router.post('/', verifyToken, async (req, res) => {
 });
 
 // Назначить сигнал пользователю
-router.post('/assign/:userId', isAdmin, async (req, res) => {
+router.post('/assign', isAdmin, async (req, res) => {
   try {
-    const { userId } = req.params;
-    const { url } = req.body;
+    const { userId, signalId } = req.body;
 
-    const { rows } = await pool.query(
-      'SELECT id FROM signals WHERE url = $1',
-      [url]
+    // Проверяем существование сигнала
+    const signalExists = await pool.query(
+      'SELECT id FROM signals WHERE id = $1',
+      [signalId]
     );
 
-    if (rows.length === 0) {
+    if (signalExists.rows.length === 0) {
       return res.status(404).json({ message: 'Сигнал не найден' });
+    }
+
+    // Проверяем, не назначен ли уже этот сигнал пользователю
+    const existingAssignment = await pool.query(
+      'SELECT * FROM user_signals WHERE user_id = $1 AND signal_id = $2',
+      [userId, signalId]
+    );
+
+    if (existingAssignment.rows.length > 0) {
+      return res.status(400).json({ message: 'Сигнал уже назначен этому пользователю' });
     }
 
     await pool.query(
       'INSERT INTO user_signals (user_id, signal_id) VALUES ($1, $2)',
-      [userId, rows[0].id]
+      [userId, signalId]
     );
 
     res.json({ message: 'Сигнал успешно назначен пользователю' });
   } catch (error) {
+    console.error('Error assigning signal:', error);
     res.status(500).json({ message: 'Ошибка при назначении сигнала' });
   }
 });
@@ -147,5 +158,48 @@ router.post('/:id/parse', verifyToken, async (req, res) => {
       });
     }
   });
+
+// Обновить сигнал (только для админа)
+router.put('/:id', isAdmin, async (req, res) => {
+  const client = await pool.connect();
+  
+  try {
+    const { id } = req.params;
+    const { name, url } = req.body;
+
+    await client.query('BEGIN');
+
+    // Проверяем существование сигнала
+    const checkSignal = await client.query(
+      'SELECT id FROM signals WHERE id = $1',
+      [id]
+    );
+
+    if (checkSignal.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ message: 'Сигнал не найден' });
+    }
+
+    // Обновляем данные сигнала
+    const { rows } = await client.query(
+      `UPDATE signals 
+       SET name = COALESCE($1, name),
+           url = COALESCE($2, url),
+           updated_at = NOW()
+       WHERE id = $3
+       RETURNING *`,
+      [name, url, id]
+    );
+
+    await client.query('COMMIT');
+    res.json(rows[0]);
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('Error updating signal:', error);
+    res.status(500).json({ message: 'Ошибка при обновлении сигнала' });
+  } finally {
+    client.release();
+  }
+});
 
 export default router; 

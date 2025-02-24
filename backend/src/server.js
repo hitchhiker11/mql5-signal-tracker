@@ -18,19 +18,23 @@ const PORT = process.env.PORT || 3001;
 export const parser = new MQL5Parser();
 
 // Middleware
-// app.use(cors());
 app.use(cors({
-    origin: 'http://localhost:3000',  // URL вашего фронтенда
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  }));
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json());
+
+// Логгирование запросов
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  next();
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/signals', verifyToken, signalRoutes);
-app.use('/api/users', verifyToken, userRoutes);
+app.use('/api/admin/users', verifyToken, userRoutes);
+app.use('/api/admin/signals', verifyToken, signalRoutes);
 
 // Публичный маршрут для тестирования парсера
 app.post('/api/parse', async (req, res) => {

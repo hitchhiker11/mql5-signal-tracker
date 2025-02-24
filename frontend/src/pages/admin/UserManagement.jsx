@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { userApi } from '../../services/api/user';
 import { useNavigate } from 'react-router-dom';
+import { adminApi } from '../../services/api/admin';
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -27,16 +28,15 @@ export default function UserManagement() {
   const navigate = useNavigate();
 
   const fetchUsers = async () => {
+    setLoading(true);
     try {
-      const response = await userApi.getAllUsers();
+      const response = await adminApi.getAllUsers();
       if (response?.data) {
         setUsers(response.data);
-      } else {
-        setUsers([]);
       }
     } catch (err) {
       console.error('Error fetching users:', err);
-      setError('Ошибка при загрузке списка пользователей');
+      setError('Ошибка при загрузке пользователей');
     } finally {
       setLoading(false);
     }

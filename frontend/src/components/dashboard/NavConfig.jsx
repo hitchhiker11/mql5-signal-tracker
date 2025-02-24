@@ -10,7 +10,7 @@ import {
 const navConfig = {
   admin: [
     {
-      title: 'Панель управления',
+      title: 'Дашборд',
       path: '/admin/dashboard',
       icon: <Home />
     },
@@ -32,7 +32,7 @@ const navConfig = {
   ],
   user: [
     {
-      title: 'Панель управления',
+      title: 'Дашборд',
       path: '/user/dashboard',
       icon: <Home />
     },

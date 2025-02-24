@@ -1,55 +1,50 @@
-import axios from '../axios';
+import axiosInstance from '../axios';
 
 export const signalApi = {
   getSignal: async (url) => {
-    const response = await axios.post('/api/signals/parse', { url });
+    const response = await axiosInstance.post('/api/signals/parse', { url });
     return response.data;
   },
 
   getAllSignals: async () => {
-    const response = await axios.get('/api/signals');
-    return response;
+    return axiosInstance.get('/api/admin/signals');
   },
 
   getUserSignals: async () => {
-    const response = await axios.get('/api/signals/user');
-    return response;
+    return axiosInstance.get('/api/signals/user');
   },
 
   addSignal: async (url) => {
-    const response = await axios.post('/api/signals', { url });
-    return response;
+    return axiosInstance.post('/api/admin/signals', { url });
   },
 
-  deleteSignal: async (signalId) => {
-    const response = await axios.delete(`/api/signals/${signalId}`);
-    return response.data;
+  deleteSignal: async (id) => {
+    return axiosInstance.delete(`/api/admin/signals/${id}`);
   },
 
-  assignSignal: async (userId, signalUrl) => {
-    const response = await axios.post(`/api/signals/assign/${userId}`, {
-      url: signalUrl
+  assignSignal: async (userId, signalId) => {
+    return axiosInstance.post('/api/admin/signals/assign', {
+      userId,
+      signalId
     });
-    return response.data;
   },
 
   getStats: async () => {
-    const response = await axios.get('/api/signals/stats');
+    const response = await axiosInstance.get('/api/signals/stats');
     return response.data;
   },
 
   parseSignal: async (url) => {
-    const response = await axios.post('/api/signals/parse', { url });
+    const response = await axiosInstance.post('/api/signals/parse', { url });
     return response;
   },
 
-  updateSignal: async (id) => {
-    const response = await axios.post(`/api/signals/${id}/parse`);
-    return response;
+  updateSignal: async (id, data) => {
+    return axiosInstance.put(`/api/admin/signals/${id}`, data);
   },
 
   updateSignalData: async (id) => {
-    const response = await axios.put(`/api/signals/${id}/update`);
+    const response = await axiosInstance.put(`/api/signals/${id}/update`);
     return response;
   }
 };

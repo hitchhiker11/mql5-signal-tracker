@@ -25,7 +25,7 @@ import {
 } from '@mui/material';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import { signalApi } from '../../services/api/signal';
-import { userApi } from '../../services/api/user';
+import { adminApi } from '../../services/api/admin';
 
 export default function SignalManagement() {
   const [signals, setSignals] = useState([]);
@@ -33,6 +33,7 @@ export default function SignalManagement() {
   const [newSignalUrl, setNewSignalUrl] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [editDialog, setEditDialog] = useState(false);
   const [assignDialog, setAssignDialog] = useState(false);
   const [selectedSignal, setSelectedSignal] = useState(null);
@@ -46,8 +47,11 @@ export default function SignalManagement() {
   const fetchSignals = async () => {
     try {
       const response = await signalApi.getAllSignals();
-      setSignals(response.data);
+      if (response?.data) {
+        setSignals(response.data);
+      }
     } catch (err) {
+      console.error('Error fetching signals:', err);
       setError('Ошибка при загрузке сигналов');
     } finally {
       setLoading(false);
@@ -56,12 +60,9 @@ export default function SignalManagement() {
 
   const fetchUsers = async () => {
     try {
-      const response = await userApi.getAllUsers();
+      const response = await adminApi.getAllUsers();
       if (response?.data) {
-        const filteredUsers = Array.isArray(response.data) 
-          ? response.data.filter(user => user.role !== 'admin')
-          : [];
-        setUsers(filteredUsers);
+        setUsers(response.data.filter(user => user.role !== 'admin'));
       }
     } catch (err) {
       console.error('Error fetching users:', err);
@@ -111,12 +112,19 @@ export default function SignalManagement() {
   };
 
   const handleSaveAssign = async () => {
+    if (!selectedSignal || !selectedUser) {
+      setError('Выберите сигнал и пользователя');
+      return;
+    }
+
     try {
       await signalApi.assignSignal(selectedUser, selectedSignal.id);
+      setSuccess('Сигнал успешно назначен пользователю');
       setAssignDialog(false);
       fetchSignals(); // Обновляем список сигналов
     } catch (err) {
-      setError('Ошибка при привязке сигнала');
+      console.error('Error assigning signal:', err);
+      setError(err.response?.data?.message || 'Ошибка при назначении сигнала');
     }
   };
 
@@ -131,6 +139,7 @@ export default function SignalManagement() {
       </Stack>
 
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
 
       <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
         <TextField
@@ -185,7 +194,6 @@ export default function SignalManagement() {
         </Table>
       </TableContainer>
 
-      {/* Диалог редактирования */}
       <Dialog open={editDialog} onClose={() => setEditDialog(false)}>
         <DialogTitle>Редактировать сигнал</DialogTitle>
         <DialogContent>
@@ -210,9 +218,8 @@ export default function SignalManagement() {
         </DialogActions>
       </Dialog>
 
-      {/* Диалог привязки к пользователю */}
       <Dialog open={assignDialog} onClose={() => setAssignDialog(false)}>
-        <DialogTitle>Привязать сигнал к пользователю</DialogTitle>
+        <DialogTitle>Назначить сигнал пользователю</DialogTitle>
         <DialogContent>
           <FormControl fullWidth sx={{ mt: 2 }}>
             <InputLabel>Пользователь</InputLabel>
@@ -222,7 +229,7 @@ export default function SignalManagement() {
             >
               {users.map((user) => (
                 <MenuItem key={user.id} value={user.id}>
-                  {user.email}
+                  {user.username || user.email}
                 </MenuItem>
               ))}
             </Select>
@@ -230,7 +237,9 @@ export default function SignalManagement() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setAssignDialog(false)}>Отмена</Button>
-          <Button onClick={handleSaveAssign} variant="contained">Привязать</Button>
+          <Button onClick={handleSaveAssign} variant="contained">
+            Назначить
+          </Button>
         </DialogActions>
       </Dialog>
     </Container>
