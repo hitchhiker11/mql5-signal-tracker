@@ -21,6 +21,13 @@ import {
 const SignalView = ({ data }) => {
     const [tabValue, setTabValue] = React.useState(0);
 
+    if (!data) {
+        return null;
+    }
+
+    // Проверяем наличие необходимых свойств
+    const { generalInfo = {}, statistics = {}, distribution = [] } = data;
+
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue);
     };
@@ -31,9 +38,15 @@ const SignalView = ({ data }) => {
                 {/* Верхняя карточка */}
                 <Grid item xs={12}>
                     <Paper elevation={3} sx={{ p: 2 }}>
-                        <Typography variant="h4">{data.generalInfo.signalName}</Typography>
-                        <Typography variant="subtitle1">{data.generalInfo.author}</Typography>
-                        <Typography variant="body1">{data.generalInfo.reliability}</Typography>
+                    {generalInfo?.signalName && (
+                        <Typography variant="h4">{generalInfo.signalName}</Typography>
+                    )}
+                    {generalInfo?.author && (
+                        <Typography variant="subtitle1">{generalInfo.author}</Typography>
+                    )}
+                    {generalInfo?.reliability && (
+                        <Typography variant="body1">{generalInfo.reliability}</Typography>
+                    )}
                     </Paper>
                 </Grid>
 
@@ -42,7 +55,7 @@ const SignalView = ({ data }) => {
                     <Paper elevation={3} sx={{ p: 2 }}>
                         <Typography variant="h6">Основные показатели</Typography>
                         <Grid container spacing={2}>
-                            {Object.entries(data.generalInfo).map(([key, value]) => (
+                            {Object.entries(generalInfo).map(([key, value]) => (
                                 <Grid item xs={6} key={key}>
                                     <Typography variant="body2" color="textSecondary">
                                         {key}
@@ -61,7 +74,7 @@ const SignalView = ({ data }) => {
                     <Paper elevation={3} sx={{ p: 2 }}>
                         <Typography variant="h6">Статистика</Typography>
                         <Grid container spacing={2}>
-                            {Object.entries(data.statistics).map(([key, value]) => (
+                            {Object.entries(statistics).map(([key, value]) => (
                                 <Grid item xs={6} key={key}>
                                     <Typography variant="body2" color="textSecondary">
                                         {key}
@@ -87,7 +100,7 @@ const SignalView = ({ data }) => {
                         <Box sx={{ p: 2 }}>
                             {tabValue === 0 && (
                                 <Grid container spacing={2}>
-                                    {data.distribution.map((item, index) => (
+                                    {distribution.map((item, index) => (
                                         item.symbol && (
                                             <Grid item xs={12} key={index}>
                                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>

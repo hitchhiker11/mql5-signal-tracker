@@ -16,6 +16,7 @@ app.post('/api/parse', async (req, res) => {
         }
 
         const data = await parser.parseSignal(url);
+        console.log(data);
         res.json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });

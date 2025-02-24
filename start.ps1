@@ -30,7 +30,7 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
 # Установка зависимостей и запуск парсера
 Write-Host "Starting parser..."
 Set-Location -Path ".\mql5-parser"
-npm install
+# npm install
 Start-Process npm -ArgumentList "start" -NoNewWindow
 
 # Ждем немного, чтобы парсер успел запуститься
@@ -39,5 +39,5 @@ Start-Sleep -Seconds 5
 # Установка зависимостей и запуск фронтенда
 Write-Host "Starting frontend..."
 Set-Location -Path "..\mql5-frontend"
-npm install
-npm start
+# npm install
+npm run dev
