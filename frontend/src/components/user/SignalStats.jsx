@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Card,
   Stack,
@@ -6,9 +6,13 @@ import {
   Grid,
   Box,
   LinearProgress,
-  CardContent
+  CardContent,
+  CircularProgress,
+  Alert
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { signalApi } from '../../services/api/signal';
+import SignalDetails from './SignalDetails';
 
 const ProgressItem = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -16,23 +20,57 @@ const ProgressItem = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.neutral
 }));
 
-const SignalStats = ({ signal }) => {
-  // Если сигнал отсутствует, показываем сообщение об ошибке
+const SignalStats = ({ signal, onUpdate }) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [retryCount, setRetryCount] = useState(0);
+
+  const handleUpdate = async () => {
+    if (!signal.id) return;
+    
+    setLoading(true);
+    setError('');
+    try {
+      const response = await signalApi.updateSignal(signal.id);
+      if (onUpdate) {
+        await onUpdate();
+      }
+    } catch (err) {
+      console.error('Error updating signal:', err);
+      const errorMessage = err.response?.data?.message || 'Ошибка при обновлении данных';
+      setError(errorMessage);
+      
+      // Попытка повторного запроса при ошибке
+      if (retryCount < 2) {
+        setTimeout(() => {
+          setRetryCount(prev => prev + 1);
+          handleUpdate();
+        }, 2000);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!signal.parsed_data && retryCount === 0) {
+      handleUpdate();
+    }
+  }, [signal.id, retryCount]);
+
   if (!signal) {
     return (
       <Card>
         <CardContent>
           <Typography>Неизвестный сигнал</Typography>
-          <Typography color="textSecondary">
-            Данные сигнала отсутствуют
-          </Typography>
         </CardContent>
       </Card>
     );
   }
 
-  // Если данные еще не загружены
-  if (!signal.data) {
+  const parsedData = signal.parsed_data;
+  
+  if (!parsedData) {
     return (
       <Card>
         <CardContent>
@@ -41,65 +79,45 @@ const SignalStats = ({ signal }) => {
             {signal.author && `Автор: ${signal.author}`}
           </Typography>
           <Typography color="textSecondary">
-            Ожидание загрузки статистики...
+            Ожидание обновления данных...
           </Typography>
         </CardContent>
       </Card>
     );
   }
 
-  // Преобразуем строку JSON в объект, если data является строкой
-  const data = typeof signal.data === 'string' ? JSON.parse(signal.data) : signal.data;
-
-  // Если нет статистики
-  if (!data || !data.stats) {
-    return (
-      <Card>
-        <CardContent>
-          <Typography variant="h6">{signal.name}</Typography>
-          <Typography color="textSecondary">
-            {signal.author && `Автор: ${signal.author}`}
-          </Typography>
-          <Typography color="textSecondary">
-            Статистика сигнала отсутствует
-          </Typography>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  const stats = data.stats;
+  const { generalInfo, statistics } = parsedData;
 
   const statItems = [
-    { label: 'Прирост', value: stats['Прирост:'] || 'Н/Д' },
-    { label: 'Просадка', value: stats['Просадка:'] || 'Н/Д' },
-    { label: 'Прибыльность', value: stats['Прибыльность:'] || 'Н/Д' },
-    { label: 'Фактор восстановления', value: stats['Фактор восстановления:'] || 'Н/Д' },
-    { label: 'Сделки', value: stats['Сделки:'] || 'Н/Д' },
-    { label: 'Математическое ожидание', value: stats['Математическое ожидание:'] || 'Н/Д' }
+    { label: 'Прирост', value: generalInfo['Прирост:'] || 'Н/Д' },
+    { label: 'Прибыль', value: generalInfo['Прибыль:'] || 'Н/Д' },
+    { label: 'Средства', value: generalInfo['Средства:'] || 'Н/Д' },
+    { label: 'Баланс', value: generalInfo['Баланс:'] || 'Н/Д' },
+    { label: 'Всего трейдов', value: statistics['Всего трейдов:'] || 'Н/Д' },
+    { label: 'Прибыльных', value: statistics['Прибыльных трейдов:'] || 'Н/Д' }
   ];
 
   return (
     <Card>
       <CardContent>
-        <Typography variant="h6" gutterBottom>{signal.name}</Typography>
+        <Typography variant="h5" gutterBottom>
+          {signal.name}
+        </Typography>
         <Typography color="textSecondary" gutterBottom>
           {signal.author && `Автор: ${signal.author}`}
         </Typography>
-        <Grid container spacing={2} sx={{ mt: 2 }}>
-          {statItems.map((item, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Box>
-                <Typography color="textSecondary" gutterBottom>
-                  {item.label}
-                </Typography>
-                <Typography variant="h5" component="div">
-                  {item.value}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
+
+        {loading ? (
+          <Box display="flex" justifyContent="center" my={2}>
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        ) : (
+          <SignalDetails signal={signal} />
+        )}
       </CardContent>
     </Card>
   );

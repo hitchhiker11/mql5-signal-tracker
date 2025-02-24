@@ -43,6 +43,11 @@ export const signalApi = {
     return response;
   },
 
+  updateSignal: async (id) => {
+    const response = await axios.post(`/api/signals/${id}/parse`);
+    return response;
+  },
+
   updateSignalData: async (id) => {
     const response = await axios.put(`/api/signals/${id}/update`);
     return response;

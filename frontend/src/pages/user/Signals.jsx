@@ -8,7 +8,8 @@ import {
   Button,
   Stack,
   Alert,
-  Box
+  Box,
+  CircularProgress
 } from '@mui/material';
 import { signalApi } from '../../services/api/signal';
 import SignalStats from '../../components/user/SignalStats';
@@ -20,22 +21,22 @@ export default function Signals() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  useEffect(() => {
-    fetchSignals();
-  }, []);
-
   const fetchSignals = async () => {
     setLoading(true);
     try {
       const response = await signalApi.getUserSignals();
       setSignals(response.data);
     } catch (err) {
-      console.log(err);
+      console.error('Error fetching signals:', err);
       setError('Ошибка при загрузке сигналов');
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchSignals();
+  }, []);
 
   const handleAddSignal = async (e) => {
     e.preventDefault();
@@ -44,19 +45,17 @@ export default function Signals() {
     setLoading(true);
 
     try {
-      // Сначала парсим сигнал
-      const parseResponse = await signalApi.parseSignal(newSignalUrl);
-      console.log('Parsed signal:', parseResponse.data);
-
-      // Если парсинг успешен, добавляем сигнал
-      const addResponse = await signalApi.addSignal(newSignalUrl);
-      console.log('Added signal:', addResponse.data);
-
-      setSignals([...signals, addResponse.data]);
+      // Добавляем сигнал и получаем обновленные данные
+      const response = await signalApi.addSignal(newSignalUrl);
+      console.log('Added signal response:', response);
+      
+      // Обновляем список сигналов
+      await fetchSignals();
+      
       setNewSignalUrl('');
       setSuccess('Сигнал успешно добавлен');
     } catch (err) {
-      console.error('Error:', err);
+      console.error('Error adding signal:', err);
       setError(err.response?.data?.message || 'Ошибка при добавлении сигнала');
     } finally {
       setLoading(false);
@@ -69,54 +68,46 @@ export default function Signals() {
         <Typography variant="h4">Мои сигналы</Typography>
       </Stack>
 
-      <Card sx={{ p: 3, mb: 3 }}>
+      {/* <Card sx={{ p: 3, mb: 3 }}>
         <form onSubmit={handleAddSignal}>
           <Stack direction="row" spacing={2}>
             <TextField
               fullWidth
-              label="URL сигнала MQL5"
+              label="URL сигнала"
               value={newSignalUrl}
               onChange={(e) => setNewSignalUrl(e.target.value)}
-              placeholder="https://www.mql5.com/ru/signals/1234567"
+              disabled={loading}
             />
             <Button
-              variant="contained"
               type="submit"
-              disabled={loading}
-              sx={{ minWidth: 120 }}
+              variant="contained"
+              disabled={loading || !newSignalUrl}
             >
-              {loading ? 'Загрузка...' : 'Добавить'}
+              {loading ? <CircularProgress size={24} /> : 'Добавить'}
             </Button>
           </Stack>
         </form>
+      </Card> */}
 
-        {error && (
-          <Alert severity="error" sx={{ mt: 2 }}>
-            {error}
-          </Alert>
-        )}
-        {success && (
-          <Alert severity="success" sx={{ mt: 2 }}>
-            {success}
-          </Alert>
-        )}
-      </Card>
-
-      {signals.length === 0 ? (
-        <Box textAlign="center" py={3}>
-          <Typography color="text.secondary">
-            У вас пока нет добавленных сигналов
-          </Typography>
-        </Box>
-      ) : (
-        <Grid container spacing={3}>
-          {signals.map((signal) => (
-            <Grid item xs={12} key={signal.id}>
-              <SignalStats data={signal} />
-            </Grid>
-          ))}
-        </Grid>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
       )}
+
+      {success && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          {success}
+        </Alert>
+      )}
+
+      <Grid container spacing={3}>
+        {signals.map((signal) => (
+          <Grid item xs={12} key={signal.id}>
+            <SignalStats signal={signal} onUpdate={fetchSignals} />
+          </Grid>
+        ))}
+      </Grid>
     </Container>
   );
 }

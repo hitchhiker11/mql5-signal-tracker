@@ -53,13 +53,78 @@ export const updateSignalData = async (req, res) => {
 
     const signalData = await parser.parseSignal(signal.rows[0].url);
     const result = await pool.query(
-      'UPDATE signals SET data = $1, updated_at = NOW() WHERE id = $2 RETURNING *',
-      [signalData, id]
+      `UPDATE signals 
+       SET parsed_data = $1,
+           name = $2,
+           author = $3,
+           updated_at = NOW() 
+       WHERE id = $4 
+       RETURNING *`,
+      [
+        signalData,
+        signalData.generalInfo.signalName,
+        signalData.generalInfo.author,
+        id
+      ]
     );
 
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Update signal error:', error);
-    res.status(500).json({ message: 'Ошибка при обновлении сигнала' });
+    res.status(500).json({ 
+      message: 'Ошибка при обновлении сигнала',
+      details: error.message 
+    });
+  }
+};
+
+export const parseAndSaveSignal = async (req, res) => {
+  try {
+    const { url } = req.body;
+    const signalData = await parser.parseSignal(url);
+    
+    // Проверяем существование сигнала
+    const existingSignal = await pool.query(
+      'SELECT id FROM signals WHERE url = $1',
+      [url]
+    );
+
+    let result;
+    if (existingSignal.rows.length > 0) {
+      // Обновляем существующий сигнал
+      result = await pool.query(
+        `UPDATE signals 
+         SET name = $1, 
+             author = $2, 
+             parsed_data = $3,
+             updated_at = NOW()
+         WHERE url = $4 
+         RETURNING *`,
+        [
+          signalData.generalInfo.signalName,
+          signalData.generalInfo.author,
+          signalData,
+          url
+        ]
+      );
+    } else {
+      // Создаем новый сигнал
+      result = await pool.query(
+        `INSERT INTO signals (url, name, author, parsed_data) 
+         VALUES ($1, $2, $3, $4) 
+         RETURNING *`,
+        [
+          url,
+          signalData.generalInfo.signalName,
+          signalData.generalInfo.author,
+          signalData
+        ]
+      );
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error saving signal:', error);
+    res.status(500).json({ message: 'Ошибка при сохранении сигнала' });
   }
 }; 
