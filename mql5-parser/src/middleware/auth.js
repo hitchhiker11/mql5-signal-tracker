@@ -3,27 +3,36 @@ import { pool } from '../config/database.js';
 
 export const verifyToken = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    const authHeader = req.headers.authorization;
     
-    if (!token) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ message: 'Токен не предоставлен' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const token = authHeader.split(' ')[1];
     
-    const [user] = await pool.query(
-      'SELECT id, username, email, role FROM users WHERE id = ?',
-      [decoded.userId]
-    );
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      // Используем PostgreSQL синтаксис
+      const { rows } = await pool.query(
+        'SELECT id, username, email, role FROM users WHERE id = $1',
+        [decoded.userId]
+      );
 
-    if (!user[0]) {
-      return res.status(401).json({ message: 'Пользователь не найден' });
+      if (rows.length === 0) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+      }
+
+      req.user = rows[0];
+      next();
+    } catch (jwtError) {
+      console.error('JWT verification error:', jwtError);
+      return res.status(401).json({ message: 'Недействительный токен' });
     }
-
-    req.user = user[0];
-    next();
   } catch (error) {
-    return res.status(401).json({ message: 'Недействительный токен' });
+    console.error('Auth middleware error:', error);
+    return res.status(500).json({ message: 'Ошибка сервера при проверке аутентификации' });
   }
 };
 

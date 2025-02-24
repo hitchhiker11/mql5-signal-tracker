@@ -33,6 +33,7 @@ export default function SignalManagement() {
       const response = await signalApi.getAllSignals();
       setSignals(response.data);
     } catch (err) {
+      console.log(err);
       setError('Ошибка при загрузке сигналов');
     } finally {
       setLoading(false);

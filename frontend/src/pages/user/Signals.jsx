@@ -30,6 +30,7 @@ export default function Signals() {
       const response = await signalApi.getUserSignals();
       setSignals(response.data);
     } catch (err) {
+      console.log(err);
       setError('Ошибка при загрузке сигналов');
     } finally {
       setLoading(false);
@@ -43,12 +44,20 @@ export default function Signals() {
     setLoading(true);
 
     try {
-      const response = await signalApi.getSignal(newSignalUrl);
-      setSignals([...signals, response.data]);
+      // Сначала парсим сигнал
+      const parseResponse = await signalApi.parseSignal(newSignalUrl);
+      console.log('Parsed signal:', parseResponse.data);
+
+      // Если парсинг успешен, добавляем сигнал
+      const addResponse = await signalApi.addSignal(newSignalUrl);
+      console.log('Added signal:', addResponse.data);
+
+      setSignals([...signals, addResponse.data]);
       setNewSignalUrl('');
       setSuccess('Сигнал успешно добавлен');
     } catch (err) {
-      setError('Ошибка при добавлении сигнала');
+      console.error('Error:', err);
+      setError(err.response?.data?.message || 'Ошибка при добавлении сигнала');
     } finally {
       setLoading(false);
     }

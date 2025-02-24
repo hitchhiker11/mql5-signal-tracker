@@ -1,10 +1,13 @@
 import express from 'express';
 import { MQL5Parser } from '../parser.js';
 import { pool } from '../config/database.js';
-import { isAdmin } from '../middleware/auth.js';
+import { isAdmin, verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
 const parser = new MQL5Parser();
+
+// Применяем middleware аутентификации ко всем маршрутам
+router.use(verifyToken);
 
 // Получить все сигналы (для админа)
 router.get('/', isAdmin, async (req, res) => {
@@ -19,12 +22,17 @@ router.get('/', isAdmin, async (req, res) => {
 // Получить сигналы пользователя
 router.get('/user', async (req, res) => {
   try {
+    console.log('User from request:', req.user); // Для отладки
+    
     const { rows } = await pool.query(
       'SELECT s.* FROM signals s JOIN user_signals us ON s.id = us.signal_id WHERE us.user_id = $1',
       [req.user.id]
     );
+    
+    console.log('Found signals:', rows); // Для отладки
     res.json(rows);
   } catch (error) {
+    console.error('Error fetching user signals:', error);
     res.status(500).json({ message: 'Ошибка при получении сигналов' });
   }
 });

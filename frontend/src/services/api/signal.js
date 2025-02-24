@@ -8,17 +8,17 @@ export const signalApi = {
 
   getAllSignals: async () => {
     const response = await axios.get('/api/signals');
-    return response.data;
+    return response;
   },
 
   getUserSignals: async () => {
     const response = await axios.get('/api/signals/user');
-    return response.data;
+    return response;
   },
 
   addSignal: async (url) => {
     const response = await axios.post('/api/signals', { url });
-    return response.data;
+    return response;
   },
 
   deleteSignal: async (signalId) => {
@@ -36,5 +36,15 @@ export const signalApi = {
   getStats: async () => {
     const response = await axios.get('/api/signals/stats');
     return response.data;
+  },
+
+  parseSignal: async (url) => {
+    const response = await axios.post('/api/signals/parse', { url });
+    return response;
+  },
+
+  updateSignalData: async (id) => {
+    const response = await axios.put(`/api/signals/${id}/update`);
+    return response;
   }
 };

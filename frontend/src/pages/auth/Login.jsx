@@ -1,56 +1,51 @@
 import React, { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
-  Card,
-  Stack,
-  Link,
   Container,
+  Box,
   Typography,
   TextField,
   Button,
-  Alert
+  Link,
+  Alert,
+  Stack
 } from '@mui/material';
 import { useAuth } from '../../auth/useAuth';
-
-const ContentStyle = styled('div')(({ theme }) => ({
-  maxWidth: 480,
-  margin: 'auto',
-  minHeight: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  padding: theme.spacing(12, 0)
-}));
 
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-    
+
     try {
       const response = await login(formData);
-      if (response.data.user.role === 'admin') {
-        navigate('/admin/dashboard');
-      } else {
-        navigate('/user/dashboard');
+      if (response?.user?.role) {
+        if (response.user.role === 'admin') {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/user/dashboard');
+        }
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Ошибка при входе');
+      console.error('Ошибка входа:', err);
+      setError(err.response?.data?.message || err.message || 'Ошибка при входе');
     } finally {
       setLoading(false);
     }
@@ -58,52 +53,37 @@ export default function Login() {
 
   return (
     <Container maxWidth="sm">
-      <ContentStyle>
-        <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-          <Typography variant="h4" gutterBottom>
-            Вход в систему
-          </Typography>
-        </Stack>
+      <Box sx={{ mt: 8, mb: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom align="center">
+          Вход в систему
+        </Typography>
+        
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
 
-        <Card sx={{ p: 3 }}>
-          {error && (
-            <Alert severity="error" sx={{ mb: 3 }}>
-              {error}
-            </Alert>
-          )}
-
-          <form onSubmit={handleSubmit}>
-            <Stack spacing={3}>
-              <TextField
-                fullWidth
-                name="email"
-                type="email"
-                label="Email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-
-              <TextField
-                fullWidth
-                name="password"
-                type="password"
-                label="Пароль"
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </Stack>
-
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              sx={{ my: 2 }}
-            >
-              <Link component={RouterLink} variant="subtitle2" to="/auth/forgot-password">
-                Забыли пароль?
-              </Link>
-            </Stack>
-
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={3}>
+            <TextField
+              fullWidth
+              label="Email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <TextField
+              fullWidth
+              label="Пароль"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
             <Button
               fullWidth
               size="large"
@@ -113,16 +93,15 @@ export default function Login() {
             >
               {loading ? 'Вход...' : 'Войти'}
             </Button>
-          </form>
-        </Card>
+          </Stack>
+        </form>
 
-        <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-          Нет аккаунта?{' '}
-          <Link variant="subtitle2" component={RouterLink} to="/auth/register">
-            Зарегистрироваться
+        <Box sx={{ mt: 3, textAlign: 'center' }}>
+          <Link component={RouterLink} to="/auth/register" variant="body2">
+            Нет аккаунта? Зарегистрироваться
           </Link>
-        </Typography>
-      </ContentStyle>
+        </Box>
+      </Box>
     </Container>
   );
 }

@@ -21,16 +21,13 @@ export const authApi = {
     return response.data;
   },
 
-  resetPassword: async (token, newPassword) => {
-    const response = await axios.post('/api/auth/reset-password', {
-      token,
-      newPassword
-    });
+  resetPassword: async (token, password) => {
+    const response = await axios.post('/api/auth/reset-password', { token, password });
     return response.data;
   },
 
   checkAuth: async () => {
-    const response = await axios.get('/api/auth/check');
+    const response = await axios.get('/api/auth/me');
     return response.data;
   }
 };

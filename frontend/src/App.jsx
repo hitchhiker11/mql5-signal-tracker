@@ -2,22 +2,21 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-
-import theme from './theme';
-import Router from './routes.jsx';
 import { AuthProvider } from './auth/AuthContext';
-import ScrollToTop from './components/ScrollToTop';
+import Router from './routes';
+import theme from './theme';
 
-export default function App() {
+function App() {
   return (
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <BrowserRouter>
         <AuthProvider>
-          <ScrollToTop />
           <Router />
         </AuthProvider>
-      </ThemeProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
+
+export default App;

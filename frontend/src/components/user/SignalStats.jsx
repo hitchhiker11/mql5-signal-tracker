@@ -5,7 +5,8 @@ import {
   Typography,
   Grid,
   Box,
-  LinearProgress
+  LinearProgress,
+  CardContent
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -15,100 +16,93 @@ const ProgressItem = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.neutral
 }));
 
-export default function SignalStats({ data }) {
-  const {
-    generalInfo,
-    statistics,
-    distribution
-  } = data;
+const SignalStats = ({ signal }) => {
+  // Если сигнал отсутствует, показываем сообщение об ошибке
+  if (!signal) {
+    return (
+      <Card>
+        <CardContent>
+          <Typography>Неизвестный сигнал</Typography>
+          <Typography color="textSecondary">
+            Данные сигнала отсутствуют
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  }
 
-  const mainStats = [
-    { label: 'Прирост', value: generalInfo['Прирост:'] },
-    { label: 'Прибыль', value: generalInfo['Прибыль:'] },
-    { label: 'Средства', value: generalInfo['Средства:'] },
-    { label: 'Торговые дни', value: generalInfo['Торговые дни:'] }
-  ];
+  // Если данные еще не загружены
+  if (!signal.data) {
+    return (
+      <Card>
+        <CardContent>
+          <Typography variant="h6">{signal.name}</Typography>
+          <Typography color="textSecondary">
+            {signal.author && `Автор: ${signal.author}`}
+          </Typography>
+          <Typography color="textSecondary">
+            Ожидание загрузки статистики...
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  }
 
-  const tradingStats = [
-    { label: 'Всего трейдов', value: statistics['Всего трейдов:'] },
-    { label: 'Прибыльные трейды', value: statistics['Прибыльных трейдов:'] },
-    { label: 'Убыточные трейды', value: statistics['Убыточных трейдов:'] },
-    { label: 'Профит фактор', value: statistics['Профит фактор:'] }
+  // Преобразуем строку JSON в объект, если data является строкой
+  const data = typeof signal.data === 'string' ? JSON.parse(signal.data) : signal.data;
+
+  // Если нет статистики
+  if (!data || !data.stats) {
+    return (
+      <Card>
+        <CardContent>
+          <Typography variant="h6">{signal.name}</Typography>
+          <Typography color="textSecondary">
+            {signal.author && `Автор: ${signal.author}`}
+          </Typography>
+          <Typography color="textSecondary">
+            Статистика сигнала отсутствует
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const stats = data.stats;
+
+  const statItems = [
+    { label: 'Прирост', value: stats['Прирост:'] || 'Н/Д' },
+    { label: 'Просадка', value: stats['Просадка:'] || 'Н/Д' },
+    { label: 'Прибыльность', value: stats['Прибыльность:'] || 'Н/Д' },
+    { label: 'Фактор восстановления', value: stats['Фактор восстановления:'] || 'Н/Д' },
+    { label: 'Сделки', value: stats['Сделки:'] || 'Н/Д' },
+    { label: 'Математическое ожидание', value: stats['Математическое ожидание:'] || 'Н/Д' }
   ];
 
   return (
-    <Card sx={{ p: 3 }}>
-      <Stack spacing={3}>
-        <Typography variant="h6">Статистика сигнала</Typography>
-
-        <Grid container spacing={3}>
-          {mainStats.map((stat) => (
-            <Grid item xs={12} sm={6} md={3} key={stat.label}>
-              <Stack spacing={0.5}>
-                <Typography variant="body2" color="text.secondary">
-                  {stat.label}
+    <Card>
+      <CardContent>
+        <Typography variant="h6" gutterBottom>{signal.name}</Typography>
+        <Typography color="textSecondary" gutterBottom>
+          {signal.author && `Автор: ${signal.author}`}
+        </Typography>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          {statItems.map((item, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Box>
+                <Typography color="textSecondary" gutterBottom>
+                  {item.label}
                 </Typography>
-                <Typography variant="h6">{stat.value}</Typography>
-              </Stack>
+                <Typography variant="h5" component="div">
+                  {item.value}
+                </Typography>
+              </Box>
             </Grid>
           ))}
         </Grid>
-
-        <Box>
-          <Typography variant="subtitle2" sx={{ mb: 2 }}>
-            Торговая статистика
-          </Typography>
-          <Stack spacing={2}>
-            {tradingStats.map((stat) => (
-              <ProgressItem key={stat.label}>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  sx={{ mb: 1 }}
-                >
-                  <Typography variant="subtitle2">{stat.label}</Typography>
-                  <Typography variant="subtitle2">{stat.value}</Typography>
-                </Stack>
-                <LinearProgress
-                  variant="determinate"
-                  value={parseFloat(stat.value) || 0}
-                  sx={{ height: 8, bgcolor: 'grey.50016' }}
-                />
-              </ProgressItem>
-            ))}
-          </Stack>
-        </Box>
-
-        <Box>
-          <Typography variant="subtitle2" sx={{ mb: 2 }}>
-            Распределение по инструментам
-          </Typography>
-          <Stack spacing={2}>
-            {distribution
-              .filter(item => item.symbol && item.percentage)
-              .slice(0, 5)
-              .map((item) => (
-                <ProgressItem key={item.symbol}>
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    sx={{ mb: 1 }}
-                  >
-                    <Typography variant="subtitle2">{item.symbol}</Typography>
-                    <Typography variant="subtitle2">{item.percentage}%</Typography>
-                  </Stack>
-                  <LinearProgress
-                    variant="determinate"
-                    value={parseFloat(item.percentage)}
-                    sx={{ height: 8, bgcolor: 'grey.50016' }}
-                  />
-                </ProgressItem>
-              ))}
-          </Stack>
-        </Box>
-      </Stack>
+      </CardContent>
     </Card>
   );
-}
+};
+
+export default SignalStats;

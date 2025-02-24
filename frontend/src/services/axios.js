@@ -7,11 +7,17 @@ const axiosInstance = axios.create({
   }
 });
 
+// Добавляем токен из localStorage при инициализации
+const token = localStorage.getItem('token');
+if (token) {
+  axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
+
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
@@ -20,8 +26,10 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
+    console.log('Response error:', error.response);
     if (error.response?.status === 401) {
+      console.log('401 error, token:', localStorage.getItem('token'));
       localStorage.removeItem('token');
       window.location.href = '/auth/login';
     }

@@ -3,8 +3,17 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { pool } from '../config/database.js';
 import { verifyToken } from '../middleware/auth.js';
+import cors from 'cors';
+
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: false
+  };
 
 const router = express.Router();
+router.use(cors(corsOptions));
 
 router.post('/register', async (req, res) => {
   try {

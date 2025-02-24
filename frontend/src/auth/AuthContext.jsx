@@ -1,59 +1,91 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { authApi } from '../services/api/auth';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     checkAuth();
   }, []);
 
   const checkAuth = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const { user } = await authApi.checkAuth();
-        setUser(user);
-        setIsAuthenticated(true);
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const response = await authApi.checkAuth();
+        console.log('Check auth response:', response);
+        if (response && response.user) {
+          setUser(response.user);
+          setIsAuthenticated(true);
+        } else {
+          throw new Error('Invalid response format');
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        localStorage.removeItem('token');
+        setUser(null);
+        setIsAuthenticated(false);
       }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      localStorage.removeItem('token');
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   const login = async (credentials) => {
-    const { token, user } = await authApi.login(credentials);
-    localStorage.setItem('token', token);
-    setUser(user);
-    setIsAuthenticated(true);
+    try {
+      const response = await authApi.login(credentials);
+      console.log('Login response:', response);
+      
+      if (response?.token && response?.user) {
+        localStorage.setItem('token', response.token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.token}`;
+        setUser(response.user);
+        setIsAuthenticated(true);
+        return response;
+      } else {
+        throw new Error('Неверный формат ответа от сервера');
+      }
+    } catch (error) {
+      console.error('Ошибка входа:', error);
+      localStorage.removeItem('token');
+      delete axios.defaults.headers.common['Authorization'];
+      setUser(null);
+      setIsAuthenticated(false);
+      throw error;
+    }
   };
 
   const register = async (userData) => {
-    const response = await authApi.register(userData);
-    return response;
+    try {
+      const response = await authApi.register(userData);
+      return response;
+    } catch (error) {
+      console.error('Registration failed:', error);
+      throw error;
+    }
   };
 
   const logout = async () => {
     try {
-      await authApi.logout();
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
       localStorage.removeItem('token');
+      delete axios.defaults.headers.common['Authorization'];
       setUser(null);
       setIsAuthenticated(false);
+      navigate('/auth/login');
+    } catch (error) {
+      console.error('Ошибка при выходе:', error);
+      localStorage.removeItem('token');
+      delete axios.defaults.headers.common['Authorization'];
+      setUser(null);
+      setIsAuthenticated(false);
+      navigate('/auth/login');
     }
-  };
-
-  const updateUser = (userData) => {
-    setUser(userData);
   };
 
   const value = {
@@ -61,22 +93,13 @@ export const AuthProvider = ({ children }) => {
     loading,
     isAuthenticated,
     login,
-    logout,
     register,
-    updateUser
+    logout
   };
 
-  if (loading) {
-    return null; // или компонент загрузки
-  }
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

@@ -56,66 +56,78 @@ export class MQL5Parser {
     }
 
     parseGeneralInfo($) {
-        return {
-            signalName: $('.signal-header__name').text().trim(),
-            author: $('.signal-header__author a').text().trim(),
-            reliability: $('.signal-header__reliability').text().trim(),
-            subscribers: parseInt($('.signal-header__subscribers span').text().trim().replace(/\D/g, '')) || 0,
-            price: parseFloat($('.signal-header__price').text().trim().replace(/[^\d.]/g, '')) || 0
-        };
+        const info = {};
+        
+        $('.s-list-info__item').each((_, element) => {
+            const label = $(element).find('.s-list-info__label').text().trim();
+            const value = $(element).find('.s-list-info__value').text().trim();
+            info[label] = value;
+        });
+
+        info.signalName = $('.s-line-card__title').text().trim();
+        info.author = $('.s-line-card__author').text().trim();
+        info.reliability = $('.s-indicators__item_risk').text().trim();
+
+        return info;
     }
 
     parseStatistics($) {
-        return {
-            deposits: parseFloat($('.signal-header__deposits').text().trim().replace(/[^\d.]/g, '')) || 0,
-            profit: parseFloat($('.signal-header__profit').text().trim().replace(/[^\d.]/g, '')) || 0,
-            trades: parseInt($('.signal-header__trades').text().trim().replace(/\D/g, '')) || 0,
-            weeks: parseInt($('.signal-header__weeks').text().trim().replace(/\D/g, '')) || 0
-        };
+        const stats = {};
+        
+        $('.s-data-columns__item').each((_, element) => {
+            const label = $(element).find('.s-data-columns__label').text().trim();
+            const value = $(element).find('.s-data-columns__value').text().trim();
+            stats[label] = value;
+        });
+
+        return stats;
     }
 
     parseTradeHistory($) {
         const trades = [];
-        $('.signal-trading__history tbody tr').each((_, row) => {
+        
+        $('#signalInfoTable tbody tr:not(.signalDataHidden):not(.summary)').each((_, row) => {
             const trade = {};
             $(row).find('td').each((index, cell) => {
                 const value = $(cell).text().trim();
                 switch(index) {
-                    case 0: trade.time = value; break;
-                    case 1: trade.type = value; break;
-                    case 2: trade.symbol = value; break;
-                    case 3: trade.volume = parseFloat(value) || 0; break;
-                    case 4: trade.price = parseFloat(value) || 0; break;
-                    case 5: trade.profit = parseFloat(value) || 0; break;
+                    case 0: trade.symbol = value; break;
+                    case 1: trade.time = value; break;
+                    case 2: trade.type = value; break;
+                    case 3: trade.volume = value; break;
+                    case 4: trade.price = value; break;
                 }
             });
-            if (Object.keys(trade).length > 0) {
-                trades.push(trade);
-            }
+            trades.push(trade);
         });
+
         return trades;
     }
 
     parseDistribution($) {
         const distribution = [];
-        $('.signal-trading__distribution .distribution__item').each((_, el) => {
+        
+        $('.signals-chart-dist tbody tr').each((_, row) => {
             distribution.push({
-                symbol: $(el).find('.distribution__symbol').text().trim(),
-                percentage: parseFloat($(el).find('.distribution__value').text().trim()) || 0
+                symbol: $(row).find('.col-symbol').text().trim(),
+                value: $(row).find('.col-buy-sell').text().trim(),
+                percentage: $(row).find('.bar div').attr('style')?.match(/width:\s*([\d.]+)%/)?.[1] || '0'
             });
         });
+
         return distribution;
     }
 
     parseAuthorSignals($) {
         const signals = [];
-        $('.signal-author__signals .signal-card').each((_, el) => {
+        
+        $('#authorsSignals .s-other-signal').each((_, element) => {
             signals.push({
-                name: $(el).find('.signal-card__name').text().trim(),
-                url: this.baseUrl + $(el).find('a').attr('href'),
-                subscribers: parseInt($(el).find('.signal-card__subscribers').text().trim().replace(/\D/g, '')) || 0
+                name: $(element).find('.s-other-signal__name').text().trim(),
+                url: $(element).attr('href')
             });
         });
+
         return signals;
     }
 
