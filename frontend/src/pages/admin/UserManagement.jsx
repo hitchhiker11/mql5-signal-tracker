@@ -97,14 +97,14 @@ export default function UserManagement() {
                   />
                 </TableCell>
                 <TableCell>
-                  <Button
+                  {/* <Button
                     size="small"
                     variant="contained"
                     color="primary"
                     onClick={() => handleAssignSignal(user.id)}
                   >
                     Назначить сигнал
-                  </Button>
+                  </Button> */}
                 </TableCell>
               </TableRow>
             ))}

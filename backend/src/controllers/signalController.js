@@ -20,28 +20,6 @@ export const parseSignal = async (req, res) => {
   }
 };
 
-export const addSignal = async (req, res) => {
-  try {
-    const { url } = req.body;
-    const signalData = await parser.parseSignal(url);
-    
-    const result = await pool.query(
-      'INSERT INTO signals (url, name, author, data) VALUES ($1, $2, $3, $4) RETURNING *',
-      [
-        url,
-        signalData.generalInfo.signalName,
-        signalData.generalInfo.author,
-        JSON.stringify(signalData)
-      ]
-    );
-
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
-    console.error('Add signal error:', error);
-    res.status(500).json({ message: 'Ошибка при добавлении сигнала' });
-  }
-};
-
 export const updateSignalData = async (req, res) => {
   const { id } = req.params;
   
@@ -79,52 +57,87 @@ export const updateSignalData = async (req, res) => {
 };
 
 export const parseAndSaveSignal = async (req, res) => {
+  const client = await pool.connect();
+  
   try {
     const { url } = req.body;
+    if (!url) {
+      return res.status(400).json({ message: 'URL сигнала обязателен' });
+    }
+
+    // Парсим сигнал
     const signalData = await parser.parseSignal(url);
     
-    // Проверяем существование сигнала
-    const existingSignal = await pool.query(
+    // Проверяем, существует ли уже сигнал с таким URL
+    const existingSignal = await client.query(
       'SELECT id FROM signals WHERE url = $1',
       [url]
     );
 
-    let result;
     if (existingSignal.rows.length > 0) {
-      // Обновляем существующий сигнал
-      result = await pool.query(
-        `UPDATE signals 
-         SET name = $1, 
-             author = $2, 
-             parsed_data = $3,
-             updated_at = NOW()
-         WHERE url = $4 
-         RETURNING *`,
-        [
-          signalData.generalInfo.signalName,
-          signalData.generalInfo.author,
-          signalData,
-          url
-        ]
-      );
-    } else {
-      // Создаем новый сигнал
-      result = await pool.query(
-        `INSERT INTO signals (url, name, author, parsed_data) 
-         VALUES ($1, $2, $3, $4) 
-         RETURNING *`,
-        [
-          url,
-          signalData.generalInfo.signalName,
-          signalData.generalInfo.author,
-          signalData
-        ]
-      );
+      return res.status(400).json({ message: 'Сигнал с таким URL уже существует' });
     }
 
-    res.json(result.rows[0]);
+    // Сохраняем сигнал
+    const result = await client.query(
+      `INSERT INTO signals (
+        url, 
+        name, 
+        author, 
+        data,
+        created_at, 
+        updated_at
+      ) VALUES ($1, $2, $3, $4, NOW(), NOW()) RETURNING *`,
+      [
+        url,
+        signalData.generalInfo.signalName,
+        signalData.generalInfo.author,
+        signalData
+      ]
+    );
+
+    return res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error saving signal:', error);
-    res.status(500).json({ message: 'Ошибка при сохранении сигнала' });
+    return res.status(500).json({ message: 'Ошибка при сохранении сигнала' });
+  } finally {
+    client.release();
+  }
+};
+
+export const deleteSignal = async (req, res) => {
+  const client = await pool.connect();
+  
+  try {
+    const { id } = req.params;
+
+    // Начинаем транзакцию
+    await client.query('BEGIN');
+
+    // Сначала удаляем все связи с пользователями
+    await client.query(
+      'DELETE FROM user_signals WHERE signal_id = $1',
+      [id]
+    );
+
+    // Затем удаляем сам сигнал
+    const result = await client.query(
+      'DELETE FROM signals WHERE id = $1 RETURNING *',
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ message: 'Сигнал не найден' });
+    }
+
+    await client.query('COMMIT');
+    res.json({ message: 'Сигнал успешно удален', signal: result.rows[0] });
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('Error deleting signal:', error);
+    res.status(500).json({ message: 'Ошибка при удалении сигнала' });
+  } finally {
+    client.release();
   }
 }; 

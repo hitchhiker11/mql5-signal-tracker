@@ -2,7 +2,11 @@ import express from 'express';
 import { MQL5Parser } from '../parser.js';
 import { pool } from '../config/database.js';
 import { isAdmin, verifyToken } from '../middleware/auth.js';
-import { parseAndSaveSignal } from '../controllers/signalController.js';
+import { 
+  parseAndSaveSignal,
+  deleteSignal,
+  // ... другие импорты контроллеров
+} from '../controllers/signalController.js';
 
 const router = express.Router();
 const parser = new MQL5Parser();
@@ -49,15 +53,8 @@ router.post('/parse', async (req, res) => {
   }
 });
 
-// Добавить сигнал
-router.post('/', verifyToken, async (req, res) => {
-  try {
-    const result = await parseAndSaveSignal(req, res);
-    res.json(result);
-  } catch (error) {
-    res.status(500).json({ message: 'Ошибка при добавлении сигнала' });
-  }
-});
+// Используем только один обработчик для добавления сигнала
+router.post('/', isAdmin, parseAndSaveSignal);
 
 // Назначить сигнал пользователю
 router.post('/assign', isAdmin, async (req, res) => {
@@ -201,5 +198,31 @@ router.put('/:id', isAdmin, async (req, res) => {
     client.release();
   }
 });
+
+router.put('/:id/update', async (req, res) => {
+  try {
+    const signalId = req.params.id;
+    // Логика обновления сигнала для пользователя
+    // Проверка прав доступа к сигналу
+    // Обновление данных
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ message: 'Ошибка при обновлении сигнала' });
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const signalId = req.params.id;
+    // Логика получения данных сигнала для пользователя
+    // Проверка прав доступа к сигналу
+    res.json(signal);
+  } catch (error) {
+    res.status(500).json({ message: 'Ошибка при получении данных сигнала' });
+  }
+});
+
+// Добавляем маршрут для удаления сигнала (только для админов)
+router.delete('/:id', isAdmin, deleteSignal);
 
 export default router; 
