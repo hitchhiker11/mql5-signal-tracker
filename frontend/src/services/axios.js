@@ -1,8 +1,15 @@
 import axios from 'axios';
 
+const baseURL = window.location.hostname.includes('ngrok-free.app')
+  ? 'https://1564-51-38-68-200.ngrok-free.app' // Ваш ngrok URL для бэкенда
+  : 'http://localhost:3001';
+
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3001',
-  withCredentials: true
+  baseURL,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
 // Добавляем перехватчик для добавления токена к каждому запросу

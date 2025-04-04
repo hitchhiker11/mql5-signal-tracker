@@ -79,12 +79,23 @@ export const updateSignalData = async (req, res) => {
 };
 
 export const parseAndSaveSignal = async (req, res) => {
+  const client = await pool.connect();
   try {
     const { url } = req.body;
+    const parser = new MQL5Parser();
+
+    // Парсим сигнал
     const signalData = await parser.parseSignal(url);
     
+    if (!signalData.generalInfo || !signalData.generalInfo.signalName) {
+      throw new Error('Invalid signal data structure');
+    }
+
+    // Начинаем транзакцию
+    await client.query('BEGIN');
+
     // Проверяем существование сигнала
-    const existingSignal = await pool.query(
+    const existingSignal = await client.query(
       'SELECT id FROM signals WHERE url = $1',
       [url]
     );
@@ -92,39 +103,43 @@ export const parseAndSaveSignal = async (req, res) => {
     let result;
     if (existingSignal.rows.length > 0) {
       // Обновляем существующий сигнал
-      result = await pool.query(
+      result = await client.query(
         `UPDATE signals 
          SET name = $1, 
              author = $2, 
-             parsed_data = $3,
+             data = $3::jsonb, 
              updated_at = NOW()
-         WHERE url = $4 
+         WHERE url = $4
          RETURNING *`,
         [
           signalData.generalInfo.signalName,
           signalData.generalInfo.author,
-          signalData,
+          JSON.stringify(signalData),
           url
         ]
       );
     } else {
       // Создаем новый сигнал
-      result = await pool.query(
-        `INSERT INTO signals (url, name, author, parsed_data) 
-         VALUES ($1, $2, $3, $4) 
+      result = await client.query(
+        `INSERT INTO signals (name, author, url, data)
+         VALUES ($1, $2, $3, $4::jsonb)
          RETURNING *`,
         [
-          url,
           signalData.generalInfo.signalName,
           signalData.generalInfo.author,
-          signalData
+          url,
+          JSON.stringify(signalData)
         ]
       );
     }
 
-    res.json(result.rows[0]);
+    await client.query('COMMIT');
+    return result.rows[0];
   } catch (error) {
+    await client.query('ROLLBACK');
     console.error('Error saving signal:', error);
-    res.status(500).json({ message: 'Ошибка при сохранении сигнала' });
+    throw error;
+  } finally {
+    client.release();
   }
 }; 

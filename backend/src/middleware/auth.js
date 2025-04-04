@@ -14,7 +14,6 @@ export const verifyToken = async (req, res, next) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       
-      // Используем PostgreSQL синтаксис
       const { rows } = await pool.query(
         'SELECT id, username, email, role FROM users WHERE id = $1',
         [decoded.userId]
@@ -37,8 +36,9 @@ export const verifyToken = async (req, res, next) => {
 };
 
 export const isAdmin = (req, res, next) => {
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ message: 'Доступ запрещен' });
+  if (req.user && req.user.role === 'admin') {
+    next();
+  } else {
+    res.status(403).json({ message: 'Доступ запрещен' });
   }
-  next();
 }; 

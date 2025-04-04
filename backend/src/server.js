@@ -17,10 +17,37 @@ const PORT = process.env.PORT || 3001;
 // Инициализация парсера
 export const parser = new MQL5Parser();
 
+// Настройка CORS для работы с ngrok
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://1564-51-38-68-200.ngrok-free.app' // Добавьте ваш ngrok URL
+];
+
+// Добавляем все домены ngrok в список разрешенных
+if (process.env.NODE_ENV === 'development') {
+  const ngrokPattern = /^https:\/\/.*\.ngrok-free\.app$/;
+  app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin && ngrokPattern.test(origin)) {
+      allowedOrigins.push(origin);
+    }
+    next();
+  });
+}
+
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-  credentials: true
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 

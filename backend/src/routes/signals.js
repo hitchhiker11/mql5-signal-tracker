@@ -7,7 +7,7 @@ import { parseAndSaveSignal } from '../controllers/signalController.js';
 const router = express.Router();
 const parser = new MQL5Parser();
 
-// Применяем middleware аутентификации ко всем маршрутам
+// Применяем middleware аутентификации
 router.use(verifyToken);
 
 // Получить все сигналы (для админа)
@@ -20,17 +20,16 @@ router.get('/', isAdmin, async (req, res) => {
   }
 });
 
-// Получить сигналы пользователя
+// Получение сигналов пользователя
 router.get('/user', async (req, res) => {
   try {
-    console.log('User from request:', req.user); // Для отладки
-    
     const { rows } = await pool.query(
-      'SELECT s.* FROM signals s JOIN user_signals us ON s.id = us.signal_id WHERE us.user_id = $1',
-      [req.user.id]
+      `SELECT s.* 
+       FROM signals s 
+       JOIN user_signals us ON s.id = us.signal_id 
+       WHERE us.user_id = $1`,
+      [req.user.id] 
     );
-    
-    console.log('Found signals:', rows); // Для отладки
     res.json(rows);
   } catch (error) {
     console.error('Error fetching user signals:', error);
@@ -159,8 +158,46 @@ router.post('/:id/parse', verifyToken, async (req, res) => {
     }
   });
 
-// Обновить сигнал (только для админа)
-router.put('/:id', isAdmin, async (req, res) => {
+// Обновление сигнала пользователем
+router.put('/user/:id', async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { id } = req.params;
+    
+    const access = await client.query(
+      'SELECT 1 FROM user_signals WHERE user_id = $1 AND signal_id = $2',
+      [req.user.id, id]
+    );
+
+    if (access.rows.length === 0) {
+      return res.status(403).json({ message: 'Доступ запрещен' });
+    }
+
+    const signal = await client.query('SELECT url FROM signals WHERE id = $1', [id]);
+    const signalData = await parser.parseSignal(signal.rows[0].url);
+
+    const result = await client.query(
+      `UPDATE signals 
+       SET data = $1::jsonb,
+           updated_at = NOW()
+       WHERE id = $2
+       RETURNING *`,
+      [JSON.stringify(signalData), id]
+    );
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error updating signal:', error);
+    res.status(500).json({ message: 'Ошибка при обновлении сигнала' });
+  } finally {
+    client.release();
+  }
+});
+
+// Админские маршруты
+router.use('/admin', isAdmin);
+router.post('/admin/signals', parseAndSaveSignal);
+router.put('/admin/signals/:id', async (req, res) => {
   const client = await pool.connect();
   
   try {

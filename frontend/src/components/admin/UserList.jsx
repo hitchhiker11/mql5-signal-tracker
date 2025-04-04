@@ -92,13 +92,13 @@ export default function UserList() {
                       />
                     </TableCell>
                     <TableCell>
-                      <Button
+                      {/* <Button
                         variant="contained"
                         size="small"
                         onClick={() => handleAssignSignal(user.id)}
                       >
                         Назначить сигнал
-                      </Button>
+                      </Button> */}
                     </TableCell>
                   </TableRow>
                 ))}
