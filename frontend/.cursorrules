@@ -1,0 +1,122 @@
+# Project Rules
+
+## Project Information
+- **Version**: 1.0.0
+- **Last Updated**: April 04, 2025 at 05:36 PM
+- **Name**: frontend
+- **Language**: javascript
+- **Framework**: react
+- **Type**: web application
+
+## Project Description
+This project provides a structured foundation for building a React-based web application, emphasizing clear separation of concerns through modular organization of code for authentication, API interactions, theming, and reusable components. It leverages Material-UI for consistent UI design and offers custom hooks for accessing context and managing responsiveness, aiming to streamline development and maintainability. It provides a solid starting point for applications needing user authentication, data management via API calls, and customizable user interfaces.
+
+## AI Behavior Rules
+
+### Code Generation Style
+#### Preferred Patterns
+- Consistent indentation (typically 2 spaces)
+- Single quotes for strings
+- Arrow functions where appropriate
+- Object shorthand notation
+- No semicolons unless strictly necessary
+- Descriptive variable and function names
+- Use of `const` and `let` appropriately
+- Consistent use of blank lines to separate logical code blocks
+
+#### Patterns to Avoid
+- Double quotes for strings
+- Semicolons where not needed
+- Inconsistent indentation
+- Verbose or unclear variable names
+- Unnecessary use of `var`
+- Inconsistent use of blank lines
+
+### Error Handling
+#### Preferred Patterns
+- Using `try...catch` blocks for potential errors in asynchronous operations (e.g., API calls)
+- Returning promises from asynchronous functions to allow for `.then()` and `.catch()` handling
+- Checking for null/undefined values before accessing properties
+- Throwing Errors with descriptive messages when necessary (e.g., in custom hooks when context is missing)
+- Using axios interceptors for global error handling (e.g., 401 Unauthorized)
+
+#### Patterns to Avoid
+- Ignoring potential errors
+- Using generic error messages
+- Not handling promise rejections
+- Overly complex or redundant error handling logic
+
+### Performance
+#### Preferred Patterns
+- Using `useEffect` hook with appropriate dependency arrays to avoid unnecessary re-renders
+- Memoizing components with `React.memo` where appropriate
+- Lazy loading images and other resources
+- Optimizing API calls by fetching only necessary data
+- Using efficient data structures and algorithms
+- Using `useCallback` for functions passed as props to prevent unnecessary re-renders of child components
+
+#### Patterns to Avoid
+- Unnecessary re-renders
+- Fetching large amounts of data unnecessarily
+- Performing expensive operations in render functions
+- Blocking the main thread with long-running tasks
+
+### Module Organization
+#### Structure
+- src/
+- ├── auth/ (Authentication related files)
+- ├── components/ (Reusable UI components)
+- ├── contexts/ (React Contexts for state management)
+- ├── hooks/ (Custom React hooks)
+- ├── pages/ (Application pages)
+- ├── services/ (API services and utilities)
+- │   ├── api/ (Specific API endpoints)
+- ├── theme/ (Material-UI theme configuration)
+- ├── utils/ (Utility functions)
+- ├── App.js
+- ├── index.js
+
+#### Dependencies
+- React components depend on hooks, contexts, and utility functions.
+- API services depend on `axios` for making HTTP requests.
+- Hooks often depend on React Contexts and Material-UI theming.
+- Theme files depend on Material-UI's `createTheme` function.
+- Utility functions have minimal dependencies (typically none).
+
+#### Module Responsibilities
+- **vite.config.js**: Configures the Vite build system, including plugins, aliases, server settings, and build options.
+- **src/theme.js**: Defines the Material-UI theme, including palette, typography, and component styles.
+- **src/auth/useAuth.js**: Custom hook for accessing the authentication context.
+- **src/hooks/useResponsive.js**: Custom hook for responsive design using Material-UI's `useMediaQuery`.
+- **src/hooks/useSettings.js**: Custom hook for accessing the settings context.
+- **src/hooks/useWidth.js**: Custom hook for determining the current screen width and breakpoint.
+- **src/services/axios.js**: Configures an `axios` instance with base URL, credentials, and interceptors for request and response handling (including token injection and error handling).
+- **src/services/localStorage.js**: Provides utility functions for interacting with local storage (e.g., storing and retrieving tokens, user data, and theme settings).
+- **src/services/api/admin.js**: Provides API functions for admin-related tasks (e.g., managing users and signals).
+- **src/services/api/auth.js**: Provides API functions for authentication (e.g., login, register, logout).
+- **src/services/api/signal.js**: Provides API functions for managing signals.
+- **src/services/api/user.js**: Provides API functions for managing users.
+- **src/theme/index.js**: Exports the main theme.
+- **src/theme/palette.js**: Defines the color palette for the theme.
+- **src/theme/shadows.js**: Defines the shadows for the theme.
+- **src/theme/typography.js**: Defines the typography for the theme.
+- **src/utils/formatDate.js**: Provides functions for formatting dates.
+- **src/utils/formatNumber.js**: Provides functions for formatting numbers and currencies.
+- **src/utils/validate.js**: Provides functions for validating data (e.g., email, password, URL).
+
+#### Rules
+- Separate concerns into different modules (e.g., API services, utility functions, hooks).
+- Use custom hooks to encapsulate reusable logic.
+- Use React Context for managing global state.
+- Configure Material-UI theme for consistent styling.
+- Handle API requests and responses using `axios`.
+- Store authentication tokens and user data in local storage.
+- Provide utility functions for common tasks like formatting data and validating input.
+
+#### Naming Conventions
+- **functions**: Use camelCase for function names (e.g., `getUser`, `formatDate`).
+- **components**: Use PascalCase for component names (e.g., `MyComponent`).
+- **variables**: Use camelCase for variable names (e.g., `userName`, `apiUrl`).
+- **constants**: Use UPPER_SNAKE_CASE for constant names (e.g., `TOKEN_KEY`, `API_URL`).
+- **modules**: Use descriptive names for modules (e.g., `authApi`, `formatDate`).
+- **hooks**: Prefix custom hooks with `use` (e.g., `useAuth`, `useResponsive`).
