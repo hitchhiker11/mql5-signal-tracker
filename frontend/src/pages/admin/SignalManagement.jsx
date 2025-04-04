@@ -21,11 +21,14 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel
+  InputLabel,
+  CircularProgress,
+  Box
 } from '@mui/material';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import { signalApi } from '../../services/api/signal';
 import { adminApi } from '../../services/api/admin';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 export default function SignalManagement() {
   const [signals, setSignals] = useState([]);
@@ -38,6 +41,8 @@ export default function SignalManagement() {
   const [assignDialog, setAssignDialog] = useState(false);
   const [selectedSignal, setSelectedSignal] = useState(null);
   const [selectedUser, setSelectedUser] = useState('');
+  const [addingSignal, setAddingSignal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     fetchSignals();
@@ -72,13 +77,22 @@ export default function SignalManagement() {
 
   const handleAddSignal = async (e) => {
     e.preventDefault();
+    if (!newSignalUrl || isSubmitting) return;
+
     setError('');
+    setSuccess('');
+    setIsSubmitting(true);
+    
     try {
       const response = await signalApi.addSignal(newSignalUrl);
-      setSignals([...signals, response.data]);
+      await fetchSignals(); // Обновляем список сигналов
       setNewSignalUrl('');
+      setSuccess('Сигнал успешно добавлен');
     } catch (err) {
-      setError('Ошибка при добавлении сигнала');
+      console.error('Error adding signal:', err);
+      setError(err.response?.data?.message || 'Ошибка при добавлении сигнала');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -147,10 +161,22 @@ export default function SignalManagement() {
           value={newSignalUrl}
           onChange={(e) => setNewSignalUrl(e.target.value)}
           sx={{ flexGrow: 1 }}
+          disabled={isSubmitting}
         />
-        <Button variant="contained" onClick={handleAddSignal}>
+        <LoadingButton
+          loading={isSubmitting}
+          variant="contained"
+          onClick={handleAddSignal}
+          disabled={!newSignalUrl}
+          loadingIndicator={
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CircularProgress size={16} sx={{ mr: 1 }} />
+              Добавление...
+            </Box>
+          }
+        >
           Добавить сигнал
-        </Button>
+        </LoadingButton>
       </Stack>
 
       <TableContainer component={Paper}>

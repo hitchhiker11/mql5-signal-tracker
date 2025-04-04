@@ -1,50 +1,57 @@
-import axiosInstance from '../axios';
+import axios from '../axios';
 
 export const signalApi = {
   getSignal: async (url) => {
-    const response = await axiosInstance.post('/api/signals/parse', { url });
+    const response = await axios.post('/api/signals/parse', { url });
     return response.data;
   },
 
   getAllSignals: async () => {
-    return axiosInstance.get('/api/admin/signals');
+    return axios.get('/api/admin/signals');
   },
 
   getUserSignals: async () => {
-    return axiosInstance.get('/api/signals/user');
+    return axios.get('/api/signals/user');
   },
 
   addSignal: async (url) => {
-    return axiosInstance.post('/api/admin/signals', { url });
+    const response = await axios.post('/api/admin/signals', { url });
+    return response;
   },
 
   deleteSignal: async (id) => {
-    return axiosInstance.delete(`/api/admin/signals/${id}`);
+    return axios.delete(`/api/admin/signals/${id}`);
   },
 
   assignSignal: async (userId, signalId) => {
-    return axiosInstance.post('/api/admin/signals/assign', {
+    return axios.post('/api/admin/signals/assign', {
       userId,
       signalId
     });
   },
 
   getStats: async () => {
-    const response = await axiosInstance.get('/api/signals/stats');
+    const response = await axios.get('/api/signals/stats');
     return response.data;
   },
 
   parseSignal: async (url) => {
-    const response = await axiosInstance.post('/api/signals/parse', { url });
+    const response = await axios.post('/api/signals/parse', { url });
     return response;
   },
 
-  updateSignal: async (id, data) => {
-    return axiosInstance.put(`/api/admin/signals/${id}`, data);
+  updateSignal: async (signalId) => {
+    const response = await axios.put(`/api/signals/${signalId}/update`);
+    return response.data;
   },
 
   updateSignalData: async (id) => {
-    const response = await axiosInstance.put(`/api/signals/${id}/update`);
+    const response = await axios.put(`/api/signals/${id}/update`);
     return response;
+  },
+
+  getSignal: async (signalId) => {
+    const response = await axios.get(`/api/signals/${signalId}`);
+    return response.data;
   }
 };
