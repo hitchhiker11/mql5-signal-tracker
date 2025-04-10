@@ -19,6 +19,7 @@ services:
         max-size: "10m"
         max-file: "3"
     environment:
+      - NODE_ENV=development
       - TZ=Europe/Moscow
       - NODE_OPTIONS=--max-old-space-size=384
 
@@ -41,6 +42,27 @@ services:
         max-file: "3"
     environment:
       - TZ=Europe/Moscow
+
+  # Дополнительные настройки для PostgreSQL
+  postgres:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+      restart_policy:
+        condition: any
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+    environment:
+      - TZ=Europe/Moscow
+    command: -c shared_buffers=256MB -c max_connections=100
 
   # Дополнительные настройки для MongoDB
   mongo:

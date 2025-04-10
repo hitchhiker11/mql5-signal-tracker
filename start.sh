@@ -1,90 +1,99 @@
 #!/bin/bash
 
-# Цвета для красивого вывода
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-RED='\033[0;31m'
-NC='\033[0m' # No Color
+# Meta Trader App Deployment Script
+# This script automates the deployment of the Meta Trader application
 
-SERVER_IP="109.73.192.193"
+# Stop on any error
+set -e
 
-echo -e "${YELLOW}Запуск Meta Trader App на сервере ${SERVER_IP}...${NC}"
+# Default IP address (can be overridden by passing argument)
+SERVER_IP=${1:-"109.73.192.193"}
+echo "🚀 Deploying Meta Trader App to server IP: ${SERVER_IP}"
 
-# Проверка наличия необходимых привилегий
-if [ "$EUID" -ne 0 ]; then
-    echo -e "${RED}Для корректной работы Docker может потребоваться запустить скрипт с sudo.${NC}"
-    read -p "Продолжить без sudo? (y/n): " answer
-    if [ "$answer" != "y" ] && [ "$answer" != "Y" ]; then
-        echo -e "${YELLOW}Перезапустите скрипт с sudo: sudo ./start.sh${NC}"
-        exit 1
-    fi
+# Create .env file if it doesn't exist
+if [ ! -f .env ]; then
+    echo "📝 Creating .env file from template..."
+    cp .env.example .env
+    # Replace the SERVER_IP in the .env file
+    sed -i "s/SERVER_IP=.*/SERVER_IP=${SERVER_IP}/" .env
+    echo "✅ .env file created"
+else
+    echo "📋 Using existing .env file"
 fi
 
-# Проверка наличия Docker и Docker Compose
-if ! command -v docker &> /dev/null; then
-    echo -e "${RED}Docker не установлен. Установите Docker и повторите попытку.${NC}"
+# Load environment variables
+set -a
+source .env
+set +a
+
+echo "🔍 Checking for Docker..."
+if ! command -v docker &> /dev/null || ! command -v docker-compose &> /dev/null; then
+    echo "❌ Docker or Docker Compose not found. Please install Docker and Docker Compose first."
     exit 1
 fi
 
-if ! command -v docker-compose &> /dev/null; then
-    echo -e "${RED}Docker Compose не установлен. Установите Docker Compose и повторите попытку.${NC}"
-    exit 1
-fi
+echo "🧹 Cleaning up old containers if needed..."
+docker-compose down --remove-orphans || true
 
-# Проверка наличия .env файлов и создание их из примеров, если не существуют
-if [ ! -f ./backend/.env ]; then
-    echo -e "${YELLOW}Файл backend/.env не найден. Создание из примера...${NC}"
-    cp ./backend/.env.example ./backend/.env
-    echo -e "${GREEN}Создан backend/.env из примера.${NC}"
-    
-    # Заменим localhost на IP сервера
-    sed -i "s/localhost:80/${SERVER_IP}/g" ./backend/.env
-    echo -e "${YELLOW}URL в backend/.env обновлен на ${SERVER_IP}${NC}"
-fi
+echo "🔄 Pulling latest images..."
+docker-compose pull || true
 
-if [ ! -f ./frontend/.env ]; then
-    echo -e "${YELLOW}Файл frontend/.env не найден. Создание из примера...${NC}"
-    cp ./frontend/.env.example ./frontend/.env
-    echo -e "${GREEN}Создан frontend/.env из примера.${NC}"
-    
-    # Заменим localhost на IP сервера для API URL
-    sed -i "s/localhost:3001/${SERVER_IP}:3001/g" ./frontend/.env
-    echo -e "${YELLOW}API URL в frontend/.env обновлен на ${SERVER_IP}:3001${NC}"
-fi
-
-# Установка правильных разрешений для директорий
-echo -e "${YELLOW}Настройка разрешений для директорий...${NC}"
-if [ -d "./backend/cache" ]; then
-    chmod -R 777 ./backend/cache
-    echo -e "${GREEN}Установлены разрешения 777 для ./backend/cache${NC}"
-fi
-
-if [ -d "./backend/logs" ]; then
-    chmod -R 777 ./backend/logs
-    echo -e "${GREEN}Установлены разрешения 777 для ./backend/logs${NC}"
-fi
-
-# Создание сети Docker, если она не существует
-if ! docker network inspect meta_trader_network &> /dev/null; then
-    echo -e "${YELLOW}Создание Docker сети meta_trader_network...${NC}"
-    docker network create meta_trader_network
-    echo -e "${GREEN}Сеть meta_trader_network создана.${NC}"
-fi
-
-# Остановка контейнеров, если они уже запущены
-echo -e "${YELLOW}Остановка существующих контейнеров (если есть)...${NC}"
-docker-compose down
-
-# Сборка и запуск Docker-композиции
-echo -e "${YELLOW}Сборка и запуск контейнеров...${NC}"
+echo "🏗️ Building containers..."
 docker-compose build --no-cache
+
+echo "🚀 Starting services..."
 docker-compose up -d
 
-# Проверка статуса контейнеров
-echo -e "${YELLOW}Проверка статуса контейнеров...${NC}"
-docker-compose ps
+echo "⏳ Waiting for services to start..."
+sleep 10
 
-echo -e "${GREEN}Meta Trader App запущен!${NC}"
-echo -e "${YELLOW}Фронтенд доступен по адресу: ${GREEN}http://${SERVER_IP}:80${NC}"
-echo -e "${YELLOW}Бэкенд API доступен по адресу: ${GREEN}http://${SERVER_IP}:3001${NC}"
-echo -e "\n${YELLOW}Для остановки используйте: ${RED}./stop.sh${NC}" 
+echo "🔍 Checking service health..."
+# Check if the containers are running
+if docker-compose ps | grep -q "meta_trader_backend.*Up"; then
+    echo "✅ Backend service is running"
+else
+    echo "❌ Backend service failed to start"
+    docker-compose logs backend
+    exit 1
+fi
+
+if docker-compose ps | grep -q "meta_trader_frontend.*Up"; then
+    echo "✅ Frontend service is running"
+else
+    echo "❌ Frontend service failed to start"
+    docker-compose logs frontend
+    exit 1
+fi
+
+if docker-compose ps | grep -q "meta_trader_postgres.*Up"; then
+    echo "✅ PostgreSQL service is running"
+else
+    echo "❌ PostgreSQL service failed to start"
+    docker-compose logs postgres
+    exit 1
+fi
+
+echo "🔍 Checking API health..."
+if curl -s -o /dev/null -w "%{http_code}" http://localhost:3001/api/health | grep -q "200"; then
+    echo "✅ API is healthy"
+else
+    echo "⚠️ API health check failed"
+    docker-compose logs backend
+fi
+
+echo "
+🎉 Meta Trader App deployed successfully! 🎉
+📊 Access your application:
+   - Frontend: http://${SERVER_IP}
+   - API: http://${SERVER_IP}:3001
+   - Database: PostgreSQL available on port 5432 (internal access only)
+
+📝 Default admin credentials:
+   - Email: admin@example.com
+   - Password: ${ADMIN_DEFAULT_PASSWORD:-admin123}
+
+⚙️ Management commands:
+   - View logs: docker-compose logs
+   - Stop services: ./stop.sh
+   - Restart: ./start.sh
+" 

@@ -1,36 +1,67 @@
-# Этап сборки
+# Build stage
 FROM node:18-alpine AS build
 
-# Создание рабочей директории
+# Create working directory
 WORKDIR /app
 
-# Копирование файлов зависимостей
+# Copy package files and install dependencies
 COPY package*.json ./
-
-# Установка зависимостей с флагом --legacy-peer-deps для обхода конфликта версий
 RUN npm install --legacy-peer-deps
 
-# Копирование исходного кода
+# Copy source code
 COPY . .
 
-# Настройка переменных окружения для сборки
-ARG VITE_API_URL=http://backend:3001
+# Build application with environment variables
+ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
 
-# Сборка приложения
+# Build the application
 RUN npm run build
 
-# Этап раздачи
+# Production stage with Nginx
 FROM nginx:alpine
 
-# Копирование результатов сборки в директорию Nginx
+# Copy build from previous stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Копирование конфигурации Nginx
+# Copy Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Порт, который будет прослушивать Nginx
+# Install wget for healthcheck
+RUN apk add --no-cache wget
+
+# Expose port
 EXPOSE 80
 
-# Запуск Nginx с поддержкой переменных окружения и перезапуском при сбоях
-CMD ["nginx", "-g", "daemon off;"] 
+# Healthcheck to ensure Nginx is running
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+  CMD wget --spider -q http://localhost:80 || exit 1
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+FROM node:20.11.0-alpine
+
+# Создание директории приложения
+WORKDIR /app
+
+# Копирование package.json и package-lock.json
+COPY package*.json ./
+
+# Установка зависимостей
+RUN npm install
+
+# Установка wget для healthcheck
+RUN apk add --no-cache wget
+
+# Копирование кода приложения
+COPY . .
+
+# Создание директорий для кэша и логов с правильными разрешениями
+RUN mkdir -p cache logs && chmod -R 777 cache logs
+
+# Открытие порта для Express
+EXPOSE 3001
+
+# Запуск приложения
+CMD ["node", "src/server.js"] 

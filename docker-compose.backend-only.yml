@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # Сервис бэкенда
+  # Backend service
   backend:
     build:
       context: ./backend
@@ -13,14 +13,19 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3001
-      - JWT_SECRET=your_jwt_secret_key_here
-      - DATABASE_URL=mongodb://mongo:27017/meta_trader
-      - HOST=0.0.0.0  # Явно указываем слушать на всех интерфейсах
+      - JWT_SECRET=${JWT_SECRET:-your_jwt_secret_key_here}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=${DB_USER:-meta_trader_user}
+      - DB_PASSWORD=${DB_PASSWORD:-meta_trader_password}
+      - DB_NAME=${DB_NAME:-meta_trader_db}
+      - ADMIN_DEFAULT_PASSWORD=${ADMIN_DEFAULT_PASSWORD:-admin123}
+      - HOST=0.0.0.0  # Explicitly listen on all interfaces
     volumes:
       - backend_cache:/app/cache
       - backend_logs:/app/logs
     depends_on:
-      - mongo
+      - postgres
     networks:
       - app_network
     healthcheck:
@@ -30,34 +35,40 @@ services:
       retries: 3
       start_period: 10s
 
-  # База данных MongoDB
-  mongo:
-    image: mongo:latest
-    container_name: meta_trader_mongo
+  # PostgreSQL database
+  postgres:
+    image: postgres:15-alpine
+    container_name: meta_trader_postgres
     restart: always
     ports:
-      - "27017:27017"
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-meta_trader_user}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-meta_trader_password}
+      - POSTGRES_DB=${DB_NAME:-meta_trader_db}
     volumes:
-      - mongo_data:/data/db
+      - postgres_data:/var/lib/postgresql/data
+      # Initialize database with schema if needed
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - app_network
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
-      interval: 30s
-      timeout: 10s
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-meta_trader_user} -d ${DB_NAME:-meta_trader_db}"]
+      interval: 10s
+      timeout: 5s
       retries: 3
       start_period: 10s
 
-# Определение томов
+# Define volumes
 volumes:
   backend_cache:
     name: meta_trader_backend_cache
   backend_logs:
     name: meta_trader_backend_logs
-  mongo_data:
-    name: meta_trader_mongo_data
+  postgres_data:
+    name: meta_trader_postgres_data
 
-# Определение сети
+# Define network
 networks:
   app_network:
     driver: bridge
