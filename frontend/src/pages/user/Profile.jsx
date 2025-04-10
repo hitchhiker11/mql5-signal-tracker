@@ -20,7 +20,8 @@ export default function Profile() {
     email: '',
     currentPassword: '',
     newPassword: '',
-    confirmNewPassword: ''
+    confirmNewPassword: '',
+    telegramAccount: ''
   });
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
@@ -31,7 +32,8 @@ export default function Profile() {
       setFormData(prev => ({
         ...prev,
         username: user.username,
-        email: user.email
+        email: user.email,
+        telegramAccount: user.telegramAccount || ''
       }));
     }
   }, [user]);
@@ -59,6 +61,7 @@ export default function Profile() {
       const updateData = {
         username: formData.username,
         email: formData.email,
+        telegramAccount: formData.telegramAccount,
         ...(formData.newPassword && {
           currentPassword: formData.currentPassword,
           newPassword: formData.newPassword
@@ -72,7 +75,8 @@ export default function Profile() {
         updateUser({
           ...user,
           username: formData.username,
-          email: formData.email
+          email: formData.email,
+          telegramAccount: formData.telegramAccount
         });
       }
     } catch (err) {
@@ -100,6 +104,11 @@ export default function Profile() {
             <Typography variant="body2" color="text.secondary">
               {user?.role === 'admin' ? 'Администратор' : 'Пользователь'}
             </Typography>
+            {user?.telegramAccount && (
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                Telegram: {user.telegramAccount}
+              </Typography>
+            )}
           </Card>
         </Grid>
 
@@ -133,6 +142,16 @@ export default function Profile() {
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Telegram аккаунт"
+                  name="telegramAccount"
+                  placeholder="@username"
+                  value={formData.telegramAccount}
+                  onChange={handleChange}
+                  helperText="Введите ваш username в Telegram (например, @username)"
                 />
 
                 <Typography variant="subtitle2">Изменить пароль</Typography>

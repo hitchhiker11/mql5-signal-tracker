@@ -21,7 +21,7 @@ Key Requirements:
 # 📁 Project Structure
 ├─ 📄 vite.config.js (54 lines) - JavaScript file for client-side functionality
 └─ 📁 src
-   ├─ 📄 theme.js (48 lines) - JavaScript file for client-side functionality
+   ├─ 📄 theme.js (101 lines) - JavaScript file for client-side functionality
    ├─ 📁 auth
    │  └─ 📄 useAuth.js (10 lines) - JavaScript file for client-side functionality
    ├─ 📁 hooks
@@ -29,18 +29,20 @@ Key Requirements:
    │  ├─ 📄 useSettings.js (12 lines) - JavaScript file for client-side functionality
    │  └─ 📄 useWidth.js (30 lines) - JavaScript file for client-side functionality
    ├─ 📁 services
-   │  ├─ 📄 axios.js (43 lines) - JavaScript file for client-side functionality
+   │  ├─ 📄 axios.js (46 lines) - JavaScript file for client-side functionality
+   │  ├─ 📄 cookies.js (108 lines) - JavaScript file for client-side functionality
    │  ├─ 📄 localStorage.js (28 lines) - JavaScript file for client-side functionality
+   │  ├─ 📄 telegram.js (137 lines) - JavaScript file for client-side functionality
    │  └─ 📁 api
    │     ├─ 📄 admin.js (46 lines) - JavaScript file for client-side functionality
    │     ├─ 📄 auth.js (33 lines) - JavaScript file for client-side functionality
    │     ├─ 📄 signal.js (57 lines) - JavaScript file for client-side functionality
-   │     └─ 📄 user.js (28 lines) - JavaScript file for client-side functionality
+   │     └─ 📄 user.js (33 lines) - JavaScript file for client-side functionality
    ├─ 📁 theme
    │  ├─ 📄 index.js (22 lines) - JavaScript file for client-side functionality
-   │  ├─ 📄 palette.js (21 lines) - JavaScript file for client-side functionality
+   │  ├─ 📄 palette.js (72 lines) - JavaScript file for client-side functionality
    │  ├─ 📄 shadows.js (8 lines) - JavaScript file for client-side functionality
-   │  └─ 📄 typography.js (17 lines) - JavaScript file for client-side functionality
+   │  └─ 📄 typography.js (72 lines) - JavaScript file for client-side functionality
    └─ 📁 utils
       ├─ 📄 formatDate.js (17 lines) - JavaScript file for client-side functionality
       ├─ 📄 formatNumber.js (18 lines) - JavaScript file for client-side functionality
@@ -59,13 +61,27 @@ Functions:
 Functions:
 - post
 
-`src\services\axios.js` (43 lines)
+`src\services\axios.js` (46 lines)
 Functions:
+- clearAuthCookies
 - create
-- getItem
+- getAuthToken
 - log
 - reject
-- removeItem
+
+`src\services\cookies.js` (108 lines)
+Functions:
+- clearAuthCookies
+- error
+- getAuthToken
+- getRefreshToken
+- getUserData
+- hasAuthToken
+- parse
+- remove
+- setAuthToken
+- setRefreshToken
+- setUserData
 
 `src\utils\formatDate.js` (17 lines)
 Functions:
@@ -96,9 +112,17 @@ Functions:
 - post
 - put
 
-`src\theme.js` (48 lines)
+`src\services\telegram.js` (137 lines)
 Functions:
-- createTheme
+- Error
+- error
+- getTelegramUser
+- getTelegramUserId
+- isTelegramWebApp
+- json
+- linkTelegramAccount
+- loginWithTelegram
+- validateTelegramWebAppData
 
 `src\auth\useAuth.js` (10 lines)
 Functions:
@@ -106,7 +130,7 @@ Functions:
 - useAuth
 - useContext
 
-`src\services\api\user.js` (28 lines)
+`src\services\api\user.js` (33 lines)
 Functions:
 - delete
 - put
@@ -137,9 +161,9 @@ Functions:
 - test
 
 # 📊 Project Overview
-**Files:** 19  |  **Lines:** 536
+**Files:** 21  |  **Lines:** 948
 
 ## 📁 File Distribution
-- .js: 19 files (536 lines)
+- .js: 21 files (948 lines)
 
-*Updated: April 04, 2025 at 05:37 PM*
+*Updated: April 09, 2025 at 07:37 PM*

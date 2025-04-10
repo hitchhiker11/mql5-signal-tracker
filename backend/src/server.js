@@ -7,7 +7,7 @@ import userRoutes from './routes/users.js';
 import { verifyToken } from './middleware/auth.js';
 import { errorHandler } from './middleware/error.js';
 import { initDatabase } from './config/database.js';
-import { MQL5Parser } from './parser.js';
+import MQL5Service from './services/mql5/index.js';
 
 dotenv.config();
 
@@ -15,7 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Инициализация парсера
-export const parser = new MQL5Parser();
+export const parser = new MQL5Service();
 
 // Настройка CORS для работы с ngrok
 const allowedOrigins = [
@@ -70,8 +70,9 @@ app.post('/api/parse', async (req, res) => {
     if (!url) {
       return res.status(400).json({ message: 'URL сигнала обязателен' });
     }
-    const data = await parser.parseSignal(url);
+    const data = await parser.getSignalData(url);
     res.json(data);
+    console.log(data);
   } catch (error) {
     console.error('Parser error:', error);
     res.status(500).json({ message: 'Ошибка при парсинге сигнала' });

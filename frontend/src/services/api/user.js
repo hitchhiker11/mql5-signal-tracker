@@ -24,5 +24,10 @@ export const userApi = {
   getStats: async () => {
     const response = await axios.get('/api/users/stats');
     return response.data;
+  },
+  
+  updateProfile: async (userData) => {
+    const response = await axios.put('/api/users/profile', userData);
+    return response.data;
   }
 };

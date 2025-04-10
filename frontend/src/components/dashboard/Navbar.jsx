@@ -1,61 +1,122 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
   IconButton,
   Typography,
-  Button,
+  Stack,
   Box,
+  Avatar,
+  Badge,
+  styled,
+  alpha,
   useTheme
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useAuth } from '../../auth/useAuth';
-import { useNavigate } from 'react-router-dom';
+import AccountPopover from './AccountPopover';
 
-export default function Navbar({ open, setOpen }) {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+// ----------------------------------------------------------------------
+
+const DRAWER_WIDTH = 280;
+const APPBAR_MOBILE = 64;
+const APPBAR_DESKTOP = 92;
+
+const StyledRoot = styled(AppBar)(({ theme, open }) => ({
+  boxShadow: 'none',
+  backdropFilter: 'blur(6px)',
+  WebkitBackdropFilter: 'blur(6px)', // Safari
+  backgroundColor: alpha(theme.palette.background.default, 0.8),
+  color: theme.palette.text.primary,
+  [theme.breakpoints.up('lg')]: {
+    width: open ? `calc(100% - ${DRAWER_WIDTH}px)` : '100%',
+  },
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+}));
+
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+  minHeight: APPBAR_MOBILE,
+  [theme.breakpoints.up('lg')]: {
+    minHeight: APPBAR_DESKTOP,
+    padding: theme.spacing(0, 5),
+  },
+}));
+
+const StyledSearch = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.grey[500], 0.12),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.grey[500], 0.16),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+    width: 'auto',
+  },
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(0, 2),
+}));
+
+// ----------------------------------------------------------------------
+
+export default function Navbar({ open, onOpenNav, isAdmin = false, sx }) {
+  const { user } = useAuth();
   const theme = useTheme();
 
-  const handleLogout = async () => {
-    await logout();
-    navigate('/auth/login');
-  };
-
   return (
-    <AppBar
-      position="fixed"
-      sx={{
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-      }}
-    >
-      <Toolbar>
+    <StyledRoot open={open} sx={{ ...sx }}>
+      <StyledToolbar>
         <IconButton
-          color="inherit"
-          onClick={() => setOpen(!open)}
-          edge="start"
-          sx={{ marginRight: 2 }}
+          onClick={onOpenNav}
+          sx={{
+            mr: 1,
+            color: 'text.primary',
+            display: { lg: 'none' },
+          }}
         >
           <MenuIcon />
         </IconButton>
-        
-        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-          {import.meta.env.VITE_APP_NAME}
+
+        <Typography 
+          variant="h5" 
+          component="div" 
+          sx={{ 
+            flexGrow: 1,
+            color: theme.palette.primary.main,
+            fontWeight: 700,
+            display: { xs: 'none', md: 'block' }
+          }}
+        >
+          {import.meta.env.VITE_APP_NAME || 'Meta Trader'}
         </Typography>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Typography variant="body2">
-            {user?.username} ({user?.role})
-          </Typography>
-          <Button color="inherit" onClick={handleLogout}>
-            Выйти
-          </Button>
-        </Box>
-      </Toolbar>
-    </AppBar>
+        <Box sx={{ flexGrow: 1 }} />
+
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={{ xs: 0.5, sm: 1.5 }}
+        >
+          {!isAdmin && (
+            <IconButton sx={{ color: 'text.primary' }}>
+              <Badge badgeContent={0} color="error">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          )}
+          
+          <AccountPopover />
+        </Stack>
+      </StyledToolbar>
+    </StyledRoot>
   );
 } 

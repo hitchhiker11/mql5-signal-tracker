@@ -34,6 +34,12 @@ export default function AccountPopover() {
     }
   };
 
+  const handleProfileClick = () => {
+    const isAdmin = user?.role === 'admin';
+    navigate(isAdmin ? '/admin/profile' : '/user/profile');
+    handleClose();
+  };
+
   return (
     <>
       <IconButton
@@ -86,7 +92,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={() => navigate('/user/profile')} sx={{ m: 1 }}>
+        <MenuItem onClick={handleProfileClick} sx={{ m: 1 }}>
           Профиль
         </MenuItem>
 

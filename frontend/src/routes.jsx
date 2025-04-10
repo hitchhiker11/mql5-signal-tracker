@@ -21,6 +21,7 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import AdminDashboard from './pages/admin/Dashboard';
 import UserManagement from './pages/admin/UserManagement';
 import SignalManagement from './pages/admin/SignalManagement';
+import AdminProfile from './pages/admin/Profile';
 
 // User Pages
 import UserDashboard from './pages/user/Dashboard';
@@ -70,6 +71,7 @@ export default function Router() {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
         <Route path="signals" element={<SignalManagement />} />
+        <Route path="profile" element={<AdminProfile />} />
       </Route>
 
       {/* User Routes */}

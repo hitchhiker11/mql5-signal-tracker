@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="dns-prefetch" href="https://c.mql5.com">
+  <meta name="description" content="Торговый Сигнал V6 FIL для MetaTrader 5: копирование сделок, мониторинг счета, автоматическое исполнение сигналов и социальный трейдинг">
+  <meta property="og:url" content="https://www.mql5.com/ru/signals/2299787">
+  <meta property="og:title" content="Торговые сигналы для MetaTrader 5: V6 FIL">
+  <meta property="og:description" content="Торговый Сигнал V6 FIL для MetaTrader 5: копирование сделок, мониторинг счета, автоматическое исполнение сигналов и социальный трейдинг">
+  <meta property="vk:image" content="https://www.mql5.com/ru/signals/images/og/fb/2299787-v6-fil.png">
+  <meta property="og:image" content="https://www.mql5.com/ru/signals/images/og/fb/2299787-v6-fil.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="628">
+  <meta property="og:type" content="product">
+  <meta property="og:updated_time" content="1743955100">
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:site" content="@mql5com">
+  <meta name="twitter:image" content="https://www.mql5.com/ru/signals/images/og/fb/2299787-v6-fil.png">
+  <meta name="theme-color" content="#4a76b8">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="https://www.mql5.com/manifest.json">
+  <link rel="apple-touch-icon" sizes="57x57" href="https://www.mql5.com/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://www.mql5.com/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="https://www.mql5.com/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="https://www.mql5.com/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="https://www.mql5.com/apple-touch-icon-167x167.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://www.mql5.com/apple-touch-icon-180x180.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="https://www.mql5.com/apple-touch-icon-192x192.png">
+  <link rel="icon" sizes="192x192" href="https://www.mql5.com/android-touch-icon-192x192.png">
+  <link rel="icon" sizes="128x128" href="https://www.mql5.com/android-touch-icon-128x128.png">
+  <link rel="shortcut icon" href="https://c.mql5.com/i/favicon4.ico">
+  <meta name="msapplication-config" content="none"/>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <meta property="qc:admins" content="36367170677651456375"/>
+  <meta property="wb:webmaster" content="073d7690269bcd81"/>
+  <link href="https://c.mql5.com/styles/core.b32f494aa194fd5fe7a62dfc7485aaeb.css" type="text/css" rel="stylesheet" media="all">
+  <link href="https://c.mql5.com/styles/all.ce0076f7a868189214823d644d8390a2.css" type="text/css" rel="stylesheet" media="all">
+  <link href="https://c.mql5.com/styles/signals.692f08189922a9d2c7f9138d34bada41.css" type="text/css" rel="stylesheet" media="all">
+  <link href="https://c.mql5.com/styles/svg-chart.b670461c55e11510e44f5f13225496da.css" type="text/css" rel="stylesheet" media="all">
+  <link rel="canonical" href="https://www.mql5.com/ru/signals/2299787">
+  <link rel="alternate" hreflang="en" href="https://www.mql5.com/en/signals/2299787">
+  <link rel="alternate" hreflang="ru" href="https://www.mql5.com/ru/signals/2299787">
+  <link rel="alternate" hreflang="zh" href="https://www.mql5.com/zh/signals/2299787">
+  <link rel="alternate" hreflang="es" href="https://www.mql5.com/es/signals/2299787">
+  <link rel="alternate" hreflang="pt" href="https://www.mql5.com/pt/signals/2299787">
+  <link rel="alternate" hreflang="ja" href="https://www.mql5.com/ja/signals/2299787">
+  <link rel="alternate" hreflang="de" href="https://www.mql5.com/de/signals/2299787">
+  <link rel="alternate" hreflang="ko" href="https://www.mql5.com/ko/signals/2299787">
+  <link rel="alternate" hreflang="fr" href="https://www.mql5.com/fr/signals/2299787">
+  <link rel="alternate" hreflang="it" href="https://www.mql5.com/it/signals/2299787">
+  <link rel="alternate" hreflang="tr" href="https://www.mql5.com/tr/signals/2299787">
+  <title>Копирование сделок торгового сигнала V6 FIL для MetaTrader 5 - 30 USD в месяц - Aleksey Belyayev</title>
+
+
+<script type="text/javascript">
+  !function(){window.mqGlobal={};var t=!1,n=!1,e=[],o=[],i=[];function d(t){var n;for(n=0;n<t.length;n+=1)t[n]()}function c(){t||(t=!0,d(e),d(o),o=[],e=[])}function a(){c(),n||(n=!0,d(i),i=[])}if(mqGlobal.AddOnReady=function(n,i){t?n(document):i?e.push(n):o.push(n)},mqGlobal.AddOnLoad=function(t){n?t(document):i.push(t)},mqGlobal.AddOnActiveWindowChange=function(t){this._onvisibility||(this._onvisibility=[]),this._onvisibility[this._onvisibility.length]=t},document.addEventListener)document.addEventListener("DOMContentLoaded",c,!1),window.addEventListener("load",a,!1);else if(document.attachEvent&&(document.attachEvent("onreadystatechange",(function(){switch(document.readyState){case"interactive":c();break;case"complete":a()}})),window.attachEvent("onload",a),document.documentElement.doScroll&&window==window.top)){!function n(){if(!t&&document.body)try{document.documentElement.doScroll("left"),c()}catch(t){setTimeout(n,0)}}()}}();
+  mqGlobal.CookieDomain = ".mql5.com";
+  mqGlobal.Language = 'ru';
+  mqGlobal.IsMobile = false;
+  mqGlobal.ClearRteStorage = function (e) { if (window.GStorage || (window.GStorage = globalStorage()), window.GStorage.supported) try { var o = e; window.GStorage.getItem("rte_autosave_uid", function (e, t) { t == o && (window.GStorage.removeItem("rte_autosave_text"), window.GStorage.removeItem("rte_autosave_date"), window.GStorage.removeItem("rte_autosave_uid")) }) } catch (e) { } };
+</script>
+  
+
+          
+
+    <script src="https://c.mql5.com/js/all.ed09021b9905a10aa5e702c5a92d51ef.js" type="text/javascript" defer="defer"></script>
+  <script src="https://c.mql5.com/js/vendor.c835e89fc229687ff8d147480b60f6c8.js" type="text/javascript" defer="defer"></script>
+  <script src="https://c.mql5.com/js/signals.843b5be03f34a13142a0a2576b498252.js" type="text/javascript" defer="defer"></script>
+  <script src="https://c.mql5.com/js/svg-chart.83de8526c18f0e3408cccc5e56c2698c.js" type="text/javascript" defer="defer"></script>
+
+
+</head>
+
+<body>
+
+<div class="cover" id="cover">
+
+    <header class="head">
+      <a href="https://www.mql5.com" class="head__logo" title="MQL5 - Язык торговых стратегий для клиентского терминала MetaTrader 5"></a>
+        <div class="head__content">
+          <nav class="main-menu" id="mainmenu">
+            
+                    <ul class="main-menu__top-level" id="menuTopLevel">
+                    <li><a href="/ru/forum" data-fz-event="MQL5+Menu+Forum">Форум</a></li>
+                    <li><a href="/ru/market" data-fz-event="MQL5+Menu+Market">Маркет</a></li>
+                    <li class="main-menu__selected"><a href="/ru/signals" data-fz-event="MQL5+Menu+Signals">Сигналы</a></li>
+                    <li><a href="/ru/job" data-fz-event="MQL5+Menu+Job">Фриланс</a></li>
+                    <li><a href="/ru/vps" data-fz-event="MQL5+Menu+VPS">VPS</a></li>
+                    <li><a href="/ru/quotes/overview" data-fz-event="MQL5+Menu+Overview">Котировки</a></li>
+                  </ul><ul class="main-menu__second-level" id="menuSecondLevel">
+                    <li><a href="/ru/articles" data-fz-event="MQL5+Menu+Articles"><img src="https://c.mql5.com/i/menu/icon-articles4.svg" alt="" width="16" height="16"/>Статьи</a></li>
+                    <li><a href="/ru/code" data-fz-event="MQL5+Menu+CodeBase"><img src="https://c.mql5.com/i/menu/icon-code4.svg" alt="" width="16" height="16"/>CodeBase</a></li>
+                    <li><a href="/ru/docs" data-fz-event="MQL5+Menu+Docs"><img src="https://c.mql5.com/i/menu/icon-docs4.svg" alt="" width="16" height="16"/>Документация</a></li>
+                    <li><a href="/ru/book" data-fz-event="MQL5+Menu+Book"><img src="https://c.mql5.com/i/menu/icon-book4.svg" alt="" width="16" height="16"/>Учебник по алготрейдингу</a></li>
+                    <li><a href="/ru/neurobook" data-fz-event="MQL5+Menu+Neurobook"><img src="https://c.mql5.com/i/menu/icon-neurobook4.svg" alt="" width="16" height="16"/>Учебник по нейросетям</a></li>
+                    <li><a href="/ru/economic-calendar" data-fz-event="MQL5+Menu+Economic+Calendar"><img src="https://c.mql5.com/i/menu/icon-economic-calendar4.svg" alt="" width="16" height="16"/>Календарь</a></li>
+                    <li><a href="https://web.metatrader.app/terminal?mode=demo" target="_blank" rel="noopener" data-fz-event="MQL5+Menu+Trading"><img src="https://c.mql5.com/i/menu/icon-trading4.svg" alt="" width="16" height="16"/>Вебтерминал</a></li>
+                    <li class="main-menu__mobile"><a href="/ru/about">О проекте</a></li>
+                    <li class="main-menu__second-tools"><a rel="noopener" target="_blank" href="https://t.me/mql5ru" title="Подпишитесь и узнавайте о популярных статьях и кодах" class="button-mt" data-vars-fz="Algo+Trading+Channel+Submenu"><img width="18" height="18" src="https://c.mql5.com/i/sidebar/tg.svg" alt="" loading="lazy">Канал об алготрейдинге</a></li>
+                    </ul>
+          </nav>
+            <div class="main-menu__active">
+              <a id="mainMenuSelected" href="#">
+                <span class="main-menu__primary">Сигналы</span><span class="main-menu__secondary">Разделы</span>
+              </a>
+            </div>
+
+<form action="https://www.mql5.com/ru/search" onsubmit="return false;" autocomplete="off" id="headerSearchForm" class="header-search" method="post">
+<button type="button" id="headerSearchButton" title="Поиск" class="header-search__button"></button><div class="header-search__input"><input name="keyword" type="text" enterkeyhint="search" title="Введите текст для поиска" placeholder="Поиск" id="headerSearchKeyword" /><label for="headerSearchKeyword" class="header-search__placeholder">Нажмите <span>/</span> для поиска: @user, $symbol, ...</label><button id="headerSearchSubmit" class="header-search__submit"></button></div><button type="button" id="headerSearchClean" title="Закрыть" class="header-search__clean"></button></form>          <input class="blurHandler" id="mainMenuBlurHandler" type="checkbox">
+        </div>
+        <div class="head__toolbar" id="headerToolbar">
+            <div class="container loginRegister">
+              <nav>
+                <ul id="loginRegisterButtons"><li><a class="login" title="Авторизуйтесь. Поддерживается OpenID-авторизация" href="https://www.mql5.com/ru/auth_login" data-fz-event="MQL5+Menu+Siginin">Вход</a></li><li><a class="registration ru" title="Зарегистрируйтесь" href="https://www.mql5.com/ru/auth_register" data-fz-event="MQL5+Menu+Register" onclick="window.fpush('MQL5+Button+Click');">Создать аккаунт</a></li></ul>
+              </nav>
+            </div>
+          <div class="container">
+            <div class="toggle-button" id="sidebarToggleButton">
+              <i></i>
+            </div>
+          </div>
+
+          <div class="group-menu" id="groupMenu">
+
+
+            <div class="container lang-menu-container">
+              <div id="langMenuContainer" class="lang-menu">
+                <input class="blurHandler" id="langmenuBlurHandler" type="checkbox">
+                <nav>
+                  <ul class="lang-menu__list" id="langmenu">
+                    <li class="lang-menu__list-item"><a href="/en/signals/2299787" aria-label="English (English)"><i class="icons-languages icons-languages_en"></i><span>English</span></a></li>
+<li class="lang-menu__list-item lang-menu__list-item_selected"><a href="/ru/signals/2299787" aria-label="Русский (Russian)"><i class="icons-languages icons-languages_ru"></i><span>Русский</span></a></li>
+<li class="lang-menu__list-item"><a href="/zh/signals/2299787" aria-label="中文 (Chinese)"><i class="icons-languages icons-languages_zh"></i><span>中文</span></a></li>
+<li class="lang-menu__list-item"><a href="/es/signals/2299787" aria-label="Español (Spanish)"><i class="icons-languages icons-languages_es"></i><span>Español</span></a></li>
+<li class="lang-menu__list-item"><a href="/pt/signals/2299787" aria-label="Português (Portuguese)"><i class="icons-languages icons-languages_pt"></i><span>Português</span></a></li>
+<li class="lang-menu__list-item"><a href="/ja/signals/2299787" aria-label="日本語 (Japanese)"><i class="icons-languages icons-languages_ja"></i><span>日本語</span></a></li>
+<li class="lang-menu__list-item"><a href="/de/signals/2299787" aria-label="Deutsch (German)"><i class="icons-languages icons-languages_de"></i><span>Deutsch</span></a></li>
+<li class="lang-menu__list-item"><a href="/ko/signals/2299787" aria-label="한국어 (Korean)"><i class="icons-languages icons-languages_ko"></i><span>한국어</span></a></li>
+<li class="lang-menu__list-item"><a href="/fr/signals/2299787" aria-label="Français (French)"><i class="icons-languages icons-languages_fr"></i><span>Français</span></a></li>
+<li class="lang-menu__list-item"><a href="/it/signals/2299787" aria-label="Italiano (Italian)"><i class="icons-languages icons-languages_it"></i><span>Italiano</span></a></li>
+<li class="lang-menu__list-item"><a href="/tr/signals/2299787" aria-label="Türkçe (Turkish)"><i class="icons-languages icons-languages_tr"></i><span>Türkçe</span></a></li>
+
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+    </header>
+
+  <main>
+<div id='bfogggabsofabcpxuzmgaibarmaxasdrj' class="ru0is50xqgq5uflsp g937w27w4"></div>
+    <article class="body" id="bodyContent">
+      <header class="top-band">
+        
+  <div class="s-header-part  ">
+    <div class="inline-tools ui">
+
+    </div>
+      <div class="path">
+        <div class="shortlinks">
+            <span>
+              <a href="/ru/signals" title="Сигналы"><span>Сигналы</span></a>
+            </span>
+            /
+            <span>
+              <a href="/ru/signals/mt5"><span>MetaTrader 5</span></a>
+            </span>/
+        </div>
+        <h1 class="title-min">
+          <a href="/ru/signals/2299787">V6 FIL</a>
+        </h1>
+      </div>
+  </div>
+
+      </header>
+
+      
+<div class="s-content content-wrapper ui">
+  <!-- sidebar -->
+  <div id="left-panel" class="sidebar sidebar_270">
+    <div class="tree-menu tree-menu_signals">
+      <ul class="tree-menu__list">
+        <li class="tree-menu__item"><a class="tree-menu__link" href="/ru/signals"><img class="tree-menu__icon" width="20" height="20" src="https://c.mql5.com/i/sidebar/signal.svg" alt="" loading="lazy"/> Сигналы</a></li>
+      </ul>
+      <div class="tree-menu__list tree-menu__list_nested">
+        <ul class="tree-menu__list tree-menu__list_no-indent">
+      <li class="tree-menu__item"><a class="tree-menu__link" href="/ru/signals/widgets" onclick="window.fpush('MQL5+Signals+Add+Widget')"> <img class="tree-menu__icon" width="20" height="20" src="https://c.mql5.com/i/sidebar/widgets.svg" alt="" loading="lazy"/>Добавить виджет</a>      </li>
+      <li class="tree-menu__item"><a class="tree-menu__link" href="/ru/signals/rules"> <img class="tree-menu__icon" width="20" height="20" src="https://c.mql5.com/i/sidebar/rules.svg" alt="" loading="lazy"/>Правила</a>      </li>
+    </ul>
+
+      </div>
+    </div>
+          <div class="s-list-info">
+            <div class="s-list-info__item">
+              <div class="s-list-info__label">Прирост: </div>
+              <div class="s-list-info__value">1.97%</div>
+            </div>
+            <div class="s-list-info__item">
+              <div class="s-list-info__label">Прибыль: </div>
+              <div class="s-list-info__value">20.90 USD</div>
+            </div>
+            <div class="s-list-info__item">
+              <div class="s-list-info__label">Средства: </div>
+              <div class="s-list-info__value">1 081.90 USD</div>
+            </div>
+            <div class="s-list-info__item">
+              <div class="s-list-info__label">Баланс: </div>
+              <div class="s-list-info__value">1 081.90 USD</div>
+            </div>
+            <div class="s-list-info__item" title="Начальный размер торгового счета">
+              <div class="s-list-info__label">Нач. депозит: </div>
+              <div class="s-list-info__value">1 061.00 USD</div>
+            </div>
+            <div class="s-list-info__item">
+              <div class="s-list-info__label">Снятия: </div>
+              <div class="s-list-info__value">0.00 USD</div>
+            </div>
+            <div class="s-list-info__item">
+              <div class="s-list-info__label">Пополнения: </div>
+              <div class="s-list-info__value">0.00 USD</div>
+            </div>
+          </div>
+          <div class="s-btns-area">
+                  <a class="button button_multiline button_green" href="javascript:void(false);" onclick="window.fpush('MQL5+Signal+Page+Copy');return SubscribeByMt();">
+                    Копировать за&nbsp;30&nbsp;USD&nbsp;в&nbsp;месяц
+                  </a>
+          </div>
+          <div class="s-warnings-list">
+              <div class="s-warnings-list__item">
+                <span class="icon ico_state Attention"></span>
+                <span class="s-warnings-list__text">
+                  Недостаточно торговых операций на счете для оценки торговли
+                    <span id="warningsMoreOff">
+                      <a href="javascript:void(false);" onclick="ShowWarnings()">
+                        <span class="s-warnings-list__more-text">
+                          еще 1
+                        </span><i class="s-icons s-icons_arrow"></i>
+                      </a>
+                    </span>
+                    <span id="warningsMoreOn" class="btn" style="display: none;">
+                      <a href="javascript:void(false);" onclick="HideWarnings()">
+                        <span class="s-warnings-list__more-text"> меньше</span><i class="s-icons s-icons_arrow-up"></i>
+                      </a>
+                    </span>
+                      
+                </span>
+              </div>
+                <div id="warningsContainer">
+                    <div class="s-warnings-list__item">
+                      <span class="icon ico_state ConnectionError"></span>
+                      <span class="s-warnings-list__text">Счет открыт совсем недавно и поэтому результаты могут быть случайными</span>
+                    </div>
+                </div>
+          </div>
+          <div class="s-list-info">
+                <div class="s-list-info__item">
+                  <div class="s-list-info__label">Торговые дни:</div>
+                  <div class="s-list-info__value">3 (60.00%)</div>
+                </div>
+                <div class="s-list-info__item" title="Время, прошедшее  с момента последней торговой операции на счете">
+                  <div class="s-list-info__label"> Последний трейд: </div>
+                  <div class="s-list-info__value">2 дня</div>
+                </div>
+                <div class="s-list-info__item" title="Среднее количество трейдов на счете сигнала за 7 дней">
+                  <div class="s-list-info__label"> Трейдов в неделю: </div>
+                  <div class="s-list-info__value">12</div>
+                </div>
+                  <div class="s-list-info__item" title="Среднее время удержания открытой позиции ">
+                    <div class="s-list-info__label"> Ср. время удержания: </div>
+                    <div class="s-list-info__value">11 часов</div>
+                  </div>
+                <div class="s-list-info__item" title="Количество действующих подписок на сигнал">
+                  <div class="s-list-info__label"> Подписчики:</div>
+                  <div class="s-list-info__value">0</div>
+                </div>
+            <div class="s-list-info__item">
+              <div class="s-list-info__label">Недели:</div>
+              <div class="s-list-info__value">1</div>
+            </div>
+                <div class="s-list-info__item">
+                  <div class="s-list-info__label">Запущен:</div>
+                  <div class="s-list-info__value">
+                    2025.04.01 17:59:44
+                  </div>
+                </div>
+          </div>
+          <div class="watch-doc">
+            <div class="text">Смотри <a href="https://youtu.be/tNQ_JB_ZswU?list=PLltlMLQ7OLeKMxPEMAQiYIbthg1IsTgGz" target="_blank" rel="nofollow">обучающее видео</a> по сигналам на YouTube</div>
+            <a href="https://youtu.be/tNQ_JB_ZswU?list=PLltlMLQ7OLeKMxPEMAQiYIbthg1IsTgGz" class="ico-watch-doc" target="_blank" rel="nofollow"></a>
+          </div>
+<div id='vgckrufggwxdtfscpyalmenexmvhljduja' class="rqe0xzlkcve3tujxk g937w27w4"></div>  </div>
+  <!-- end sidebar -->
+  <div class="block-content" id="signal-content">
+      <div class="s-top-line">
+        <div class="s-line-card">
+          <div class="s-line-card__avatar">
+              <a href="/ru/users/moneyai">
+                <img src="https://c.mql5.com/avatar/avatar_na2_big.png" title="Aleksey Belyayev" alt="Aleksey Belyayev" loading="lazy" width="100" height="100">
+              </a>
+          </div>
+          <div class="s-line-card__title">V6 FIL</div>
+          <div class="s-line-card__header">
+              <div class="s-line-card__author">
+                  <span class="ui-icon-flags ui-icon-flags_bg-ru"></span>
+                <a class="author" href="/ru/users/moneyai">Aleksey Belyayev</a>
+              </div>
+              <div class="s-line-card__rating rating-area">
+                <div class="g-rating g-rating_" title="Нет отзывов"></div>
+                0 отзывов
+              </div>
+            <div class="s-indicators">
+                  <div class="s-indicators__item s-indicators__item_risk" title="Надежность оценивает в % риски данного сигнала относительно других. Чем выше показатель, тем надежней сигнал.">
+                    <div class="risk-bars-slim-rel4"></div>
+                    Надежность
+                  </div>
+              <div class="s-indicators__item s-indicators__item_weeks">
+                <div class="s-indicators__item-wrapper">
+                  <span class="s-indicators__item-desc s-indicators__item-desc_weeks">
+<span>1</span> неделя                  </span>
+
+                </div>
+              </div>
+              <div class="s-indicators__item">
+                <div class="s-indicators__item-wrapper  s-indicators__item-wrapper_subscribers">
+                  <span class="s-subscribers-icon"></span>
+                  <span title="Количество действующих подписок на сигнал">0</span>
+                  /
+                  <span title="Совокупные средства только реальных счетов в рамках используемых рисков">0 USD</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="s-line-card__button">
+                  <a class="button button_green-border" href="javascript:void(false);" onclick="window.fpush ('MQL5+Signal+Page+Copy');return SubscribeByMt();">
+                    Копировать за&nbsp;30&nbsp;USD&nbsp;в&nbsp;месяц
+                  </a>
+        </div>  
+        </div>
+      </div>
+      <div class="s-top-info">
+        <div class="s-top-info__left-part">
+          <div class="s-plain-card">
+            <div id="avatar_chart" class="s-plain-card__chart">
+              <span class="chart-caption chart-caption__positive">
+                  <span class="chart-caption__date">прирост с 2025</span>
+                <span class="chart-caption__value">2%</span>
+              </span>
+              
+            </div>
+            <div class="s-plain-card__footer">
+              <div class="s-plain-card__broker">
+                  <span title="Реальный счет" class="icons-ux icons-ux_shield"></span>
+                <form method="POST" action="/ru/signals/mt5/page1">
+                  <input type="hidden" name="substring_apply" value="1"/>
+                  <input type="hidden" name="substring_filter" value="Alpari-MT5"/>
+                  <a href="javascript:void(false);" onclick="parentNode.submit()">Alpari-MT5</a>
+                </form>
+
+              </div>
+              <div class="s-plain-card__leverage" title="Плечо">
+                1:500
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="s-top-info__right-part">
+          <div class="s-bar-chart" id="barChart"></div>
+        </div>
+        <div class="s-top-info__center-part">
+          <div class="s-radar-chart" id="radarChart"></div>
+        </div>
+
+          
+      </div>
+      <ul id="signal_tabs_top" class="tabs padded smart-list">
+        <li id="tab_account" class="item selected">
+          <a href="javascript:void(false)" onclick="window.fpush ('MQL5+Signal+Page+Account');">
+            <span class="text">Счет</span>
+          </a>
+        </li>
+        <li id="tab_history" class="item">
+          <a href="javascript:void(false)" onclick="window.fpush ('MQL5+Signal+Page+Trading+History');">
+            <span class="text">История сделок</span>
+          </a>
+        </li>
+        <li id="tab_stats" class="item">
+          <a href="javascript:void(false)" onclick="window.fpush ('MQL5+Signal+Page+Statistics');">
+            <span class="text">Статистика</span>
+          </a>
+        </li>
+        <li id="tab_risks" class="item">
+          <a href="javascript:void(false)" onclick="window.fpush ('MQL5+Signal+Page+Risk');">
+            <span class="text">Риски</span>
+          </a>
+        </li>
+        <li id="tab_slippage" class="item">
+          <a href="javascript:void(false)" onclick="window.fpush ('MQL5+Signal+Page+Slippage');">
+            <span class="text">Проскальзывание</span>
+          </a>
+        </li>
+          <li id="tab_reviews" class="item" onclick="window.fpush ('MQL5+Signal+Page+Reviews');">
+            <a href="javascript:void(false)">
+              <span class="text">Отзывы</span>
+            </a>
+          </li>
+          <li id="tab_news" class="item" onclick="window.fpush ('MQL5+Signal+Page+News');">
+            <a href="javascript:void(false)">
+              <span class="text">Новости</span>
+            </a>
+          </li>
+      </ul>
+    <div class="s-tabs-area">
+      <div id="tab_content_account" class="tab__content selected">
+        <div class="tab__content__item">
+            <div class="need-auth"><strong><a href="https://www.mql5.com/ru/auth_login">Авторизуйтесь</a></strong> или <strong><a href="https://www.mql5.com/ru/auth_register">зарегистрируйтесь</a></strong> и получите доступ к текущим сделкам поставщика</div>
+        </div>
+        <div class="tab__content__item">
+          <ul class="switch s-switch" id="switchGrowthChart">
+            <li data-content="growth_chart" class="item selected">Прирост</li>
+            <li data-content="balance_chart" class="item">Баланс</li>
+          </ul>
+          <div id="tab_content_growth_chart" class="tab__content wide selected">
+            <div id="growth_chart" class="signal-chart-placeholder s-svg-chart"></div>
+            <div id="growth_chart_note">
+              <span class="icon ico_state ErrorGray"></span><span>
+                <a href="/ru/forum/10603#q23" target="_blank">Как рассчитывается Прирост в сигналах?</a>
+              </span>
+            </div>
+          </div>
+          <div id="tab_content_balance_chart" class="tab__content wide">
+            <div id="balance_chart" class="signal-chart-placeholder s-svg-chart"></div>
+          </div>
+        </div>
+        <div class="tab__content__item">
+          <ul class="switch s-switch" id="switchEquityChart">
+            <li data-content="equity_chart" class="item selected">Средства</li>
+            <li data-content="drawdown_chart" class="item">Просадка</li>
+          </ul>
+          <div id="tab_content_equity_chart" class="tab__content wide selected">
+            <div id="equity_chart" class="signal-chart-placeholder s-svg-chart"></div>
+          </div>
+          <div id="tab_content_drawdown_chart" class="tab__content wide">
+            <div id="drawdown_chart" class="signal-chart-placeholder s-svg-chart"></div>
+          </div>
+        </div>
+      </div>
+      <div id="tab_content_stats" class="tab__content">
+        <div id="tradeDataColumns" class="tab__content__item">
+          <div class="s-data-columns">
+            <div class="s-data-columns__column">
+              <div class="s-data-columns__item" title="Количество совершенных сделок. Малое количество не может характеризовать торговлю, и полученная прибыль может быть случайной.">
+                <div class="s-data-columns__label">Всего трейдов:</div>
+                <div class="s-data-columns__value">12</div>
+              </div>
+              <div class="s-data-columns__split"></div>
+              <div class="s-data-columns__item" title="Общее количество выигрышных сделок. В скобках показан процент от общего числа сделок.">
+                <div class="s-data-columns__label">Прибыльных трейдов:</div>
+                <div class="s-data-columns__value">8 (66.66%)</div>
+              </div>
+              <div class="s-data-columns__item" title="Общее количество проигрышных сделок. В скобках показан процент от общего числа сделок.">
+                <div class="s-data-columns__label">Убыточных трейдов:</div>
+                <div class="s-data-columns__value">4 (33.33%)</div>
+              </div>
+              <div class="s-data-columns__split"></div>
+              <div class="hoverable s-data-columns__item" title="Сделка с максимальным выигрышем. Экстремальные значения обычно не принимаются во внимание для более объективной оценки." onmouseover="Signals.HighlightTrade (11, 11)" onmouseout="Signals.HighlightTradeOff (11, 11)">
+                <div class="s-data-columns__label">Лучший трейд:</div>
+                <div class="s-data-columns__value">
+                  <i class="blue">18.35</i> USD
+                </div>
+              </div>
+              <div class="hoverable s-data-columns__item" title="Сделка с максимальным проигрышем. Часто является даже более важным показателем, чем максимальный выигрыш." onmouseover="Signals.HighlightTrade (5, 5)" onmouseout="Signals.HighlightTradeOff (5, 5)">
+                <div class="s-data-columns__label">Худший трейд: </div>
+                <div class="s-data-columns__value">
+                  <i class="red">-7.30</i> USD
+                </div>
+              </div>
+              <div class="s-data-columns__split"></div>
+              <div class="s-data-columns__item" title="Общая прибыль - это сумма всех сделок с положительным результатом.">
+                <div class="s-data-columns__label">Общая прибыль:</div>
+                <div class="s-data-columns__value">
+                  <i class="blue">36.80</i> USD
+ (<i class="blue">357</i> pips)                </div>
+              </div>
+              <div class="s-data-columns__item" title="Общий убыток - это сумма всех сделок с отрицательным результатом.">
+                <div class="s-data-columns__label">Общий убыток: </div>
+                <div class="s-data-columns__value">
+                  <i class="red">-15.90</i> USD
+ (<i class="red">158</i> pips)                </div>
+              </div>
+              <div class="s-data-columns__split"></div>
+              <div class="hoverable s-data-columns__item" title="Количество сделок в самой длинной выигрышной последовательности. В скобках указан суммарный выигрыш этой последовательности." onmouseover="Signals.HighlightGrowthRange (0)" onmouseout="Signals.HighlightGrowthRangeOff (0)">
+                <div class="s-data-columns__label">Макс. серия выигрышей:</div>
+                <div class="s-data-columns__value">4 (<i class="blue">29.60</i> USD)</div>
+              </div>
+              <div class="hoverable s-data-columns__item" title="Максимальная прибыль в непрерывной выигрышной последовательности. В скобках указано количество сделок в этой последовательности." onmouseover="Signals.HighlightGrowthRange (2)" onmouseout="Signals.HighlightGrowthRangeOff (2)">
+                <div class="s-data-columns__label">Макс. прибыль в серии:</div>
+                <div class="s-data-columns__value"><i class="blue">29.60</i> USD (4)</div>
+              </div>
+              <div class="s-data-columns__split"></div>
+              <div class="s-data-columns__item" title="Один из важных показателей, связывающих доходность и риск. Коэффициент Шарпа показывает на сколько сильно среднее геометрическое изменение баланса превышает стандартное отклонение от колебаний денежных средств. Например, значение Sharp=0.6 говорит о том, что на каждые 6 долларов дохода в среднем приходится риск потерять 10 долларов. Чем больше это значение, тем менее рискована торговля. Но большие значения выигрыша в отдельных сделках могут приводить к более высокому значению стандартного отклонения, а значит, и неоправданно уменьшать вычисляемое значение Sharpe Ratio.">
+                <div class="s-data-columns__label">Коэффициент Шарпа:</div>
+                <div class="s-data-columns__value">0.27</div>
+              </div>
+                <div class="s-data-columns__item" title="За время мониторинга Сигнала (2 дней 18 часов) на торговом счете в течение 80.50% времени  были открытые позиции - 2 дней 5 часов 15 минут. ">
+                  <div class="s-data-columns__label">Торговая активность:</div>
+                  <div class="s-data-columns__value">80.50%</div>
+                </div>
+              <div class="s-data-columns__item" title="Максимальная испытанная нагрузка на депозит">
+                <div class="s-data-columns__label">Макс. загрузка депозита:</div>
+                <div class="s-data-columns__value">4.76%</div>
+              </div>
+              <div class="s-data-columns__split"></div>
+                <div class="s-data-columns__item" title="Время, прошедшее  с момента последней торговой операции на счете">
+                  <div class="s-data-columns__label"> Последний трейд: </div>
+                  <div class="s-data-columns__value">2 дня</div>
+                </div>
+                <div class="s-data-columns__item" title="Среднее количество трейдов на счете сигнала за 7 дней">
+                  <div class="s-data-columns__label"> Трейдов в неделю: </div>
+                  <div class="s-data-columns__value">12</div>
+                </div>
+                  <div class="s-data-columns__item" title="Среднее время удержания открытой позиции ">
+
+                    <div class="s-data-columns__label"> Ср. время удержания: </div>
+                    <div class="s-data-columns__value">11 часов</div>
+
+                  </div>
+            </div>
+            <div class="s-data-columns__separator" style="left: 50%;"></div>
+            <div class="s-data-columns__column" style="padding-left: 2%;">
+              <div class="s-data-columns__item" title="Фактор восстановления (recovery factor) рассчитывается как отношение абсолютной прибыли к максимальной просадке. Чем выше фактор восстановления, тем быстрее система восстанавливается после просадки. ">
+                <div class="s-data-columns__label">Фактор восстановления:</div>
+                <div class="s-data-columns__value">1.47</div>
+              </div>
+              <div class="s-data-columns__split"></div>
+              <div class="s-data-columns__item" title="Количество длинных трейдов - количество сделок, зафиксировавших прибыль/убыток от покупок. В скобках указана доля длинных трейдов в процентах.">
+                <div class="s-data-columns__label">Длинных трейдов:</div>
+                <div class="s-data-columns__value">8 (66.67%)</div>
+              </div>
+              <div class="s-data-columns__item" title="Количество коротких трейдов - количество сделок, зафиксировавших прибыль/убыток от продаж. В скобках указана доля коротких трейдов в процентах.">
+                <div class="s-data-columns__label">Коротких трейдов:</div>
+                <div class="s-data-columns__value">4 (33.33%)</div>
+              </div>
+              <div class="s-data-columns__split"></div>
+              <div class="s-data-columns__item" title="Фактор прибыльности показывает, во сколько раз общая прибыль превышает общий убыток. Чем больше это значение, тем лучше.">
+                <div class="s-data-columns__label">Профит фактор: </div>
+                <div class="s-data-columns__value">2.31</div>
+              </div>
+              <div class="s-data-columns__item" title="Математическое ожидание (средняя прибыль на сделку) является результатом деления чистой прибыли на количество всех сделок.">
+                <div class="s-data-columns__label">Мат. ожидание:</div>
+                <div class="s-data-columns__value">
+                  <i class="blue">1.74</i> USD
+                </div>
+              </div>
+              <div class="s-data-columns__split"></div>
+              <div class="s-data-columns__item" title="Средний выигрыш является результатом деления общей прибыли на количество выигрышных сделок.">
+                <div class="s-data-columns__label">Средняя прибыль:</div>
+                <div class="s-data-columns__value" title="44.63 pips">
+                  <i class="blue">4.60</i> USD
+                </div>
+              </div>
+              <div class="s-data-columns__item" title="Средний проигрыш является результатом деления общего убытка на количество проигрышных сделок.">
+                <div class="s-data-columns__label">Средний убыток:</div>
+                <div class="s-data-columns__value" title="39.50 pips">
+                  <i class="red">-3.98</i> USD
+                </div>
+              </div>
+              <div class="s-data-columns__split"></div>
+              <div class="hoverable s-data-columns__item" title="Количество сделок в самой длинной проигрышной последовательности. В скобках указан суммарный проигрыш этой последовательности." onmouseover="Signals.HighlightGrowthRange (1)" onmouseout="Signals.HighlightGrowthRangeOff (1)">
+                <div class="s-data-columns__label">Макс. серия проигрышей:</div>
+                <div class="s-data-columns__value">2 (<i class="red">-9.00</i> USD)</div>
+              </div>
+              <div class="hoverable s-data-columns__item" title="Максимальный убыток в непрерывной последовательности потерь. В скобках указано количество сделок в этой последовательности." onmouseover="Signals.HighlightGrowthRange (3)" onmouseout="Signals.HighlightGrowthRangeOff (3)">
+                <div class="s-data-columns__label">Макс. убыток в серии:</div>
+                <div class="s-data-columns__value"><i class="red">-9.00</i> USD (2)</div>
+              </div>
+              <div class="s-data-columns__split"></div>
+                <div class="s-data-columns__item" title="Прирост на счете за последние 30 дней">
+                  <div class="s-data-columns__label">Прирост в месяц:</div>
+                  <div class="s-data-columns__value">
+                    <i class="blue">1.97%</i>
+                  </div>
+                </div>
+              <div class="s-data-columns__item" title="Доля трейдов, совершенных торговыми роботами">
+                <div class="s-data-columns__label">Алготрейдинг: </div>
+                <div class="s-data-columns__value">0%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab__content__item">
+          <div class="s-data-columns hoverable">
+            <div class="s-data-columns__column">
+              <div class="s-data-columns__item header">
+                <strong>Просадка по балансу: </strong>
+              </div>
+              <div class="s-data-columns__item" title="Просадка от начального баланса показывает, насколько уменьшался баланс относительно первоначального значения. Максимально может быть равно начальному балансу, если потеряны все деньги.">
+                <div class="s-data-columns__label">Абсолютная: </div>
+                <div class="s-data-columns__value">
+                  <i class="red">11.00</i> USD
+                </div>
+              </div>
+              <div class="s-data-columns__item" title="Денежная просадка показывает зафиксированную максимальную просадку в денежном выражении и является наибольшим перепадом между последним максимумом и текущим минимумом. Может превышать абсолютную просадку и дает представление о сумме возможного проигрыша даже при торговле с прибыльным результатом. В скобках дается значение в процентах на момент достижения просадки. ">
+                <div class="s-data-columns__label">Максимальная: </div>
+                <div class="s-data-columns__value"><i class="red">14.20</i> USD (1.33%)</div>
+              </div>
+            </div>
+            <div class="s-data-columns__separator" style="left: 50%;">
+            </div>
+            <div class="s-data-columns__column" style="padding-left: 2%;">
+              <div class="s-data-columns__item header">
+                <strong>Отноcительная просадка: </strong>
+              </div>
+              <div class="s-data-columns__item" title="Относительная просадка показывает максимальную просадку в процентах и позволяет оценить возможные потери в процентах от начального депозита. ">
+                <div class="s-data-columns__label">По балансу: </div>
+                <div class="s-data-columns__value">1.33% (<i class="red">14.20</i> USD)</div>
+              </div>
+              <div class="s-data-columns__item" title="Максимальная просадка по собственным средствам в процентах, достигнутая на протяжении торговой истории (абсолютная денежная просадка на этот момент)">
+                <div class="s-data-columns__label">По эквити: </div>
+                <div class="s-data-columns__value">4.24% (<i class="red">44.65</i> USD)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab__content__item">
+          <h3 class="tab__content__title">Распределение</h3>
+            <table class="signals-chart-dist signalsChart">
+    <thead>
+      <tr>
+        <th class="col-symbol">Символ</th>
+        <th class="col-buy-sell"></th>
+        <th>Сделки</th>
+        <th style="text-align:right;">Sell</th>
+        <th>Buy</th>
+      </tr>
+    </thead>
+    <tbody>
+          <tr title="Трейды на NG_i">
+            <td class="col-symbol">NG_i</td>
+            <td class="col-buy-sell col-right">12</td>
+            <td class="bar col-30" title="Трейды на NG_i: 12">
+              <div style="width: 60.00%;"></div>
+            </td>
+            <td class="bar col-right col-30" title="Продажи на NG_i: 4">
+              <div class="d" style="float: right; width: 20.00%;"></div>
+            </td>
+            <td class="bar col-30" title="Покупки на NG_i: 8">
+              <div class="u" style="width: 40.00%;"></div>
+            </td>
+          </tr>
+        <tr class="nohl">
+          <td></td>
+          <td></td>
+          <td class="scale">
+            <div class="left">
+                <i style="right:75%;">5</i>
+                <i style="right:50%;">10</i>
+                <i style="right:25%;">15</i>
+                <i style="right:0%;">20</i>
+            </div>
+          </td>
+          <td class="scale">
+            <div class="right">
+                <i style="left:75%;">5</i>
+                <i style="left:50%;">10</i>
+                <i style="left:25%;">15</i>
+                <i style="left:0%;">20</i>
+            </div>
+          </td>
+          <td class="scale">
+            <div class="left">
+                <i style="right:75%;">5</i>
+                <i style="right:50%;">10</i>
+                <i style="right:25%;">15</i>
+                <i style="right:0%;">20</i>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+  <div class="midSpace"></div>
+  <table class="signals-chart-dist signalsChart">
+    <thead>
+      <tr>
+        <th class="col-symbol">Символ</th>
+        <th class="col-buy-sell"></th>
+        <th>Общая прибыль, USD</th>
+        <th style="text-align:right;">Убыток, USD</th>
+        <th>Прибыль, USD</th>
+      </tr>
+    </thead>
+    <tbody>
+          <tr title="Результаты на NG_i">
+            <td class="col-symbol">NG_i</td>
+            <td class="col-buy-sell col-right">21</td>
+            <td class="bar col-30" title="Сумма на NG_i: 20.90 USD">
+              <div class="u" style="width: 34.83%;"></div>
+            </td>
+            <td class="bar col-right col-30" title="Убыток на NG_i: 15.90 USD">
+              <div class="d" style="float: right; width: 26.50%;"></div>
+            </td>
+            <td class="bar col-30" title="Прибыль на NG_i: 36.80 USD">
+              <div class="u" style="width: 61.33%;"></div>
+            </td>
+          </tr>
+        <tr class="nohl">
+          <td></td>
+          <td></td>
+          <td class="scale">
+            <div class="left">
+                <i style="right:83.33333333333333%;">10</i>
+                <i style="right:66.66666666666666%;">20</i>
+                <i style="right:50%;">30</i>
+                <i style="right:33.33333333333333%;">40</i>
+                <i style="right:16.66666666666667%;">50</i>
+                <i style="right:0%;">60</i>
+            </div>
+          </td>
+          <td class="scale">
+            <div class="right">
+                <i style="left:83.33333333333333%;">10</i>
+                <i style="left:66.66666666666666%;">20</i>
+                <i style="left:50%;">30</i>
+                <i style="left:33.33333333333333%;">40</i>
+                <i style="left:16.66666666666667%;">50</i>
+                <i style="left:0%;">60</i>
+            </div>
+          </td>
+          <td class="scale">
+            <div class="left">
+                <i style="right:83.33333333333333%;">10</i>
+                <i style="right:66.66666666666666%;">20</i>
+                <i style="right:50%;">30</i>
+                <i style="right:33.33333333333333%;">40</i>
+                <i style="right:16.66666666666667%;">50</i>
+                <i style="right:0%;">60</i>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+  <div class="midSpace"></div>
+  <table class="signals-chart-dist signalsChart">
+    <thead>
+      <tr>
+        <th class="col-symbol">Символ</th>
+        <th class="col-buy-sell"></th>
+        <th>Общая прибыль, pips</th>
+        <th style="text-align:right;">Убыток, pips</th>
+        <th>Прибыль, pips</th>
+      </tr>
+    </thead>
+    <tbody>
+          <tr title="Результаты на NG_i">
+            <td class="col-symbol">NG_i</td>
+            <td class="col-buy-sell col-right">199</td>
+            <td class="bar col-30" title="Сумма на NG_i: 199 pips">
+              <div class="u" style="width: 33.17%;"></div>
+            </td>
+            <td class="bar col-right col-30" title="Убыток на NG_i: 158 pips">
+              <div class="d" style="float: right; width: 26.33%;"></div>
+            </td>
+            <td class="bar col-30" title="Прибыль на NG_i: 357 pips">
+              <div class="u" style="width: 59.50%;"></div>
+            </td>
+          </tr>
+        <tr class="nohl">
+          <td></td>
+          <td></td>
+          <td class="scale">
+            <div class="left">
+                <i style="right:83.33333333333333%;">100</i>
+                <i style="right:66.66666666666666%;">200</i>
+                <i style="right:50%;">300</i>
+                <i style="right:33.33333333333333%;">400</i>
+                <i style="right:16.66666666666667%;">500</i>
+                <i style="right:0%;">600</i>
+            </div>
+          </td>
+          <td class="scale">
+            <div class="right">
+                <i style="left:83.33333333333333%;">100</i>
+                <i style="left:66.66666666666666%;">200</i>
+                <i style="left:50%;">300</i>
+                <i style="left:33.33333333333333%;">400</i>
+                <i style="left:16.66666666666667%;">500</i>
+                <i style="left:0%;">600</i>
+            </div>
+          </td>
+          <td class="scale">
+            <div class="left">
+                <i style="right:83.33333333333333%;">100</i>
+                <i style="right:66.66666666666666%;">200</i>
+                <i style="right:50%;">300</i>
+                <i style="right:33.33333333333333%;">400</i>
+                <i style="right:16.66666666666667%;">500</i>
+                <i style="right:0%;">600</i>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </div>
+      </div>
+      <div id="tab_content_risks" class="tab__content">
+        <div class="tab__content__item">
+          <ul class="switch s-switch" id="switchRiskChart">
+            <li data-content="risk_load_chart" class="item selected">Загрузка депозита</li>
+            <li data-content="risk_drawdown_chart" class="item">Просадка</li>
+          </ul>
+          <div id="tab_content_risk_load_chart" class="tab__content wide selected">
+            <div id="risk_load_chart" class="signal-chart-placeholder s-svg-chart"></div>
+          </div>
+          <div id="tab_content_risk_drawdown_chart" class="tab__content wide">
+            <div id="risk_drawdown_chart" class="signal-chart-placeholder s-svg-chart"></div>
+          </div>
+        </div>
+
+        <div class="tab__content__item s-swing-progress">
+          <div class="-item">
+            <div class="-label -positive" title="Сделка с максимальным выигрышем. Экстремальные значения обычно не принимаются во внимание для более объективной оценки.">
+              Лучший трейд:
+              <span class="-value">&#x2B;18.35</span>
+              <span class="-currency">USD</span>
+            </div>
+              <div class="-bar">
+                <i class="-component" style="width:72%"></i><i class="-component" style="width:28%"></i>
+              </div>
+            <div class="-label -negative" title="Сделка с максимальным проигрышем. Часто является даже более важным показателем, чем максимальный выигрыш.">
+              Худший трейд:
+              <span class="-value">-7</span>
+              <span class="-currency">USD</span>
+            </div>
+          </div>
+          <div class="-item">
+            <div class="-label -positive" title="Количество сделок в самой длинной выигрышной последовательности. В скобках указан суммарный выигрыш этой последовательности.">
+              Макс. серия выигрышей:
+              <span class="-value">4</span>
+            </div>
+              <div class="-bar">
+                <i class="-component" style="width:67%"></i><i class="-component" style="width:33%"></i>
+              </div>
+            <div class="-label -negative" title="Количество сделок в самой длинной проигрышной последовательности. В скобках указан суммарный проигрыш этой последовательности.">
+              Макс. серия проигрышей:
+              <span class="-value">2</span>
+            </div>
+          </div>
+          <div class="-item">
+            <div class="-label -positive" title="Максимальная прибыль в непрерывной выигрышной последовательности. В скобках указано количество сделок в этой последовательности.">
+              Макс. прибыль в серии:
+              <span class="-value">&#x2B;29.60</span>
+              <span class="-currency">USD</span>
+            </div>
+              <div class="-bar">
+                <i class="-component" style="width:77%"></i><i class="-component" style="width:23%"></i>
+              </div>
+            <div class="-label -negative" title="Максимальный убыток в непрерывной последовательности потерь. В скобках указано количество сделок в этой последовательности.">
+              Макс. убыток в серии:
+              <span class="-value">-9.00</span>
+              <span class="-currency">USD</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="tab__content__item">
+            <div id="risk_mae_mfe_chart" class="signal-chart-placeholder s-svg-chart"></div>
+          </div>
+        </div>
+      </div>
+      <div id="tab_content_slippage" class="tab__content">
+        <div class="tab__content__item">
+          <p>Среднее проскальзывание на основе статистики исполнения на реальных счетах разных брокеров указано в пунктах. Зависит от разницы между котировками поставщика с "Alpari-MT5" и подписчика, а также от задержек в исполнении ордеров. Чем меньше значение, тем лучше качество копирования.</p>
+    <p class="noData">Нет данных</p>
+
+        </div>
+      </div>
+      <div id="tab_content_description" class="tab__content">
+        <div class="tab__content__item tab__content__item_description" id="description">
+          
+        </div>
+      </div>
+        <div id="tab_content_reviews" class="tab__content">
+          <div class="tab__content__item">
+            
+
+<div id="reviews" class="editor-comments signal-reviews ui  ">
+      <div class="no-data">
+      Нет отзывов
+      </div>
+</div>
+
+  
+
+          </div>
+        </div>
+        <div id="tab_content_news" class="tab__content">
+          <div class="tab__content__item">
+            <div class="signal_updates signals_states">
+                  <div class="signal_update system_message warn">
+      <span class="timestamp">2025.04.01 18:43</span>
+      <div class="text" id="content56326057">
+        <span class="ico_state"></span>
+        This is a newly opened account, and the trading results may be of random nature
+      </div>
+    </div>
+    <div class="signal_update system_message warn">
+      <span class="timestamp">2025.04.01 18:43</span>
+      <div class="text" id="content56326056">
+        <span class="ico_state"></span>
+        The number of deals on the account is too small to evaluate trading quality
+      </div>
+    </div>
+
+            </div>
+          </div>
+        </div>
+      <div id="tab_content_history" class="tab__content">
+        <div class="tab__content__item">
+            <div class="need-auth"><strong><a href="https://www.mql5.com/ru/auth_login">Авторизуйтесь</a></strong> или <strong><a href="https://www.mql5.com/ru/auth_register">зарегистрируйтесь</a></strong> и получите доступ к текущим сделкам поставщика</div>
+        </div>
+      </div>
+    </div>
+<div id='wdausxxqrpvhekbwjrjlhqjghyhesrqqau' class="rdbyqww6mc0nehtfd rdbyqww6mc0nehtfd_signals-view g937w27w4"></div>  </div>
+</div>
+
+    
+    
+
+
+<div id="subscribeByMtWindow" class="block-subscribe-signal">
+  <div class="body">
+    <div class="table-subscribe-signal">
+      <div class="table__header">
+        <div class="col-chart">Сигнал</div>
+        <div class="col-price">Цена</div>
+        <div class="col-growth">Прирост</div>
+        <div class="col-subscribers">Подписчики</div>
+        <div class="col-facilities">Средства</div>
+        <div class="col-balance">Баланс</div>
+        <div class="col-weeks">Недели</div>
+        <div class="col-experts">Торговые роботы</div>
+        <div class="col-trades">Трейды</div>
+        <div class="col-plus">В плюсе</div>
+        <div class="col-activity">Активность</div>
+        <div class="col-pf">PF</div>
+        <div class="col-ep">Мат. ожидание</div>
+        <div class="col-drawdown">Просадка</div>
+        <div class="col-leverage">Плечо</div>
+      </div>
+      <div class="table__content">
+        <div class="row signal"><div class="col-chart"><div class="signal-chart"><a class="signal-avatar" href="https://www.mql5.com/ru/signals/2299787" rel="nofollow" title="'V6 FIL' от Aleksey Belyayev"><canvas width="123" height="58"></canvas><input type="hidden" value="20, 1, 6, 7, -5, -3, -16, -20, -14, -15, -14, 5, 39, 39, 0, 0, 0, 0, 0, 0, "/><span class="name">V6 FIL</span><span class="ico_state real bg" title="Реальный счет"></span></a></div><div class="info"><div class="tools"></div></div></div><div class="col-price"><span title="Это 1 USD в день"><span class="price-value">30 USD</span> в месяц</span></div><div class="col-growth blue" title="Прибыль в&nbsp;месяц: 2%">2%</div><div class="col-subscribers">0</div><div class="col-facilities">0<br> <span>USD</span></div><div class="col-balance">1.1K<br> <span>USD</span></div><div class="col-weeks">1</div><div class="col-experts">0%</div><div class="col-trades">12</div><div class="col-plus">66%</div><div class="col-activity">81%</div><div class="col-pf">2.31</div><div class="col-ep">1.74<br> <span>USD</span></div><div class="col-drawdown green">4%</div><div class="col-leverage">1:500</div><div class="col-btns"><div class="button button_white-and-green" data-id="2299787" data-name="V6 FIL" data-mt="5">Копировать</div></div></div> 
+      </div>
+    </div>
+    <div class="commands">
+      <button id="buttonSubscribeDialogLaunch" class="green mt" onclick="subscribeByMtWindowLaunch()"><strong>Запустить MetaTrader 5</strong><br/> и оформить подписку в платформе<span></span></button>
+    </div>
+  </div>
+  <div class="footer">
+    <p class="big link-ext">Как происходит копирование сделок в MetaTrader? <a href="https://youtu.be/tNQ_JB_ZswU?list=PLltlMLQ7OLeKMxPEMAQiYIbthg1IsTgGz" target="_blank">Посмотрите обучающее видео</a></p>
+    <p>Подписка на сигнал дает вам право копировать сделки поставщика в течение 1 месяца. Для работы подписки необходимо использовать торговый терминал MetaTrader 5.</p>
+    <p class="link-download">Если платформа у вас не установлена, вы можете <a href="https://download.mql5.com/cdn/web/metaquotes.ltd/mt5/mt5setup.exe?utm_source=www.mql5.com&utm_medium=special&utm_campaign=signals.subscribe.wizard" onclick="window.fpush('MQL5+Signal+Download+MetaTrader+5');" target="_blank">скачать ее здесь</a>.</p>
+  </div>
+</div>
+  
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://www.mql5.com/ru/signals","name":"Сигналы"}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CreativeWorkSeries","name":"V6 FIL","description":"","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.mql5.com/ru/signals/2299787"},"offers":{"price":"30.00","priceCurrency":"USD"},"datePublished":"2025-04-01T17:59:44","dateModified":"2025-04-06T15:58:20","image":{"@type":"ImageObject","url":"https://c.mql5.com/avatar/avatar_na2_big.png"},"author":{"@type":"Person","name":"Aleksey Belyayev","url":"https://www.mql5.com/ru/users/moneyai"},"publisher":{"@type":"Organization","name":"MQL5 Community","url":"https://www.mql5.com","logo":{"@type":"ImageObject","url":"https://c.mql5.com/i/community/logo_mql5-2.png"}}}
+</script>
+    
+
+    </article>
+  </main>
+
+    <footer aria-hidden="true">
+
+
+<div class="footer  desktop" id="footer">
+  <ul class="links  links_desktop">
+      <li id="navFooterCommunity">
+        <b>MQL5.community</b>
+        <nav>
+          <ul>
+            <li><a href="https://web.metatrader.app/terminal?mode=demo" target="_blank" rel="noopener" data-fz-event="MQL5+Footer+Trading">Онлайн трейдинг / Вебтерминал</a></li>
+            <li><a href="/ru/code" data-fz-event="MQL5+Footer+CodeBase">Бесплатные индикаторы и советники</a></li>
+            <li><a href="/ru/articles" data-fz-event="MQL5+Footer+Articles">Статьи о программировании и трейдинге</a></li>
+            <li><a href="/ru/job" data-fz-event="MQL5+Footer+Job">Заказать торговый советник и индикатор</a></li>
+            <li><a href="/ru/market" data-fz-event="MQL5+Footer+Market">Купить торговый робот и индикатор</a></li>
+            <li><a href="/ru/signals" data-fz-event="MQL5+Footer+Signals">Торговые сигналы форекс</a></li>
+            <li><a href="/ru/vps" data-fz-event="MQL5+Footer+VPS">Forex VPS для торговли</a></li>
+            <li><a href="/ru/forum" data-fz-event="MQL5+Footer+Forum">Форум трейдеров</a></li>
+            <li><a href="/ru/blogs" data-fz-event="MQL5+Footer+Blogs">Блоги трейдеров</a></li>
+            <li><a href="/ru/charts" data-fz-event="MQL5+Footer+Charts">Графики</a></li>
+          </ul>
+        </nav>
+      </li>
+      <li id="navFooterMt5">
+        <b>MetaTrader 5</b>
+        <nav>
+          <ul>
+            <li><a rel="noopener" href="https://www.metatrader5.com" data-fz-event="MQL5+Footer+MetaTrader+5">Торговая платформа <span class="nobr">MetaTrader 5</span></a></li>
+            <li><a rel="noopener" href="https://www.metatrader5.com/ru/releasenotes" data-fz-event="MQL5+Footer+MetaTrader+5">Последние обновления <span class="nobr">MetaTrader 5</span></a></li>
+            <li><a rel="noopener" href="https://www.metatrader5.com/ru/news" data-fz-event="MQL5+Footer+MetaTrader+5">Новости, внедрения и технологии</a></li>
+            <li><a rel="noopener" href="https://www.metatrader5.com/ru/terminal/help" data-fz-event="MQL5+Footer+MetaTrader+5">Руководство пользователя <span class="nobr">MetaTrader 5</span></a></li>
+            <li><a href="/ru/docs" data-fz-event="MQL5+Footer+Docs">Язык торговых стратегий MQL5</a></li>
+            <li><a rel="noopener" href="https://cloud.mql5.com" data-fz-event="MQL5+Footer+Cloud">MQL5 Cloud Network</a></li>
+            <li><a rel="noopener" href="https://www.finteza.com/?utm_source=www.mql5.com&utm_medium=cpc&utm_term=cross-link&utm_content=visit.finteza.com&utm_campaign=0791.finteza.cross-link" data-fz-event="MQL5+Footer+Finteza" target="_blank">Сквозная аналитика</a></li>
+              <li><a rel="noopener" href="https://download.mql5.com/cdn/web/metaquotes.ltd/mt5/mt5setup.exe?utm_source=www.mql5.com&amp;utm_campaign=download" data-fz-event="MetaTrader+5+Desktop+Download+Footer">Скачать <span class="nobr">MetaTrader 5</span></a></li>
+              <li><a rel="noopener" href="https://www.metatrader5.com/ru/terminal/help/start_advanced/installation" data-fz-event="MQL5+Footer+MetaTrader+5">Установка платформы</a></li>
+              <li><a rel="noopener" href="https://www.metatrader5.com/ru/terminal/help/start_advanced/deinstallation" data-fz-event="MQL5+Footer+MetaTrader+5">Удаление программы</a></li>
+          </ul>
+        </nav>
+
+      </li>
+    <li id="navFooterWebsite">
+        <b >Информация о сайте</b>
+        <nav>
+          <ul>
+            <li><a href="/ru/about" data-fz-event="MQL5+Footer+About">О проекте</a></li>
+              <li><a href="/ru/wall" data-fz-event="MQL5+Footer+Wall">Хроника сайта</a></li>
+            <li><a href="/ru/about/terms" data-fz-event="MQL5+Footer+About">Условия использования</a></li>
+            <li><a href="/ru/about/autopayments" data-fz-event="MQL5+Footer+About">Соглашение о рекуррентных платежах</a></li>
+            <li><a href="/ru/about/agencyagreement" data-fz-event="MQL5+Footer+About">Агентский договор-оферта</a></li>
+            <li><a href="/ru/about/privacy" data-fz-event="MQL5+Footer+About">Политика конфиденциальности и защиты данных</a></li>
+            <li><a href="/ru/about/cookies" data-fz-event="MQL5+Footer+About">Политика в отношении cookie-файлов</a></li>
+            <li>
+                <a href="/ru/contact" data-fz-event="MQL5+Footer+Contacts">Контакты и обращения</a>
+            </li>
+          </ul>
+        </nav>
+    </li>
+
+      <li>
+        <div class="footer__products">
+            <div class="footer__product">
+              <a target="_blank" rel="noopener" href="https://www.metatrader5.com" class="footer__product-name">MetaTrader 5</a>
+              <div class="footer__product-links">
+              <a rel="noopener" href="https://download.mql5.com/cdn/web/metaquotes.ltd/mt5/mt5setup.exe?utm_source=www.mql5.com&amp;utm_campaign=download" class="icon windows" data-fz-event="MetaTrader+5+Desktop+Download+Footer"><div class="footer__product-link-hint footer__product-link-hint-short">Скачать MetaTrader 5 для Windows</div></a>
+              <a rel="noopener" href="https://download.mql5.com/cdn/web/metaquotes.ltd/mt5/MetaTrader5.pkg.zip?utm_source=www.mql5.com&amp;utm_campaign=download" class="icon macos" data-fz-event="MetaTrader+5+Desktop+Download+Footer"><div class="footer__product-link-hint footer__product-link-hint-short">Скачать MetaTrader 5 для MacOS</div></a>
+              <a rel="noopener" href="https://www.mql5.com/ru/articles/625?utm_source=www.mql5.com&amp;utm_campaign=download" class="icon linux" data-fz-event="MetaTrader+5+Desktop+Download+Footer"><div class="footer__product-link-hint footer__product-link-hint-short">Скачать MetaTrader 5 для Linux</div></a>
+              <a rel="noopener" href="https://web.metatrader.app/terminal?mode=demo" class="icon web"><div  class="footer__product-link-hint footer__product-link-hint-short">Открыть MetaTrader 5 WebTerminal</div></a>
+              <a rel="noopener" href="https://download.mql5.com/cdn/mobile/mt5/ios?utm_source=www.mql5.com&amp;utm_campaign=install.metaquotes" class="icon ios" data-fz-event="MetaTrader+5+iOS+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/F1qzfrtIhDp.png)">Отсканируйте для установки из App Store</div></a>
+              <a rel="noopener" href="https://download.mql5.com/cdn/mobile/mt5/android?utm_source=www.mql5.com&amp;utm_campaign=install.metaquotes" class="icon android" data-fz-event="MetaTrader+5+Android+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/5y81uvyFMPW.png)">Отсканируйте для установки из Google Play</div></a>
+              <a rel="noopener" href="https://download.mql5.com/cdn/mobile/mt5/android/app-gallery?utm_source=www.mql5.com&amp;utm_campaign=install.metaquotes" class="icon huawei" data-fz-event="MetaTrader+5+Android+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/ZgFlSvLLbPn.png)">Отсканируйте для установки из Huawei AppGallery</div></a>
+              <a rel="noopener" href="https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/metatrader5.apk?utm_source=www.mql5.com&amp;utm_campaign=install.metaquotes" class="icon ark" data-fz-event="MetaTrader+5+Android+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/Lwmc2V3KIPA.png)">Отсканируйте для получения файла APK для Android</div></a>
+              </div>
+            </div>
+            <div>
+              <div class="footer__product">
+                <a target="_blank" rel="noopener" href="https://www.metatrader5.com/en/news/2270" class="footer__product-name">MQL5 Channels</a>
+                <div class="footer__product-links">
+                <a rel="noopener" href="https://download.mql5.com/cdn/mobile/mql5.channels/ios?utm_source=www.mql5.com&amp;utm_campaign=download" class="icon ios" data-fz-event="MQL5+Channels+iOS+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/yXkH8gcWl8A.png)">Отсканируйте для установки из App Store</div></a>
+                <a rel="noopener" href="https://download.mql5.com/cdn/mobile/mql5.channels/android?utm_source=www.mql5.com&amp;utm_campaign=download" class="icon android" data-fz-event="MQL5+Channels+Android+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/Vi4XegV9Yr7.png)">Отсканируйте для установки из Google Play</div></a>
+                <a rel="noopener" href="https://download.mql5.com/cdn/mobile/mql5.channels/android/app-gallery?utm_source=www.mql5.com&amp;utm_campaign=download" class="icon huawei" data-fz-event="MQL5+Channels+Android+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/S7GLL6gia6p.png)">Отсканируйте для установки из Huawei AppGallery</div></a>
+                <a rel="noopener" href="https://download.mql5.com/cdn/web/metaquotes.software.corp/mql5channels/mql5channels.apk?utm_source=www.mql5.com&amp;utm_campaign=download" class="icon ark" data-fz-event="MQL5+Channels+Android+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/GavZeMoJbi7.png)">Отсканируйте для получения файла APK для Android</div></a>
+                </div>
+              </div>
+              <div class="footer__product">
+                <a target="_blank" rel="noopener" href="https://www.tradays.com/ru/download?utm_source=www.mql5.com&amp;utm_campaign=download" data-fz-event="MQL5+Footer+Download+Tradays" class="footer__product-name">Economic Calendar</a>
+                <div class="footer__product-links">
+                <a rel="noopener" href="https://download.mql5.com/cdn/mobile/tradays/ios?utm_source=www.mql5.com&amp;utm_campaign=download" class="icon ios" data-fz-event="Tradays+iOS+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/RSdc9QEIOU9.png)">Отсканируйте для установки из App Store</div></a>
+                <a rel="noopener" href="https://download.mql5.com/cdn/mobile/tradays/android?utm_source=www.mql5.com&amp;utm_campaign=download" class="icon android" data-fz-event="Tradays+Android+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/BgT2JC9nsN7.png)">Отсканируйте для установки из Google Play</div></a>
+                <a rel="noopener" href="https://download.mql5.com/cdn/mobile/tradays/android/app-gallery?utm_source=www.mql5.com&amp;utm_campaign=download" class="icon huawei" data-fz-event="Tradays+Android+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/CDbwhhgyysd.png)">Отсканируйте для установки из Huawei AppGallery</div></a>
+                <a rel="noopener" href="https://download.mql5.com/cdn/web/metaquotes.software.corp/tradays/tradays.apk?utm_source=www.mql5.com&amp;utm_campaign=download" class="icon ark" data-fz-event="Tradays+Android+Download+Footer"><div class="footer__product-link-hint" style="background-image: url(https://c.mql5.com/qr/VGWFy3By-09.png)">Отсканируйте для получения файла APK для Android</div></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer__networks">
+                    <div class="footer__networks-list">
+                    <a href="https://www.facebook.com/mql5.community/" target="_blank" rel="nofollow" title="Facebook"><i class="icons-networks icons-networks_fb"></i></a>
+                    <a href="https://t.me/mql5ru" target="_blank" rel="nofollow" title="Telegram"><i class="icons-networks icons-networks_tg"></i></a>
+                    <a href="https://twitter.com/mql5com" target="_blank" rel="nofollow" title="X (Twitter)"><i class="icons-networks icons-networks_tw"></i></a>
+                    </div>
+
+                    <span>Подпишитесь и узнавайте о популярных статьях и кодах</span>
+          </div>
+  
+        <div class="footer__other">
+          <div class="footer__not-a-broker">Не является брокером, нет реальных торговых счетов</div>
+          <div class="copyright">35 Dodekanisou str, Germasogeia, 4043,&nbsp;Limassol,&nbsp;Cyprus</div>
+          <div class="copyright">Copyright 2000-2025, <span class="nobr">MetaQuotes Ltd</span></div>
+        </div>
+      </li>
+  </ul>
+</div>
+
+
+    </footer>
+
+  <div class="shadow-layer" id="layer"></div>
+      
+</div>
+
+
+<script type='text/javascript'>
+  (function(a,e,f,g,b,c,d){a[b]||(a.FintezaCoreObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=!0,c.defer=!0,c.src=g,d&&d.parentNode&&d.parentNode.insertBefore(c,d))})
+      (window, document, "script", "/ff/core.js", "fz");
+  window.fz("register", "website", {
+      id: "sqjxkxkswybhifrohpyooonwgbvsfzmayq",
+    trackLinks: true
+  });
+  </script>
+
+<script type="text/javascript">
+           mqGlobal.AddOnReady(function () { Mql5Cookie.init('mql5.com','5088427603355640619'); });
+function ShowWarnings(){var link=document.getElementById('warningsMoreOff');if(link){link.style.display='none';}link=document.getElementById('warningsMoreOn');if(link){link.style.display='inline';}var container=document.getElementById('warningsContainer');if(container){container.style.display='inline';}}function HideWarnings(){var link=document.getElementById('warningsMoreOn');if(link){link.style.display='none';}link=document.getElementById('warningsMoreOff');if(link){link.style.display='inline';}var container=document.getElementById('warningsContainer');if(container){container.style.display='none';}}mqGlobal.AddOnReady(function(){HideWarnings();});window.fz("show","vgckrufggwxdtfscpyalmenexmvhljduja");mqGlobal.AddOnReady(function(){var radarRadius;var radarFontSize;var radarHeight;function setRadarChartSize(){radarRadius=80;radarFontSize=14;radarHeight=220;var currentWidth=document.documentElement.clientWidth;if(1315>currentWidth){radarRadius=80;radarFontSize=13;}else if(1500>currentWidth){radarRadius=70;radarFontSize=12;}else if(1540>currentWidth){radarRadius=80;radarFontSize=12;}}setRadarChartSize();var radarChart=new svgRadarChart($('radarChart'),[{value:66.7,name:'Прибыльных трейдов',title:'Общее количество выигрышных сделок. В скобках показан процент от общего числа сделок. 8 (66.66%)'},{value:33.3,name:'Убыточных трейдов',title:'Общее количество проигрышных сделок. В скобках показан процент от общего числа сделок. 4 (33.33%)'},{value:80.5,name:'Торговая активность',title:'За время мониторинга Сигнала (2 дней 18 часов) на торговом счете в течение 80.50% времени  были открытые позиции - 2 дней 5 часов 15 минут. '},{value:4.8,name:'Макс. загрузка депозита',title:'Максимальная испытанная нагрузка на депозит'},{value:4.2,name:'Максимальная просадка',title:'Денежная просадка показывает зафиксированную максимальную просадку в денежном выражении и является наибольшим перепадом между последним максимумом и текущим минимумом. Может превышать абсолютную просадку и дает представление о сумме возможного проигрыша даже при торговле с прибыльным результатом. В скобках дается значение в процентах на момент достижения просадки. '},{value:0,name:'Алготрейдинг',title:'Доля трейдов, совершенных торговыми роботами'}],null,radarHeight,radarRadius,4,radarFontSize,function(){setRadarChartSize();radarChart.set(null,radarHeight,radarRadius,null,radarFontSize);});new BarChartHorizontal($('barChart'),[{title:'Средства',value:'1081.9',valueText:'1 081.90 USD',additional:{value:'0'},description:['Баланс: 1 081.90 USD','Плавающая прибыль: 0.00 USD'],callback:function(){window.fpush('MQL5+Signal+Page+Balance+Focus');}},{title:'Прибыль',value:'20.90000000000009',valueText:'20.90 USD',description:['Сделок: 12'],callback:function(){window.fpush('MQL5+Signal+Page+Profit+Focus');}},{title:' Нач. депозит',value:'1061',valueText:'1 061.00 USD'},{title:'Снятия',value:'0',valueText:'0.00 USD',description:['Операций: 0'],callback:function(){window.fpush('MQL5+Signal+Page+Withdrawals+Focus');}},{title:'Пополнения',value:'0',valueText:'0.00 USD',description:['Операций: 0'],callback:function(){window.fpush('MQL5+Signal+Page+Deposits+Focus');}}]);});var ratingTypes=['Reliability','CopyQuality','Support'];function toggleReview(event){event.preventDefault();var review=$('newreview'),editForm=$("reviews"),reviewContent=$("reviewContent");reviewContent.value='';$("reviewID").value=0;for(i=0;i<ratingTypes.length;i++){$("rating"+ratingTypes[i]).value=0;$("selectedStars"+ratingTypes[i]).className="g-rating";}if(review.style.display=='none'){review.style.display='block';reviewContent.focus();setTimeout(function(){let scrollTop=window.pageYOffset||document.body.scrollTop;let coord=editForm.getBoundingClientRect();window.scrollTo(0,coord.bottom+scrollTop);},100);}else{review.style.display='none';}$("reviewAddButton").style.display="block";$("reviewEditButton").style.display="none";}function complaintInline(itemId,moduleId,typeId){if(!window.showComplaintForm)return false;return showComplaintForm(itemId,moduleId,typeId,0,'bb9cde641d1d4f461d9c2587657505ca');}function editReview(rID,event,rvals){event.preventDefault();var reviewID=$("reviewID"),rRating=$("rating_"+rID),editForm=$("reviews"),coord,scrollTop,reviewContent=$("reviewContent");if(reviewID.value!=rID){reviewContent.value=$("reviewContentRaw_"+rID).value;reviewID.value=rID;for(var i=0;i<ratingTypes.length;i++){var ratingEl=$("rating"+ratingTypes[i]);ratingEl.value=rvals[i];$("selectedStars"+ratingTypes[i]).className=getRatingClass(ratingEl.value);}$('newreview').style.display="block";}$("reviewAddButton").style.display="none";$("reviewEditButton").style.display="block";reviewContent.focus();setTimeout(function(){scrollTop=window.pageYOffset||document.body.scrollTop;coord=editForm.getBoundingClientRect();window.scrollTo(0,coord.bottom+scrollTop);},100);}function hideOptions(rId){let placeholder=$('reviewSettings_'+rId);if(!placeholder)return;placeholder.style.visibility='hidden';}function showOptions(rId,s,mid,tid,rvals){let placeholder=$('reviewSettings_'+rId);if(!placeholder)return;placeholder.style.visibility='visible';if(placeholder.innerHTML.trim().length!==0)return;placeholder.innerHTML=`
+      <a href="#edit_form" onclick="editReview('${rId}', event, [${rvals.toString()}])">правка</a>
+      | <a 
+        href="https://www.mql5.com/ru/signals/reviews/${rId}/delete"
+        onclick="
+          if(!confirm('Are you sure?')) return false;
+          doPost(event,'https://www.mql5.com/ru/signals/reviews/${rId}/delete', '${s}'); 
+          return false;">
+        удалить
+      </a>
+      | <a href="javascript:complaintInline(${rId},${mid},${tid})">нарушение</a>
+      `;};window.fz("show","wdausxxqrpvhekbwjrjlhqjghyhesrqqau");mqGlobal.AddOnReady(function(){var acc={growth:0.0197,balance:1081.9,equity:1081.9,drawdown:0,depositLoad:0,deposits:0,withdrawals:0,currency:"USD",digits:2,stops:window.buildBalanceData([]),};var res={growth:"Прирост",balance:"Баланс",equity:"Средства",drawdown:"Просадка",depositLoad:"Загрузка депозита",deposits:"Пополнения",withdrawals:"Снятия",average:"Среднее",assets:"Активы",liabilities:"Обязательства",max_avg_profit:"Средняя прибыль",max_avg_mfe:"MFE (Макс. прибыль)",min_avg_mae:"MAE (Макс. просадка)",min_avg_loss:"Средний убыток",};window.renderMiniChart(document.getElementById("avatar_chart"),"D1",[1743292800,0,1743379200,-0.77,1743465600,-0.75,1743724800,1.97]);window.growthChart(document.getElementById("growth_chart"),acc,res,{chart:[],table:{years:[{year:2025,yearly:0.0197,months:{"2":-0.0077,"3":0.0276,}},],total:0.0197,extra:document.getElementById("growth_chart_note")},inited:true,splitIndex:10,greyMonth:0,},[[0,0,1,0.25,2,0.3,3,-0.3,4,-0.19,5,-0.88,6,-1.04,7,-0.77,8,-0.82,9,-0.75,10,0.2,11,1.93,12,1.97],]);window.balanceChart(document.getElementById("balance_chart"),acc,res,{chart:[],table:{years:[{year:2025,yearly:20.9,months:{"2":-8.2,"3":29.1,}},],total:20.90000000000009},inited:true,splitIndex:10,},[[0,1061,1,1063.7,2,1064.2,3,1057.8,4,1059,5,1051.7,6,1050,7,1052.8,8,1052.3,9,1053,10,1063.15,11,1081.5,12,1081.9],]);var equityData=[1743530200,1053,1053,1743576640,1053,1052.2,1743576640,1053,1052.2,1743576704,1053,1052.1,1743577353,1053,1051.9,1743578195,1053,1051.8,1743578390,1053,1051.7,1743578519,1053,1051.6,1743578908,1053,1051.5,1743578973,1053,1051.4,1743580788,1053,1051.8,1743582472,1053,1053.1,1743584202,1053,1052.8,1743585162,1053,1051.3,1743585226,1053,1051.2,1743587083,1053,1052.2,1743588172,1053,1051,1743588876,1053,1050.8,1743589581,1053,1050.2,1743589645,1053,1050.1,1743589709,1053,1050,1743589901,1053,1049.7,1743591758,1053,1050.3,1743591950,1053,1049.4,1743593807,1053,1049.9,1743595622,1053,1052,1743596476,1053,1048.9,1743596871,1053,1048.8,1743597133,1053,1048.3,1743598053,1053,1048.1,1743598119,1053,1046.3,1743598251,1053,1045.7,1743598316,1053,1045.5,1743600156,1053,1045.6,1743600353,1053,1045.3,1743600419,1053,1045.2,1743602259,1053,1045.8,1743602456,1053,1044.4,1743602588,1053,1043.2,1743603442,1053,1043.1,1743603508,1053,1042.8,1743603574,1053,1042.5,1743605414,1053,1044.9,1743606794,1053,1041.6,1743607510,1053,1040.8,1743609312,1053,1042.7,1743611116,1053,1042.8,1743612920,1053,1044,1743614723,1053,1043.8,1743616526,1053,1043.6,1743618328,1053,1042.1,1743620143,1053,1044.9,1743621957,1053,1047.3,1743623770,1053,1046.7,1743625582,1053,1047.5,1743626768,1053,1047.4,1743627605,1053,1047.55,1743631305,1053,1048.25,1743633153,1053,1050.75,1743635017,1053,1050.05,1743636739,1053,1049.85,1743638747,1053,1049.15,1743640612,1053,1050.15,1743642405,1053,1049.25,1743644270,1053,1049.55,1743646144,1053,1049.45,1743647948,1053,1049.85,1743649751,1053,1049.65,1743651554,1053,1049.35,1743653357,1053,1049.35,1743655087,1053,1049.15,1743656987,1053,1049.45,1743658847,1053,1049.55,1743660706,1053,1048.65,1743662566,1053,1048.95,1743664361,1053,1049.75,1743666093,1053,1047.75,1743668144,1053,1046.65,1743669903,1053,1045.05,1743671801,1053,1046.15,1743673664,1053,1044.45,1743675521,1053,1043.95,1743675989,1053,1041.35,1743677793,1053,1045.75,1743679621,1053,1045.15,1743680089,1053,1038.35,1743680156,1053,1037.95,1743680223,1053,1035.55,1743680290,1053,1030.95,1743680490,1053,1029.15,1743680757,1053,1027.95,1743680824,1053,1027.75,1743682628,1053,1032.15,1743683230,1053,1025.95,1743683230,1053,1025.95,1743683296,1053,1024.85,1743683363,1053,1023.35,1743683497,1053,1022.45,1743685301,1053,1028.45,1743685902,1053,1020.05,1743685969,1053,1017.35,1743686103,1053,1017.05,1743686838,1053,1016.45,1743687105,1053,1014.95,1743687640,1053,1011.95,1743687773,1053,1010.75,1743688041,1053,1008.65,1743688509,1053,1008.35,1743690313,1053,1022.15,1743692116,1053,1025.75,1743693918,1053,1021.55,1743695764,1053,1024.85,1743697601,1053,1024.25,1743699438,1053,1031.15,1743701275,1053,1027.55,1743703113,1053,1026.65,1743704951,1053,1026.05,1743706789,1053,1041.05,1743708652,1053,1034.15,1743710515,1053,1031.75,1743712377,1053,1036.25,1743714040,1053,1035.5,1743717698,1053,1030.7,1743719555,1053,1034.9,1743721403,1053,1027.1,1743723252,1053,1027.4,1743725100,1053,1024.1,1743726948,1053,1026.8,1743728731,1053,1028.9,1743730646,1053,1032.2,1743732431,1053,1031,1743734216,1053,1033.4,1743736199,1053,1032.8,1743737984,1053,1031.9,1743739902,1053,1036.4,1743741754,1053,1036.4,1743743540,1053,1035.2,1743745460,1053,1036.7,1743747314,1053,1032.8,1743749168,1053,1036.4,1743750955,1053,1040.3,1743752809,1053,1046.6,1743754597,1053,1048.4,1743756406,1053,1045.7,1743758355,1053,1040.6,1743760170,1053,1043.6,1743761985,1053,1043.6,1743763798,1053,1034.3,1743765612,1053,1030.4,1743767425,1053,1052,1743768364,1053,1073,1743768364,1081.9,1081.9,1743768364,1081.9,1081.9];window.equityChart(document.getElementById("equity_chart"),acc,res,{chart:[],inited:true},[equityData,]);window.balanceDrawdownChart(document.getElementById("drawdown_chart"),acc,res,{chart:[],inited:true},[equityData,]);window.balanceDrawdownChart(document.getElementById("risk_drawdown_chart"),acc,res,{chart:[],inited:true},[equityData,]);window.depositLoadChart(document.getElementById("risk_load_chart"),acc,res,{chart:[],inited:true},[equityData,[1743577353,0.0149,1743578195,0.0149,1743578390,0.0149,1743578519,0.0149,1743578908,0.0149,1743578973,0.0149,1743580788,0.0149,1743582472,0.0148,1743584202,0.0148,1743585162,0.0149,1743585226,0.0149,1743587083,0.0149,1743588172,0.0149,1743588876,0.0149,1743589581,0.0149,1743589645,0.0149,1743589709,0.0149,1743589901,0.0149,1743591758,0.0149,1743591950,0.0149,1743593807,0.0149,1743595622,0.0149,1743596476,0.0149,1743596871,0.0149,1743597133,0.0149,1743598053,0.0149,1743598119,0.0149,1743598251,0.0149,1743598316,0.0149,1743600156,0.0149,1743600353,0.015,1743600419,0.015,1743602259,0.0149,1743602456,0.015,1743602588,0.015,1743603442,0.015,1743603508,0.015,1743603574,0.015,1743605414,0.015,1743606794,0.015,1743607510,0.015,1743609312,0.015,1743611116,0.015,1743612920,0.015,1743614723,0.015,1743616526,0.015,1743618328,0.015,1743620143,0.015,1743621957,0.0149,1743623770,0.0149,1743625582,0.0149,1743626768,0.0149,1743627605,0.0149,1743631305,0.0149,1743633153,0.0149,1743635017,0.0149,1743636739,0.0149,1743638747,0.0149,1743640612,0.0149,1743642405,0.0149,1743644270,0.0149,1743646144,0.0149,1743647948,0.0149,1743649751,0.0149,1743651554,0.0149,1743653357,0.0149,1743655087,0.0149,1743656987,0.0149,1743658847,0.0149,1743660706,0.0149,1743662566,0.0149,1743664361,0.0149,1743666093,0.0149,1743668144,0.0149,1743669903,0.015,1743671801,0.0149,1743673664,0.015,1743675521,0.015,1743675989,0.015,1743677793,0.0303,1743679621,0.0303,1743680089,0.0305,1743680156,0.0305,1743680223,0.0306,1743680290,0.0307,1743680490,0.0308,1743680757,0.0308,1743680824,0.0308,1743682628,0.0307,1743683230,0.0309,1743683230,0.0309,1743683296,0.0468,1743683363,0.0469,1743683497,0.047,1743685301,0.0467,1743685902,0.0471,1743685969,0.0472,1743686103,0.0472,1743686838,0.0472,1743687105,0.0473,1743687640,0.0474,1743687773,0.0475,1743688041,0.0476,1743688509,0.0476,1743690313,0.047,1743692116,0.0468,1743693918,0.047,1743695764,0.0468,1743697601,0.0469,1743699438,0.0466,1743701275,0.0467,1743703113,0.0468,1743704951,0.0468,1743706789,0.0461,1743708652,0.0464,1743710515,0.0465,1743712377,0.0463,1743714040,0.0464,1743717698,0.0466,1743719555,0.0464,1743721403,0.0467,1743723252,0.0467,1743725100,0.0469,1743726948,0.0468,1743728731,0.0467,1743730646,0.0465,1743732431,0.0466,1743734216,0.0465,1743736199,0.0465,1743737984,0.0465,1743739902,0.0463,1743741754,0.0463,1743743540,0.0464,1743745460,0.0463,1743747314,0.0465,1743749168,0.0463,1743750955,0.0462,1743752809,0.0459,1743754597,0.0458,1743756406,0.0459,1743758355,0.0461,1743760170,0.046,1743761985,0.046,1743763798,0.0464,1743765612,0.0466,1743767425,0.0456,1743768364,0.0447,1743768364,0,1743768364,0],]);Signals.RenderRisksChart=function(){if(Signals.risksChartLoaded){return;}Signals.risksChartLoaded=true;document.body.style.cursor='wait';Ajax.get('/signals/charts/risks/json',{'id':2299787},{onready:function(text){let json=null;try{json=JSON.parse(text);}catch(e){document.body.style.cursor='initial';console.warn(e);return;}if(!json||!json.length){document.body.style.cursor='initial';$('risk_mae_mfe_chart').style.display='none';return;}window.risksMaeMfeChart(document.getElementById("risk_mae_mfe_chart"),acc,res,{chart:[]},[json]);document.body.style.cursor='initial';}});};});window.signalsTabLoading=false;mqGlobal.AddOnReady(function(){Signals.Init();ui_tooltip(300,$("tooltipDataGrowth"),$("tooltipDataGrowthContent"),null);ui_tooltip(300,$("tooltipWeeks"),$("tooltipWeeksContent"),null);ui_tabs("switchGrowthChart",null);ui_tabs("switchEquityChart",null);ui_tabs("switchRiskChart",null);ui_smartList("signal_tabs_top");InitTabs();});function InitTabs(){var selectedTab=window.hashParams.Get("tab")||'account';if(Signals.signalTabs.indexOf(selectedTab)<0){selectedTab='account';}var build=function(tabs){var tabsInfo=new Array();for(var i=0;i<tabs.length;i++){var content=$("tab_content_"+tabs[i]);if(content){tabsInfo[tabsInfo.length]={"content_id":"tab_content_"+tabs[i],"selected":(selectedTab==tabs[i])||(selectedTab==''&&(i==0)),"tab_id":"tab_"+tabs[i],"tag":tabs[i]};}}return tabsInfo;};window.topTabs=new Tabs();window.topTabs.Create(build(Signals.signalTabs),Signals.SwitchTab,false,false,true);}function ShowReviews(){var tab=$('tab_reviews');window.topTabs.SelectTab(tab);setTimeout(function(){Signals.SwitchTab(tab);},0);return false;}function ToggleNews(){var news=$('newsContainer');if(news.style.display=='none'){news.style.display='block';$('buttonNews').className='selected';}else{news.style.display='none';$('buttonNews').className='';}}function LoadNews(skip){if(window.signalNewsLoading){return false;}var url="/ru/signals/2299787/news?skip="+skip;document.body.style.cursor="wait";Ajax.get(url,null,{onready:function(text){try{var placeholder=$('signal_news_placeholder');if(placeholder){placeholder.innerHTML=text;placeholder.setAttribute("id","");}}catch(e){}window.signalNewsLoading=false;document.body.style.cursor="initial";},onerror:function(){window.signalNewsLoading=false;document.body.style.cursor="initial";}});};mqGlobal.AddOnReady(function(){Signals.RenderAvatarsNew($("subscribeByMtWindow"));});function SubscribeByMt(){var subscribeByMtWindow=$('subscribeByMtWindow');if(subscribeByMtWindow){var subscribeByMtWindowShow=function(){var title="Копировать сделки <strong>V6 FIL</strong> в MetaTrader 5";Dialog.show(title,subscribeByMtWindow,680,510,subscribeByMtWindowHide,null,null,'cloud-dialog signal');subscribeByMtWindow.style.display="block";var height=subscribeByMtWindow.clientHeight;var width=subscribeByMtWindow.clientWidth;Dialog.show(title,subscribeByMtWindow,width,height,subscribeByMtWindowHide,null,null,'cloud-dialog signal');};subscribeByMtWindowShow();return false;}return true;}function subscribeByMtWindowLaunch(){window.fpush('MQL5+Signal+Page+Launch+Platform');Ajax.get("/ru/accounting/prepare/signals/2299787?cartId=2b234e13f2b99d462bb1f267");Deeplink.OpenUri("mql5buy://signal/subscribe/2299787.V6_FIL&source=Unknown&ec_cart_id=2b234e13f2b99d462bb1f267&ec_affiliation=Unknown&ec_detail=MQL5+Page13+Visit",'https://download.mql5.com/cdn/web/metaquotes.ltd/mt5/mt5setup.exe?utm_source=www.mql5.com&amp;utm_campaign=download');subscribeByMtWindowHide();}function subscribeByMtWindowHide(){Dialog.hide();var subscribeByMtWindow=$('subscribeByMtWindow');if(subscribeByMtWindow){subscribeByMtWindow.style.display="none";}};try{var url=new URL(window.location);url.searchParams.set('source','Unknown');window.history.pushState({},'',url);}catch(e){};mqGlobal.AddOnReady(function(){window.setTimeout(function(){window.fpush("MQL5+Signal+View");},2000);});mqGlobal.AddOnReady(function(){window.initHeaderSearch('','https://www.mql5.com/ru/search');});</script><script type="text/javascript">mqGlobal.AddOnReady(function(){window.initSuggestions("headerSearchKeyword","ru","https://search.mql5.com/api/query","https://www.mql5.com/ru/users_search/suggestion");});window.fz("show","bfogggabsofabcpxuzmgaibarmaxasdrj");mqGlobal.AddOnReady(function(){window.floatVerticalPanelNode=FloatVerticalPanel('Сайт использует cookie-файлы. Узнайте больше о нашей <a href="/ru/about/cookies">политике по использованию cookie-файлов</a>.','cookie_accept');});      if (typeof Attach !== "undefined")
+        Attach.setAcceptFilter(".zip, .txt, .log, .mqh, .ex5, .mq5, .mq4, .mqproj, .ex4, .mt5, .set, .tpl, .cl, .py, .sqlite, .csv, .ini, .ipynb, .onnx, .gif, .png, .jpg, .jpeg, .mp4, .webm");
+  </script>
+
+  <div class="b-fixed-mt" id="bFixedMt" style="display: none;">
+    <div id='nxqxoctubmivyqaqydzulkocbuaaudxldm' class="bfb g937w27w4"><script type='text/javascript'>window.fz("show","nxqxoctubmivyqaqydzulkocbuaaudxldm");</script></div>
+  </div>
+
+
+<script type="application/ld&#x2B;json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://www.mql5.com",
+      "logo": "https://c.mql5.com/i/community/logo_mql5-2.png",
+      "sameAs": [
+        "https://www.facebook.com/mql5.community",
+        "https://www.twitter.com/mql5com",
+        "https://www.youtube.com/user/MetaQuotesOfficial"
+        ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "MQL5 Community",
+      "url": "https://www.mql5.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.mql5.com/ru/search?keyword={keyword}",
+        "query-input": "required name=keyword"
+      }
+    }
+, 
+{"@context":"https://schema.org","@type":"ItemList","itemListElement":[{"@type":"SiteNavigationElement","position":1,"name":"Форум","description":"Обсуждение торговых стратегий и автоматического трейдинга. MQL5.community  крупнейший форум по форексу","url":"https://www.mql5.com/ru/forum","children":[]},{"@type":"SiteNavigationElement","position":2,"name":"Маркет","description":"MetaTrader Market - магазин торговых роботов, индикаторов, книг и журналов по трейдингу.","url":"https://www.mql5.com/ru/market","children":[]},{"@type":"SiteNavigationElement","position":3,"name":"Сигналы","description":"Социальный трейдинг, копирование сделок и мониторинг счетов в MetaTrader - Торговые сигналы на MQL5.com","url":"https://www.mql5.com/ru/signals","children":[]},{"@type":"SiteNavigationElement","position":4,"name":"Фриланс","description":"Заказать торговых роботов, технические индикаторы и программы для автоматического трейдинга. Работа на форексе. Фриланс-сервис на MQL5.com. Нанять на работу специалистов и экспертов по MetaTrader","url":"https://www.mql5.com/ru/job","children":[]},{"@type":"SiteNavigationElement","position":5,"name":"Котировки","description":"","url":"https://www.mql5.com/ru/quotes/overview","children":[]},{"@type":"SiteNavigationElement","position":6,"name":"Вебтерминал","description":"Вебтерминал для торговой плафтормы MetaTrader. Торгуйте на форекс рынке.","url":"https://web.metatrader.app/terminal?mode=demo","children":[]},{"@type":"SiteNavigationElement","position":7,"name":"Календарь","description":"","url":"https://www.mql5.com/ru/economic-calendar","children":[]},{"@type":"SiteNavigationElement","position":8,"name":"VPS","description":"","url":"https://www.mql5.com/ru/vps","children":[]},{"@type":"SiteNavigationElement","position":9,"name":"Статьи","description":"","url":"https://www.mql5.com/ru/articles","children":[]},{"@type":"SiteNavigationElement","position":10,"name":"CodeBase","description":"Скачать торговые роботы, технические индикаторы, скрипты в исходном коде - Библиотека кодов на MQL5 для MetaTrader 5","url":"https://www.mql5.com/ru/code","children":[]},{"@type":"SiteNavigationElement","position":11,"name":"Документация","description":"Справочник MetaQuotes Language 5 (MQL5) - Документация на MQL5.com","url":"https://www.mql5.com/ru/docs","children":[]}]}  ]
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <title>Test Page</title>
+    
+    <!-- mqGlobal в head -->
+    <script type="text/javascript">
+        var mqGlobal = {};
+        mqGlobal.AddOnReady = function(callback) {
+            if (document.readyState === 'complete') {
+                callback();
+            } else {
+                window.addEventListener('load', callback);
+            }
+        };
+        
+        mqGlobal.AddOnReady(function () { 
+            console.log("mqGlobal initialized");
+            if (window.Mql5Cookie) {
+                Mql5Cookie.init('mql5.com','test123');
+            }
+        });
+    </script>
+    
+    <!-- finteza в head -->
+    <script type="text/javascript">
+        (function(a,e,f,g,b,c,d){a[b]||(a.FintezaCoreObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=!0,c.defer=!0,c.src=g,d&amp;&amp;d.parentNode&amp;&amp;d.parentNode.insertBefore(c,d))})
+        (window, document, "script", "/ff/core.js", "fz");
+        window.fz("register", "website", {
+            id: "testid",
+            trackLinks: true
+        });
+    </script>
+    
+    <!-- Основная библиотека в head -->
+    <script src="/vendor.js"></script>
+</meta><title>Test Page</title><script type="text/javascript">
+        var mqGlobal = {};
+        mqGlobal.AddOnReady = function(callback) {
+            if (document.readyState === 'complete') {
+                callback();
+            } else {
+                window.addEventListener('load', callback);
+            }
+        };
+        
+        mqGlobal.AddOnReady(function () { 
+            console.log("mqGlobal initialized");
+            if (window.Mql5Cookie) {
+                Mql5Cookie.init('mql5.com','test123');
+            }
+        });
+    </script><script type="text/javascript">
+        (function(a,e,f,g,b,c,d){a[b]||(a.FintezaCoreObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=!0,c.defer=!0,c.src=g,d&amp;&amp;d.parentNode&amp;&amp;d.parentNode.insertBefore(c,d))})
+        (window, document, "script", "/ff/core.js", "fz");
+        window.fz("register", "website", {
+            id: "testid",
+            trackLinks: true
+        });
+    </script><script src="/vendor.js"></script></head><body><div id="growth_chart" class="chart-container">
+        Chart will be rendered here
+    </div><div id="balance_chart" class="chart-container">
+        Chart will be rendered here
+    </div><div id="equity_chart" class="chart-container">
+        Chart will be rendered here
+    </div><div id="growth_chart" class="chart-container">
+        Chart will be rendered here
+    </div><div id="balance_chart" class="chart-container">
+        Chart will be rendered here
+    </div><script src="/all.js"></script><script type="text/javascript">
+        // Имитация данных графиков
+        var equityData = [
+            1743530200, 1053, 1053,
+            1743576640, 1053, 1052.2,
+            1743576704, 1053, 1052.1,
+            1743577353, 1053, 1051.9
+        ];
+        
+        var acc = {
+            growth: 0.0197,
+            balance: 1081.9,
+            equity: 1081.9,
+            drawdown: 0,
+            depositLoad: 0,
+            deposits: 0,
+            withdrawals: 0,
+            currency: "USD",
+            digits: 2
+        };
+        
+        var res = {
+            growth: "Прирост",
+            balance: "Баланс",
+            equity: "Средства",
+            drawdown: "Просадка"
+        };
+        
+        // Имитация функций отрисовки графиков
+        window.growthChart = function(element, account, resources, options, data) {
+            console.log("Growth chart rendered", data);
+            element.innerHTML = "Growth Chart Rendered";
+        };
+        
+        window.balanceChart = function(element, account, resources, options, data) {
+            console.log("Balance chart rendered", data);
+            element.innerHTML = "Balance Chart Rendered";
+        };
+        
+        window.equityChart = function(element, account, resources, options, data) {
+            console.log("Equity chart rendered", data);
+            element.innerHTML = "Equity Chart Rendered";
+        };
+        
+        window.renderMiniChart = function(element, period, data) {
+            console.log("Mini chart rendered", data);
+            element.innerHTML = "Mini Chart Rendered";
+        };
+        
+        // Вызов функций отрисовки графиков
+        mqGlobal.AddOnReady(function() {
+            window.fz("show", "testchart");
+            
+            window.growthChart(document.getElementById("growth_chart"), acc, res, {}, [
+                [0, 0, 1, 0.25, 2, 0.3, 3, -0.3, 4, -0.19]
+            ]);
+            
+            window.balanceChart(document.getElementById("balance_chart"), acc, res, {}, [
+                [0, 1061, 1, 1063.7, 2, 1064.2, 3, 1057.8, 4, 1059]
+            ]);
+            
+            window.equityChart(document.getElementById("equity_chart"), acc, res, {}, [equityData]);
+        });
+    </script><script src="/signals.js"></script><script src="/svg-chart.js"></script></body></html>

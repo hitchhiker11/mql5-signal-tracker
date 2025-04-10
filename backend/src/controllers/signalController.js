@@ -1,22 +1,22 @@
 import { pool } from '../config/database.js';
-import { MQL5Parser } from '../parser.js';
+import MQL5Service from '../services/mql5/index.js';
 
-const parser = new MQL5Parser();
+// Инициализация парсера с настройками по умолчанию
+const parser = new MQL5Service();
 
 export const parseSignal = async (req, res) => {
   try {
     const { url } = req.body;
-    const signalData = await parser.parseSignal(url);
     
-    // Проверяем наличие основных данных
-    if (!signalData.generalInfo || !signalData.generalInfo.signalName) {
-      throw new Error('Invalid signal data');
+    if (!url) {
+      return res.status(400).json({ error: 'URL is required' });
     }
-
-    res.json(signalData);
+    
+    const signalData = await parser.getSignalData(url);
+    return res.json(signalData);
   } catch (error) {
-    console.error('Parse error:', error);
-    res.status(500).json({ message: 'Ошибка при парсинге сигнала' });
+    console.error('Parser error:', error);
+    return res.status(500).json({ error: 'Failed to parse signal' });
   }
 };
 
@@ -29,7 +29,7 @@ export const updateSignalData = async (req, res) => {
       return res.status(404).json({ message: 'Сигнал не найден' });
     }
 
-    const signalData = await parser.parseSignal(signal.rows[0].url);
+    const signalData = await parser.getSignalData(signal.rows[0].url);
     const result = await pool.query(
       `UPDATE signals 
        SET parsed_data = $1,
@@ -66,7 +66,7 @@ export const parseAndSaveSignal = async (req, res) => {
     }
 
     // Парсим сигнал
-    const signalData = await parser.parseSignal(url);
+    const signalData = await parser.getSignalData(url);
     
     // Проверяем, существует ли уже сигнал с таким URL
     const existingSignal = await client.query(

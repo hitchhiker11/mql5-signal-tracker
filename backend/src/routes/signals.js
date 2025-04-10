@@ -1,6 +1,6 @@
 import express from 'express';
-import { MQL5Parser } from '../parser.js';
 import { pool } from '../config/database.js';
+import MQL5Service from '../services/mql5/index.js';
 import { isAdmin, verifyToken } from '../middleware/auth.js';
 import { 
   parseAndSaveSignal,
@@ -9,7 +9,9 @@ import {
 } from '../controllers/signalController.js';
 
 const router = express.Router();
-const parser = new MQL5Parser();
+
+// Инициализация парсера
+const parser = new MQL5Service();
 
 // Применяем middleware аутентификации
 router.use(verifyToken);
@@ -45,7 +47,7 @@ router.get('/user', async (req, res) => {
 router.post('/parse', async (req, res) => {
   try {
     const { url } = req.body;
-    const signalData = await parser.parseSignal(url);
+    const signalData = await parser.getSignalData(url);
     res.json(signalData);
   } catch (error) {
     res.status(500).json({ message: 'Ошибка при парсинге сигнала' });
@@ -122,7 +124,7 @@ router.post('/:id/parse', verifyToken, async (req, res) => {
       }
   
       // Парсим данные
-      const signalData = await parser.parseSignal(signal.rows[0].url);
+      const signalData = await parser.getSignalData(signal.rows[0].url);
       
       if (!signalData || !signalData.generalInfo) {
         throw new Error('Invalid signal data structure');
@@ -171,7 +173,7 @@ router.put('/user/:id', async (req, res) => {
     }
 
     const signal = await client.query('SELECT url FROM signals WHERE id = $1', [id]);
-    const signalData = await parser.parseSignal(signal.rows[0].url);
+    const signalData = await parser.getSignalData(signal.rows[0].url);
 
     const result = await client.query(
       `UPDATE signals 

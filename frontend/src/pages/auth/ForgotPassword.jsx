@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  Card,
   Stack,
   Link,
-  Container,
   Typography,
   TextField,
   Button,
-  Alert
+  Alert,
+  Box
 } from '@mui/material';
 import { authApi } from '../../services/api/auth';
 
@@ -35,55 +34,65 @@ export default function ForgotPassword() {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Stack spacing={2} sx={{ mb: 5, position: 'relative' }}>
-        <Typography variant="h4">Забыли пароль?</Typography>
-        <Typography color="text.secondary">
-          Введите email для восстановления пароля
-        </Typography>
-      </Stack>
+    <Box sx={{ maxWidth: 480 }}>
+      <Typography variant="h4" sx={{ mb: 2 }}>
+        Забыли пароль?
+      </Typography>
+      
+      <Typography variant="body2" sx={{ mb: 5, color: 'text.secondary' }}>
+        Пожалуйста, введите email, который вы использовали при регистрации. 
+        Мы отправим вам инструкции по восстановлению пароля.
+      </Typography>
 
-      <Card sx={{ p: 3 }}>
-        {success && (
-          <Alert severity="success" sx={{ mb: 3 }}>
-            {success}
-          </Alert>
-        )}
-        {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
-            {error}
-          </Alert>
-        )}
+      {success && (
+        <Alert severity="success" sx={{ mb: 3 }}>
+          {success}
+        </Alert>
+      )}
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {error}
+        </Alert>
+      )}
 
-        <form onSubmit={handleSubmit}>
-          <Stack spacing={3}>
-            <TextField
-              fullWidth
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+      <form onSubmit={handleSubmit}>
+        <Stack spacing={3}>
+          <TextField
+            fullWidth
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            placeholder="example@email.com"
+          />
 
-            <Button
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              disabled={loading}
-            >
-              {loading ? 'Отправка...' : 'Отправить'}
-            </Button>
-          </Stack>
-        </form>
+          <Button
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            disabled={loading}
+            sx={{
+              mt: 2,
+              bgcolor: 'primary.main',
+              color: (theme) => theme.palette.common.white,
+              '&:hover': {
+                bgcolor: 'primary.dark',
+              },
+            }}
+          >
+            {loading ? 'Отправка...' : 'Восстановить пароль'}
+          </Button>
+        </Stack>
+      </form>
 
-        <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-          Вспомнили пароль?{' '}
-          <Link variant="subtitle2" component={RouterLink} to="/auth/login">
-            Войти
-          </Link>
-        </Typography>
-      </Card>
-    </Container>
+      <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+        Вспомнили пароль?{' '}
+        <Link variant="subtitle2" component={RouterLink} to="/auth/login" sx={{ color: 'primary.main' }}>
+          Вернуться к входу
+        </Link>
+      </Typography>
+    </Box>
   );
 }

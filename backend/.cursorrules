@@ -2,113 +2,113 @@
 
 ## Project Information
 - **Version**: 1.0.0
-- **Last Updated**: April 04, 2025 at 05:37 PM
+- **Last Updated**: April 09, 2025 at 07:07 PM
 - **Name**: backend
 - **Language**: javascript
 - **Framework**: express
 - **Type**: application
 
 ## Project Description
-This project serves as a web API for parsing and managing trading signals, primarily focusing on data extraction from MQL5.com. It offers user authentication, role-based access control, and API endpoints for retrieving and manipulating signal data, catering to users who need to programmatically access and manage trading signals. Its distinguishing feature is the integration of a web scraping component to dynamically extract data from a specific external source.
+This project serves as a data extraction and management system tailored for MQL5 signals, offering parsing capabilities through varying modes optimized for speed and detail. It provides a structured API for accessing signal data, user authentication, and administrative control, catering to both end-users seeking signal insights and administrators managing the platform's content and user base.
 
 ## AI Behavior Rules
 
 ### Code Generation Style
 #### Preferred Patterns
-- Consistent indentation (2 spaces)
-- Use of single quotes for strings
+- Consistent use of ES modules (import/export)
+- Use of `const` and `let` over `var`
+- Asynchronous operations handled with `async/await`
+- Consistent indentation (typically 2 spaces)
+- Use of template literals for string concatenation
+- Object destructuring for accessing properties
 - Arrow functions where appropriate
-- Descriptive variable names
-- Clear and concise comments (often in Russian)
-- Asynchronous functions with try/catch blocks for error handling
-- Use of `const` and `let` for variable declaration
-- Consistent use of `async/await` for asynchronous operations
-- ES6 module syntax (import/export)
-- Consistent use of `console.error` for error logging
+- Consistent use of single quotes for strings
+- Prefer named imports over default imports where possible (e.g., `import { Pool } from 'pg';` instead of `import pkg from 'pg'; const { Pool } = pkg;`)
+- Use of JSDoc-style comments for documentation
+- Consistent use of `console.log`, `console.info`, `console.warn`, and `console.error` for logging
 
 #### Patterns to Avoid
+- Usage of `var`
 - Inconsistent indentation
-- Double quotes for strings
-- Traditional function declarations where arrow functions are suitable
-- Ambiguous variable names
-- Missing comments
-- Lack of error handling
-- Use of `var` for variable declaration
-- Mixing `async/await` with `.then/.catch`
-- CommonJS module syntax (require/module.exports)
-- Lack of logging
+- Mixing single and double quotes
+- Inconsistent use of arrow functions
+- Callbacks instead of `async/await`
+- Inconsistent naming conventions
 
 ### Error Handling
 #### Preferred Patterns
-- Try/catch blocks for asynchronous operations
-- Centralized error handling middleware (`errorHandler` in `src/middleware/error.js`)
-- Returning JSON responses with error messages and status codes
-- Logging errors using `console.error`
-- Specific error messages based on the type of error (e.g., validation error, unauthorized access)
-- Use of `ROLLBACK` in database transactions to handle errors
+- Use of `try...catch` blocks for handling asynchronous errors
+- Consistent use of `errorHandler` middleware for centralized error handling in Express routes
+- Returning appropriate HTTP status codes (e.g., 400, 401, 404, 500) with JSON responses
+- Logging error messages with `console.error`
+- Throwing `Error` objects with descriptive messages
+- Using custom error messages in responses, often including `message` and `details` fields
+- Using `ROLLBACK` in database transactions when errors occur
+- Catching errors at the controller level and passing them to the `errorHandler` middleware
 
 #### Patterns to Avoid
 - Ignoring errors
 - Generic error messages
-- Lack of error logging
-- Uncaught exceptions
+- Inconsistent error handling strategies
 
 ### Performance
 #### Preferred Patterns
-- Database connection pooling using `pg` library
-- Efficient database queries using parameterized queries to prevent SQL injection
-- Caching parsed data (though currently only a simple in-memory cache is used in `src/storage.js`)
-- Using `bcrypt` for password hashing
-- Limiting the number of redirects and setting timeouts for axios requests in `src/parser.js`
+- Caching frequently accessed data using `node-cache`
+- Using `FastHtmlCleaner` for quicker HTML cleaning
+- Efficiently parsing HTML with `cheerio`
+- Using connection pooling with `pg` to manage database connections
+- Using `gzip` compression (likely handled by Express middleware, though not explicitly shown)
+- Optimizing HTTP requests using `axios` with timeouts and redirects
+- Limiting the number of external resources loaded by `jsdom` using `SelectiveResourceLoader`
+- Using different parsing modes (`fast`, `normal`, `advanced`) based on the required level of detail
+- Lazy initialization of resources (e.g., `MQL5Parser` only when `advanced` parsing is used)
 
 #### Patterns to Avoid
-- Inefficient database queries
-- Lack of caching
-- Insecure password storage
-- Unnecessary network requests
+- Unnecessary computations
+- Blocking operations in the main thread
+- Inefficient data structures
 
 ### Module Organization
 #### Structure
-- src/
-- ├── config/ (Database configuration)
-- ├── controllers/ (Route handlers/controllers)
-- ├── middleware/ (Middleware functions)
-- ├── routes/ (Express routes)
-- ├── models/ (Currently not present, but a potential location for database models)
-- ├── parser.js (Web scraping logic)
-- ├── server.js (Main server file)
-- ├── storage.js (In-memory storage, could be replaced with a database)
-- └── utils/ (Utility functions)
+- Core modules are placed in `src` directory
+- Express routes are in `src/routes`
+- Express middleware in `src/middleware`
+- Controllers in `src/controllers`
+- Services related to MQL5 parsing are in `src/services/mql5`
+- Configuration files in `src/config`
+- Utility functions in `src/services/mql5/utils`
+- Parsers within `src/services/mql5/parser`
+- Resource management in `src/services/mql5/resources`
 
 #### Dependencies
-- server.js depends on express, cors, dotenv, routes, middleware, database config, and parser.
-- Routes depend on controllers and middleware.
-- Controllers depend on database config and parser.
-- Middleware depends on JWT and database config.
-- Parser depends on cheerio and axios.
-- Database config depends on dotenv and pg.
+- server.js depends on express, cors, dotenv, routes, middleware, MQL5Service, and database configuration
+- Routes depend on controllers, middleware (auth), and database configuration
+- Controllers depend on services (MQL5Service) and database configuration
+- Services depend on utility functions and configuration
+- Middleware depends on authentication libraries (jwt, bcrypt) and database configuration
+- Configuration depends on environment variables (dotenv)
 
 #### Module Responsibilities
-- **config/database.js**: Database connection and schema initialization.
-- **controllers/*Controller.js**: Handling route logic, interacting with the database, and calling the parser.
-- **middleware/auth.js**: Authentication and authorization middleware.
-- **middleware/error.js**: Centralized error handling.
-- **routes/*.js**: Defining API endpoints and routing requests to controllers.
-- **parser.js**: Web scraping and data extraction from MQL5 signals.
-- **server.js**: Main server setup, middleware configuration, and route registration.
-- **storage.js**: In-memory storage for parsed data (temporary solution).
+- **server.js**: Main entry point, initializes Express app, middleware, routes, and database connection.
+- **src/routes/***: Define API endpoints and route requests to appropriate controllers.
+- **src/controllers/***: Handle business logic for specific routes, interact with services and database.
+- **src/services/mql5/***: Provide functionality for parsing data from MQL5 website.
+- **src/middleware/***: Implement middleware functions for authentication, authorization, and error handling.
+- **src/config/***: Configure database connection and other application settings.
+- **src/services/mql5/utils/***: Provide utility functions for tasks such as caching, HTML cleaning, and logging.
+- **src/services/mql5/parser/***: Contain different parsers for the MQL5 website.
 
 #### Rules
-- Separate concerns into modules (routes, controllers, middleware, config).
-- Use dependency injection where appropriate.
+- Separate concerns into modules: routes, controllers, services, middleware, and configuration.
+- Use dependency injection to provide services and configuration to controllers and other modules.
 - Handle errors centrally using middleware.
-- Use authentication and authorization middleware to protect routes.
-- Configure the database connection in a separate module.
-- Use environment variables for configuration.
+- Use logging for debugging and monitoring.
+- Configure application settings using environment variables.
 
 #### Naming Conventions
-- **files**: kebab-case (e.g., `auth.js`, `signalController.js`)
-- **variables**: camelCase (e.g., `hashedPassword`, `signalData`)
-- **functions**: camelCase (e.g., `verifyToken`, `parseSignal`)
-- **classes**: PascalCase (e.g., `MQL5Parser`, `Storage`)
-- **routes**: plural nouns (e.g., `/api/users`, `/api/signals`)
+- **files**: Use camelCase for file names (e.g., `signalController.js`, `MQL5Service.js`).
+- **variables**: Use camelCase for variable names (e.g., `signalData`, `httpOptions`).
+- **classes**: Use PascalCase for class names (e.g., `MQL5Service`, `HTMLCleaner`).
+- **functions**: Use camelCase for function names (e.g., `parseSignal`, `fetchPage`).
+- **routes**: Use kebab-case for route paths (e.g., `/api/signals`, `/api/admin/users`).
+- **environment_variables**: Use uppercase with underscores for environment variables (e.g., `DB_HOST`, `JWT_SECRET`).

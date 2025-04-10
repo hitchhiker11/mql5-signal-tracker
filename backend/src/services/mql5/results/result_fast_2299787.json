@@ -1,0 +1,24 @@
+{
+  "generalInfo": {
+    "signalName": "",
+    "author": "",
+    "price": "",
+    "subscribers": "",
+    "growth": "",
+    "maxDrawdown": "",
+    "age": "",
+    "description": ""
+  },
+  "broker": "",
+  "tradingServers": "",
+  "tags": [],
+  "meta": {
+    "parsedAt": "2025-04-06T16:50:33.353Z",
+    "processingTime": 512,
+    "parser": "SimpleHtmlParser",
+    "mode": "fast",
+    "url": "https://www.mql5.com/ru/signals/2299787",
+    "originalSize": 94669,
+    "processedSize": 47380
+  }
+}

@@ -20,20 +20,26 @@ Key Requirements:
 
 # 📁 Project Structure
 └─ 📁 src
-   ├─ 📄 parser.js (143 lines) - JavaScript file for client-side functionality
-   ├─ 📄 server.js (94 lines) - JavaScript file for client-side functionality
+   ├─ 📄 parser.js (47 lines) - JavaScript file for client-side functionality
+   ├─ 📄 server.js (95 lines) - JavaScript file for client-side functionality
    ├─ 📄 storage.js (23 lines) - JavaScript file for client-side functionality
+   ├─ 📄 test-parser.js (130 lines) - JavaScript file for client-side functionality
    ├─ 📁 config
    │  └─ 📄 database.js (142 lines) - JavaScript file for client-side functionality
    ├─ 📁 controllers
-   │  └─ 📄 signalController.js (201 lines) - JavaScript file for client-side functionality
+   │  └─ 📄 signalController.js (144 lines) - JavaScript file for client-side functionality
    ├─ 📁 middleware
    │  ├─ 📄 auth.js (44 lines) - JavaScript file for client-side functionality
    │  └─ 📄 error.js (28 lines) - JavaScript file for client-side functionality
-   └─ 📁 routes
-      ├─ 📄 auth.js (122 lines) - JavaScript file for client-side functionality
-      ├─ 📄 signals.js (265 lines) - JavaScript file for client-side functionality
-      └─ 📄 users.js (134 lines) - JavaScript file for client-side functionality
+   ├─ 📁 routes
+   │  ├─ 📄 auth.js (122 lines) - JavaScript file for client-side functionality
+   │  ├─ 📄 signals.js (267 lines) - JavaScript file for client-side functionality
+   │  └─ 📄 users.js (134 lines) - JavaScript file for client-side functionality
+   └─ 📁 services
+      └─ 📁 mql5
+         ├─ 📄 MQL5Service.js (276 lines) - JavaScript file for client-side functionality
+         ├─ 📄 demo.js (96 lines) - JavaScript file for client-side functionality
+         └─ 📄 index.js (12 lines) - JavaScript file for client-side functionality
 
 # 🔍 Key Files with Methods
 
@@ -70,51 +76,85 @@ Functions:
 - release
 - update_updated_at_column
 
+`src\services\mql5\demo.js` (96 lines)
+Functions:
+- MQL5Service
+- error
+- getSignalData
+- join
+- log
+- mkdir
+- runDemo
+
 `src\middleware\error.js` (28 lines)
 Functions:
 - error
 - errorHandler
 - json
 
-`src\parser.js` (143 lines)
+`src\services\mql5\MQL5Service.js` (276 lines)
 Functions:
-- A
 - Error
+- FastHtmlCleaner
+- MQL5Fetcher
+- MQL5Parser
+- SimpleHtmlParser
+- _advancedParsing
+- _fastParsing
+- _mergeConfig
+- _normalParsing
+- clean
+- clearCache
+- constructor
+- createLogger
+- debug
+- emit
+- error
+- fetchPage
+- getSignalData
+- info
+- load
+- now
+- parseSignal
+- setParsingMode
+- super
+- validateSignalUrl
+- warn
+
+`src\parser.js` (47 lines)
+Functions:
+- Error
+- MQL5Service
 - constructor
 - error
-- load
-- parseAuthorSignals
-- parseDistribution
-- parseGeneralInfo
-- parseStatistics
-- parseTradeHistory
-- push
-- trim
+- getSignalData
+- log
+- parseSignal
 - validateSignalUrl
 
-`src\server.js` (94 lines)
+`src\server.js` (95 lines)
 Functions:
-- MQL5Parser
+- MQL5Service
 - callback
 - config
 - error
 - exit
 - express
 - function
+- getSignalData
 - json
 - log
 - origin
-- parseSignal
 - push
 - use
 
-`src\controllers\signalController.js` (201 lines)
+`src\controllers\signalController.js` (144 lines)
 Functions:
-- Error
-- MQL5Parser
+- MQL5Service
 - connect
 - deleteSignal
 - error
+- getSignalData
 - json
 - parseAndSaveSignal
 - parseSignal
@@ -122,16 +162,16 @@ Functions:
 - release
 - updateSignalData
 
-`src\routes\signals.js` (265 lines)
+`src\routes\signals.js` (267 lines)
 Functions:
 - Error
-- MQL5Parser
+- MQL5Service
 - Router
 - connect
 - delete
 - error
+- getSignalData
 - json
-- parseSignal
 - post
 - query
 - release
@@ -146,6 +186,20 @@ Functions:
 - getSignal
 - saveSignal
 
+`src\test-parser.js` (130 lines)
+Functions:
+- MQL5Parser
+- _renderPage
+- createLogger
+- error
+- exit
+- info
+- process
+- readFile
+- runTests
+- testHtmlCleaner
+- testMql5Parser
+
 `src\routes\users.js` (134 lines)
 Functions:
 - Router
@@ -157,9 +211,9 @@ Functions:
 - use
 
 # 📊 Project Overview
-**Files:** 10  |  **Lines:** 1,196
+**Files:** 14  |  **Lines:** 1,560
 
 ## 📁 File Distribution
-- .js: 10 files (1,196 lines)
+- .js: 14 files (1,560 lines)
 
-*Updated: April 04, 2025 at 05:37 PM*
+*Updated: April 09, 2025 at 07:37 PM*
