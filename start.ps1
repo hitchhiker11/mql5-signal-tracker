@@ -5,7 +5,7 @@ function Stop-ProcessOnPort {
                Get-Process
     if ($process) {
         Stop-Process -Id $process.Id -Force
-        Write-Host "Остановлен процесс на порту $Port"
+        Write-Host "Process on port $Port stopped"
         Start-Sleep -Seconds 2
     }
 }
