@@ -17,11 +17,17 @@ const PORT = process.env.PORT || 3001;
 // Инициализация парсера
 export const parser = new MQL5Service();
 
-// Настройка CORS для работы с ngrok
+// Настройка CORS для работы с разными источниками
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://1564-51-38-68-200.ngrok-free.app' // Добавьте ваш ngrok URL
+  'http://localhost:80',
+  'http://frontend', // Для работы внутри Docker-сети
+  'http://109.73.192.193',        // Внешний IP-адрес сервера (HTTP)
+  'http://109.73.192.193:80',     // Внешний IP-адрес сервера с портом 80
+  'http://109.73.192.193:3001',   // Внешний IP-адрес сервера с портом бэкенда
+  'https://109.73.192.193',       // HTTPS версия, если будет использоваться SSL
+  'https://1564-51-38-68-200.ngrok-free.app' // ngrok URL
 ];
 
 // Добавляем все домены ngrok в список разрешенных
@@ -39,9 +45,11 @@ if (process.env.NODE_ENV === 'development') {
 // Middleware
 app.use(cors({
   origin: function(origin, callback) {
+    // Разрешаем запросы без origin (например, от Postman или curl)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.log(`CORS blocked for origin: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -53,8 +61,19 @@ app.use(express.json());
 
 // Логгирование запросов
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path}`);
+  console.log(`${req.method} ${req.path} (Origin: ${req.headers.origin || 'Unknown'})`);
   next();
+});
+
+// Endpoint для проверки здоровья сервера
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memoryUsage: process.memoryUsage(),
+    version: process.env.npm_package_version || '1.0.0'
+  });
 });
 
 // Routes
@@ -84,8 +103,9 @@ app.use(errorHandler);
 
 // Database initialization
 initDatabase().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  // Явно указываем host 0.0.0.0 для доступа извне
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT} and accessible from all interfaces`);
   });
 }).catch(err => {
   console.error('Failed to initialize database:', err);

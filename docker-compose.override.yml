@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # Дополнительные настройки для бэкенда
+  backend:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 512M
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 5
+        window: 120s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      - TZ=Europe/Moscow
+      - NODE_OPTIONS=--max-old-space-size=384
+
+  # Дополнительные настройки для фронтенда
+  frontend:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "3"
+    environment:
+      - TZ=Europe/Moscow
+
+  # Дополнительные настройки для MongoDB
+  mongo:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+      restart_policy:
+        condition: any
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+    environment:
+      - TZ=Europe/Moscow
+    command: --wiredTigerCacheSizeGB 0.5 

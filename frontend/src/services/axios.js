@@ -1,9 +1,7 @@
 import axios from 'axios';
 import { getAuthToken, clearAuthCookies } from './cookies';
 
-const baseURL = window.location.hostname.includes('ngrok-free.app')
-  ? 'https://1564-51-38-68-200.ngrok-free.app' // Ваш ngrok URL для бэкенда
-  : 'http://localhost:3001';
+const baseURL = process.env.VITE_API_URL;
 
 const axiosInstance = axios.create({
   baseURL,
